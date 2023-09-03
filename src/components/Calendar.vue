@@ -12,100 +12,118 @@ export default {
   props: ['artists']
   ,
   data() {
-
     return {
       calendarOptions: {
-        headerToolbar: { left: 'dayGridMonth,resourceTimeline,timeGridWeek,timeGridoneDay', center: 'title' },
+        headerToolbar: { left: 'dayGridMonth,timeGridWeek,Day,Timeline', center: 'title' },
         plugins: [resourceTimelinePlugin, dayGridPlugin, interactionPlugin, timeGridPlugin],
-        initialView: ref('dayGridMonth'), // dayGridMonth , resourceTimeline
+        initialView: ref('dayGridMonth'), 
         dateClick: this.handleDateClick,
-        weekends: true, // initial value
+        weekends: true,
         selectable: true,
         allDaySlot: false,
         EventTime: false,
-        slotMinTime: '06:00:00',
-        slotMaxTime: '24:00:00',
+        displayEventTime: true,
+        slotMinTime: '08:00:00',
+        slotMaxTime: '22:00:00',
         dateClick: this.handleDateClick,
         views: {
-          timeGridoneDay: {
+          Day: {
             type: 'timeGrid',
+            duration: { days: 2 }
+          },
+          Timeline: {
+            type: 'resourceTimeline',
             duration: { days: 1 }
           }
         },
+        eventTimeFormat: {
+          hour: 'numeric',
+          minute: '2-digit',
+          meridiem: false
 
+        },
         resources: [
           {
-            id: '100',
+            id: 'CSB100',
             title: 'CSB100'
           },
           {
-            id: '207',
+            id: 'CSB207',
             title: 'CSB207'
           },
           {
-            id: '209',
+            id: 'CSB209',
             title: 'CSB209'
           },
           {
-            id: '210',
+            id: 'CSB210',
             title: 'CSB210'
           },
           {
-            id: '301',
+            id: 'CSB301',
             title: 'CSB301'
           }
         ],
         events: [
           {
-      resourceIds: ['100', '207'],
-            title: 'My Event',
+            resourceIds: ['CSB301'],
+            title: 'CSB301',
             start: '2023-09-05T14:14:00',
             end: '2023-09-05T16:30:00',
-            className: 'bg-primary'
+            time: '14:14-16:30',
+            className: 'bg-teal-500 border-transparent rounded-md'
           },
           {
-      resourceIds: ['a', 'b'],
-            title: 'My Event',
+            resourceIds: ['CSB301'],
+            title: 'CSB301',
             start: '2023-09-05T14:14:00',
             end: '2023-09-05T16:30:00',
-            className: 'bg-primary'
+            time: '14:14-16:30',
+            className: 'bg-teal-500 border-transparent rounded-md'
           },
           {
-      resourceIds: ['a', 'b'],
-            title: 'My Event',
-            start: '2023-09-05T14:14:00',
-            end: '2023-09-05T16:30:00',
-            className: 'bg-primary'
-          },
-          {
-      resourceIds: ['a', 'b'],
-            title: 'My Event',
-            start: '2023-09-05T14:14:00',
-            end: '2023-09-05T16:30:00',
-            className: 'bg-primary'
-          },
-          {
-            resourceIds: ['a', 'b'],
+            resourceIds: ['CSB210'],
             title: 'CSB210',
+            start: '2023-09-05T14:14:00',
+            end: '2023-09-05T16:30:00',
+            time: '14:14-16:30',
+            className: 'bg-teal-500 border-transparent rounded-md'
+          },
+          {
+            resourceIds: ['CSB209'],
+            title: 'CSB209',
+            start: '2023-09-05T14:14:00',
+            end: '2023-09-05T16:30:00',
+            time: '14:14-16:30',
+            className: 'bg-teal-500 border-transparent rounded-md'
+          },
+          {
+            resourceIds: ['CSB207'],
+            title: 'CSB207',
             start: '2023-09-02T13:14:00',
             end: '2023-09-02T16:30:00',
-            className: 'bg-primary'
+            time: '14:14-16:30',
+            className: 'bg-teal-500 border-transparent rounded-md'
           },
           {
+            resourceIds: ['CSB209'],
             title: 'CSB209',
             start: '2023-09-02T1:14:00',
             end: '2023-09-02T16:30:00',
-            className: 'bg-primary'
+            time: '14:14-16:30',
+            className: 'bg-teal-500 border-transparent rounded-md'
           },
           {
+            resourceIds: ['CSB310'],
             title: 'CSB310',
-            start: '2023-09-02T1:14:00',
+            start: '2023-09-02T14:14:00',
             end: '2023-09-02T16:30:00',
-            className: 'bg-primary'
+            time: '14:14-16:30',
+            className: 'bg-teal-500 border-transparent rounded-md'
+            
           },
 
         ],
-        eventColor: '#378006'
       }
 
     }
@@ -113,18 +131,24 @@ export default {
   methods: {
     handleDateClick: function (clickinfo) {
       this.$emit('dateClick', clickinfo);
-    }
-  }
+    },
+    test: function (data) {
+      console.log(data);
+    },
+  },
+  mounted() {
+    console.log()
+  },
 }
 </script>
 <template>
-  <!-- <p>SSSSSSSS :====== {{  artists  }}</p>
-  <button @click="toggleWeekends" class="bg-gray-500">toggle weekends</button>
-  <p>{{ this.calendarOptions.initialView.value }}</p> -->
   <FullCalendar :options="calendarOptions">
-    <template v-slot:eventContent='arg' class="ml-3">
-      <b>{{ arg.event.title }} '(<b>{{ arg.timeText }}</b>)'</b>
+    <template v-slot:eventContent='arg' >
+      <div class="w-100 mx-auto">
+        <b class="">{{ arg.event.extendedProps.time }}</b>
 
+        <b class="ml-3">{{ arg.event.title }}</b>
+      </div>
     </template>
   </FullCalendar>
 </template>

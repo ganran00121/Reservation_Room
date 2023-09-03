@@ -144,9 +144,8 @@
           </div>
         </header>
         <div class="flex-1 z-10 pt-8">
-          <div class="container rounded-xl mx-auto px-3 py-8 bg-white">
+          
             <router-view />
-          </div>
         </div>
       </main>
       
