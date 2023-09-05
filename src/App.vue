@@ -162,7 +162,7 @@ export default {
   setup() {
     // provide("store", store);
     const dropdownOpen = ref(false);
-    const isOpen = ref(true);
+    const isOpen = ref(false);
     const show = ref(false);
     return {
       dropdownOpen,

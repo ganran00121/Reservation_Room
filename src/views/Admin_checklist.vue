@@ -1,15 +1,46 @@
 <script>
 import { watchEffect, ref, defineComponent } from "vue";
-
 export default {
 
   components: {
   },
   setup() {
     return {
+      count : ref(10),
+      number :ref(1),
+      data: [],
     }
   },
   methods: {
+    Approve : function (data) {
+      console.log(data);
+    },
+    Refuse : function (data) {
+      console.log(data);
+    },
+    next_count: function () {
+      this.count += 10;
+      this.number += 10;
+    },
+    prevent_count: function() {
+      this.count -= 10;
+      this.number -= 10;
+    }
+  },
+  async created() {
+    try {
+      const response = await axios.get('http://localhost:3000/reservations');
+      this.data = response.data.map(eventnew => ({
+        room: eventnew.room_id,
+        name: 'Aucarapon Maunrach  640510689',
+        time: eventnew.time_start + '-' + eventnew.time_end,
+        date: eventnew.date,
+        status: eventnew.status
+      }));
+      console.log(this.data);
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
   },
 }
 </script>
@@ -17,27 +48,27 @@ export default {
   <div class="container rounded-xl mx-auto p-0 pt-0 bg-white">
     <table class="table-auto w-full rounded-xl">
       <thead class="bg-gray-200 bg-gray-200 text-gray-600 rounded-xl">
-        <tr class="p-4">
-          <th class="rounded-tl-lg">ID</th>
+        <tr>
+          <th class="rounded-tl-lg pl-5">ID</th>
           <th>ROOM</th>
           <th>NAME</th>
           <th>TIME</th>
           <th class="p-3">STATUS</th>
-          <th class="rounded-tr-lg justify-end  ml-13">ACTION</th>
+          <th class="rounded-tr-lg justify-end " style="padding-left: 4%;">ACTION</th>
         </tr>
       </thead>
-      <tbody class="text-center divide-y">
-        <tr class="hover:bg-gray-50 border-b-2 ml-3">
-          <td class=" py-6">1</td>
-          <td>CSB100</td>
-          <td>Aucarapon Maunrach 640510689</td>
-          <td>12:00-14:00 <br> 12/08/23</td>
+      <tbody v-for="(items, index) in data" :key="index" class="text-center divide-y ">
+        <tr v-if="index+1 <= this.count && index+1 >= this.number" class="hover:bg-gray-50 border-b-2 ml-3">
+          <td class=" py-6 pl-5">{{ index+1 }}</td>
+          <td>{{ items.room }}</td>
+          <td>{{ items.name }}</td>
+          <td>{{ items.time }}<br> {{ items.date }} </td>
           <td>
-            <p class=" rounded-xl bg-amber-400 text-white text-center p-1 w-3/5 mx-auto">Wait</p>
+            <p class=" rounded-xl bg-amber-400 text-white text-center p-1 w-3/5 mx-auto">{{ items.status }}</p>
           </td>
           <td class="mr-8 ">
             <div class="flex justify-end  mr-8">
-              <div class="flex rounded-xl bg-emerald-400 p-1 px-3 text-white">
+              <div class="flex rounded-xl bg-emerald-400 p-1 px-3 text-white" @click="Approve(items)">
                 <svg class="my-auto" width="20" height="20" viewBox="0 0 20 20" fill="none"
                   xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -46,47 +77,39 @@ export default {
                 </svg>
                 <p class="ml-2">Approve</p>
               </div>
-              <div class="flex rounded-xl bg-red-400 p-1 text-white ml-3">
+              <div class="flex rounded-xl bg-red-400 p-1 px-2 text-white ml-3" @click="Refuse(items)">
                 <svg class="my-auto" width="20" height="20" viewBox="0 0 20 20" fill="none"
                   xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M8 12L10 10M10 10L12 8M10 10L8 8M10 10L12 12M19 10C19 11.1819 18.7672 12.3522 18.3149 13.4442C17.8626 14.5361 17.1997 15.5282 16.364 16.364C15.5282 17.1997 14.5361 17.8626 13.4442 18.3149C12.3522 18.7672 11.1819 19 10 19C8.8181 19 7.64778 18.7672 6.55585 18.3149C5.46392 17.8626 4.47177 17.1997 3.63604 16.364C2.80031 15.5282 2.13738 14.5361 1.68508 13.4442C1.23279 12.3522 1 11.1819 1 10C1 7.61305 1.94821 5.32387 3.63604 3.63604C5.32387 1.94821 7.61305 1 10 1C12.3869 1 14.6761 1.94821 16.364 3.63604C18.0518 5.32387 19 7.61305 19 10Z"
                     stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-                <p class="ml-2">Refuse</p>
-
+                <p class="ml-2 ">Refuse</p>
               </div>
             </div>
           </td>
-        </tr>
-        <tr class="">
-          <td class="">2</td>
-          <td>CSB100</td>
-          <td>Aucarapon Maunrach 640510689</td>
-          <td>12:00-14:00 <br> 12/08/23</td>
-          <td>
-            <div class="rounded-xl bg-emerald-400 text-white text-center p-1  w-3/5 mx-auto">Confirmed</div>
-          </td>
-          <td class="justify-end">
-          </td>
-        </tr>
-        <tr>
-          <td class="">3</td>
-          <td>CSB100</td>
-          <td>Aucarapon Maunrach 640510689</td>
-          <td>12:00-14:00 <br> 12/08/23</td>
-          <td>
-            <div class="rounded-xl bg-red-400 text-white text-center p-1 w-3/5 mx-auto">Rejeceted</div>
-          </td>
-          <td class="flex justify-center">
-          </td>
+        <div class="relative">
+          <div class="absolute">
+          
+          </div>
+        </div>
         </tr>
       </tbody>
     </table>
+    <div class="flex w-full p-4 pl-8">
+      <p class="flex-none "> Showing 1 to 1 of 10 results </p>
+      <div class="flex-1 text-end ml-12">
+        <div>
+          <button @click="next_count()" class="bg-emerald-400 rounded-xl p-3">next</button>
+          <button @click="prevent_count()" class="bg-red-400 rounded-xl ml-10 p-3">prevent</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <style>
 body {
   color: black;
   background-color: black;
-}</style>
+}
+</style>

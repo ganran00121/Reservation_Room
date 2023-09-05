@@ -11,6 +11,8 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Calendar: typeof import('./src/components/Calendar.vue')['default']
     Calendarmodal: typeof import('./src/components/Modals/Calendarmodal.vue')['default']
+    copy: typeof import('./src/components/Modals/Calendarmodal copy.vue')['default']
+    Editmodal: typeof import('./src/components/Modals/editmodal.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

@@ -13,10 +13,11 @@ export default {
   ,
   data() {
     return {
+      data: [],
       calendarOptions: {
         headerToolbar: { left: 'dayGridMonth,timeGridWeek,Day,Timeline', center: 'title' },
         plugins: [resourceTimelinePlugin, dayGridPlugin, interactionPlugin, timeGridPlugin],
-        initialView: ref('dayGridMonth'), 
+        initialView: ref('dayGridMonth'),
         dateClick: this.handleDateClick,
         weekends: true,
         selectable: true,
@@ -25,7 +26,6 @@ export default {
         displayEventTime: true,
         slotMinTime: '08:00:00',
         slotMaxTime: '22:00:00',
-        dateClick: this.handleDateClick,
         views: {
           Day: {
             type: 'timeGrid',
@@ -65,65 +65,7 @@ export default {
           }
         ],
         events: [
-          {
-            resourceIds: ['CSB301'],
-            title: 'CSB301',
-            start: '2023-09-05T14:14:00',
-            end: '2023-09-05T16:30:00',
-            time: '14:14-16:30',
-            className: 'bg-teal-500 border-transparent rounded-md'
-          },
-          {
-            resourceIds: ['CSB301'],
-            title: 'CSB301',
-            start: '2023-09-05T14:14:00',
-            end: '2023-09-05T16:30:00',
-            time: '14:14-16:30',
-            className: 'bg-teal-500 border-transparent rounded-md'
-          },
-          {
-            resourceIds: ['CSB210'],
-            title: 'CSB210',
-            start: '2023-09-05T14:14:00',
-            end: '2023-09-05T16:30:00',
-            time: '14:14-16:30',
-            className: 'bg-teal-500 border-transparent rounded-md'
-          },
-          {
-            resourceIds: ['CSB209'],
-            title: 'CSB209',
-            start: '2023-09-05T14:14:00',
-            end: '2023-09-05T16:30:00',
-            time: '14:14-16:30',
-            className: 'bg-teal-500 border-transparent rounded-md'
-          },
-          {
-            resourceIds: ['CSB207'],
-            title: 'CSB207',
-            start: '2023-09-02T13:14:00',
-            end: '2023-09-02T16:30:00',
-            time: '14:14-16:30',
-            className: 'bg-teal-500 border-transparent rounded-md'
-          },
-          {
-            resourceIds: ['CSB209'],
-            title: 'CSB209',
-            start: '2023-09-02T1:14:00',
-            end: '2023-09-02T16:30:00',
-            time: '14:14-16:30',
-            className: 'bg-teal-500 border-transparent rounded-md'
-          },
-          {
-            resourceIds: ['CSB310'],
-            title: 'CSB310',
-            start: '2023-09-02T14:14:00',
-            end: '2023-09-02T16:30:00',
-            time: '14:14-16:30',
-            className: 'bg-teal-500 border-transparent rounded-md'
-            
-          },
-
-        ],
+        ]
       }
 
     }
@@ -131,22 +73,46 @@ export default {
   methods: {
     handleDateClick: function (clickinfo) {
       this.$emit('dateClick', clickinfo);
+      console.log(clickinfo);
     },
     test: function (data) {
       console.log(data);
     },
   },
-  mounted() {
-    console.log()
+  onMounted()  {
+    calendar.getDate();
   },
+  async created() {
+  try {
+    const response = await axios.get('http://localhost:3000/reservations');
+    this.calendarOptions.events = response.data.map(eventnew => ({
+      title: eventnew.room_id,
+      resourceIds: [eventnew.room_id],
+      start: eventnew.date + 'T' + eventnew.time_start,
+      end: eventnew.date + 'T' + eventnew.time_end,
+      time: eventnew.time_start + '-' + eventnew.time_end,
+    }));
+
+    // Check if this.npm is defined, and if not, initialize it as an object
+    if (!this.npm) {
+      this.npm = {};
+    }
+
+    // Set the 'events' property on this.npm
+    this.npm.events = events;
+
+    console.log(this.npm.events);
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+},
 }
 </script>
 <template>
   <FullCalendar :options="calendarOptions">
-    <template v-slot:eventContent='arg' >
+    <template v-slot:eventContent='arg'>
       <div class="w-100 mx-auto">
         <b class="">{{ arg.event.extendedProps.time }}</b>
-
         <b class="ml-3">{{ arg.event.title }}</b>
       </div>
     </template>

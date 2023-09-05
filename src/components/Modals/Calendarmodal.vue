@@ -36,7 +36,7 @@
                   class="block text-gray-700 text-sm font-bold mb-2"
                 >Room</label>
                 <select
-                  v-model="form.RoomID"
+                  v-model="form.room_id"
                   id="exampleFormControlInput1"
                   class="mt-1 block form-select w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 >
@@ -61,7 +61,7 @@
                     <div class="my-2 p-1 bg-white flex border border-gray-200 rounded">
                       <div class="flex flex-auto flex-wrap"></div>
                       <input
-                        v-model="form.Instructor"
+                        v-model="form.instructor"
                         placeholder="Teacher's name ..."
                         class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
                       />
@@ -84,7 +84,7 @@
                   class="block text-gray-700 text-sm font-bold mb-2"
                 >Phone number :</label>
                 <input
-                  v-model="form.Phone"
+                  v-model="form.phone"
                   type="text"
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="exampleFormControlInput1"
@@ -98,7 +98,7 @@
                   class="block text-gray-700 text-sm font-bold mb-2"
                 >Description :</label>
                 <input
-                  v-model="form.Description"
+                  v-model="form.description"
                   type="text"
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="exampleFormControlInput1"
@@ -112,7 +112,7 @@
                   class="block text-gray-700 text-sm font-bold mb-2"
                 >Date :</label>
                 <input
-                  v-model="form.Date"
+                  v-model="form.date"
                   disabled="true"
                   type="text"
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -126,7 +126,7 @@
                   class="block text-gray-700 text-sm font-bold mb-2"
                 >Time-start :</label>
                 <input
-                  v-model="form.TimeS"
+                  v-model="form.time_start"
                   type="time"
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="exampleFormControlInput2"
@@ -140,7 +140,7 @@
                   class="block text-gray-700 text-sm font-bold mb-2"
                 >Time-end :</label>
                 <input 
-                  v-model="form.TimeE"
+                  v-model="form.time_end"
                   type="time"
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="exampleFormControlInput2"
@@ -181,6 +181,7 @@ export default {
   },
   components: {
   },
+  
   methods:{
     closeModal(){
       this.$emit('closeModal')
