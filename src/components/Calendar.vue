@@ -1,113 +1,92 @@
 <script>
-import FullCalendar from '@fullcalendar/vue3'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import interactionPlugin from '@fullcalendar/interaction'
+import { defineComponent, ref, onMounted } from 'vue';
+import FullCalendar from '@fullcalendar/vue3';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { watchEffect, ref, defineComponent } from "vue";
-export default {
+
+import axios from 'axios';
+
+export default defineComponent({
   components: {
-    FullCalendar // make the <FullCalendar> tag available
+    FullCalendar
   },
-  props: ['artists']
-  ,
-  data() {
-    return {
-      data: [],
-      calendarOptions: {
-        headerToolbar: { left: 'dayGridMonth,timeGridWeek,Day,Timeline', center: 'title' },
-        plugins: [resourceTimelinePlugin, dayGridPlugin, interactionPlugin, timeGridPlugin],
-        initialView: ref('dayGridMonth'),
-        dateClick: this.handleDateClick,
-        weekends: true,
-        selectable: true,
-        allDaySlot: false,
-        EventTime: false,
-        displayEventTime: true,
-        slotMinTime: '08:00:00',
-        slotMaxTime: '22:00:00',
-        views: {
-          Day: {
-            type: 'timeGrid',
-            duration: { days: 2 }
-          },
-          Timeline: {
-            type: 'resourceTimeline',
-            duration: { days: 1 }
-          }
-        },
-        eventTimeFormat: {
-          hour: 'numeric',
-          minute: '2-digit',
-          meridiem: false
-
-        },
-        resources: [
-          {
-            id: 'CSB100',
-            title: 'CSB100'
-          },
-          {
-            id: 'CSB207',
-            title: 'CSB207'
-          },
-          {
-            id: 'CSB209',
-            title: 'CSB209'
-          },
-          {
-            id: 'CSB210',
-            title: 'CSB210'
-          },
-          {
-            id: 'CSB301',
-            title: 'CSB301'
-          }
-        ],
-        events: [
-        ]
-      }
-
-    }
-  },
-  methods: {
-    handleDateClick: function (clickinfo) {
-      this.$emit('dateClick', clickinfo);
+  setup(props, context) {
+    const handleDateClick = function (clickinfo) {
+      context.emit('dateClick', clickinfo);
       console.log(clickinfo);
-    },
-    test: function (data) {
-      console.log(data);
-    },
-  },
-  onMounted()  {
-    calendar.getDate();
-  },
-  async created() {
-  try {
-    const response = await axios.get('http://localhost:3000/reservations');
-    this.calendarOptions.events = response.data.map(eventnew => ({
-      title: eventnew.room_id,
-      resourceIds: [eventnew.room_id],
-      start: eventnew.date + 'T' + eventnew.time_start,
-      end: eventnew.date + 'T' + eventnew.time_end,
-      time: eventnew.time_start + '-' + eventnew.time_end,
-    }));
+    };
 
-    // Check if this.npm is defined, and if not, initialize it as an object
-    if (!this.npm) {
-      this.npm = {};
-    }
+    const events_data = ref([]);
+    const calendarOptions = ref({
+      headerToolbar: { left: 'dayGridMonth,timeGridWeek,Day,Timeline', center: 'title' },
+      plugins: [resourceTimelinePlugin, dayGridPlugin, interactionPlugin, timeGridPlugin],
+      initialView: 'dayGridMonth',
+      dateClick: handleDateClick,
+      weekends: true,
+      selectable: true,
+      allDaySlot: false,
+      eventTime: false,
+      displayEventTime: true,
+      slotMinTime: '08:00:00',
+      slotMaxTime: '22:00:00',
+      views: {
+        Day: {
+          type: 'timeGrid',
+          duration: { days: 2 }
+        },
+        Timeline: {
+          type: 'resourceTimeline',
+          duration: { days: 1 }
+        }
+      },
+      eventTimeFormat: {
+        hour: 'numeric',
+        minute: '2-digit',
+        meridiem: false
+      },
+      resources: [
+        { id: 'CSB100', title: 'CSB100' },
+        { id: 'CSB207', title: 'CSB207' },
+        { id: 'CSB209', title: 'CSB209' },
+        { id: 'CSB210', title: 'CSB210' },
+        { id: 'CSB301', title: 'CSB301' }
+      ],
+      events: []
+    });
+    const fetchReservations = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/reservations');
 
-    // Set the 'events' property on this.npm
-    this.npm.events = events;
+        if (Array.isArray(response.data)) {
+          events_data.value = response.data.map(reservation => ({
+            title: reservation.room_id,
+            resourceIds: [reservation.room_id],
+            start: reservation.date + 'T' + reservation.time_start,
+            end: reservation.date + 'T' + reservation.time_end,
+            time: reservation.time_start + '-' + reservation.time_end,
+          }));
+          calendarOptions.value.events = events_data.value;
+        } else {
+          console.error('Invalid response data:', response.data);
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    };
 
-    console.log(this.npm.events);
-  } catch (error) {
-    console.error('An error occurred:', error);
+    onMounted(fetchReservations);
+
+    return {
+      handleDateClick,
+      events_data,
+      calendarOptions,
+    };
   }
-},
-}
+});
 </script>
+
 <template>
   <FullCalendar :options="calendarOptions">
     <template v-slot:eventContent='arg'>
@@ -118,6 +97,7 @@ export default {
     </template>
   </FullCalendar>
 </template>
+
 <style>
 body {
   color: black;

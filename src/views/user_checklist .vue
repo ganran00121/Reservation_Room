@@ -11,12 +11,13 @@ export default {
   },
   
   setup() {
+    const data = ref([])
     return {
       showEditModal: ref(false),
       max_obj: 0,
       count: ref(10),
       number: ref(1),
-      data: [],
+      data,
       room: "",
       edit_new:{
         room_id: '',
@@ -65,7 +66,7 @@ export default {
     },
     saveEdit: function (param) {
       axios
-        .post('http://localhost:3000/reservations', param)
+        .put('http://localhost:3000/reservations', param)
         .then((response) => { console.log('POST request successful:', response.data); 
         this.closeModal() 
         this.showAlert()
@@ -85,10 +86,12 @@ export default {
   },
   async created() {
     try {
-      const response = await axios.get('http://localhost:3000/reservations');
-      this.data = response.data.map(eventnew => ({
+      const response = ref(await axios.get(`http://localhost:3000/users/${1}`));
+      const namef = ref(response.value.data.firstname)
+      const nameE = ref(response.value.data.lastname)
+      this.data = response.value.data.reservations.map(eventnew => ({
         room: eventnew.room_id,
-        name: 'Aucarapon Maunrach  640510689',
+        name: namef.value + "  "+nameE.value ,
         time: eventnew.time_start + '-' + eventnew.time_end,
         phone : eventnew.phone,
         description : eventnew.description,
@@ -98,7 +101,7 @@ export default {
         date: eventnew.date,
         status: eventnew.status
       }));
-      console.log(this.data);
+      
       this.max_obj = this.data.length
       console.log(this.max_obj);
       
@@ -117,21 +120,26 @@ export default {
       <thead class="bg-gray-200 bg-gray-200 text-gray-600 rounded-xl">
         <tr>
           <th class="rounded-tl-lg pl-5">ID</th>
-          <th>ROOMm</th>
+          <th>ROOM</th>
           <th>NAME</th>
           <th>TIME</th>
           <th class="p-3">STATUS</th>
           <th class="rounded-tr-lg justify-end " style="padding-left: 4%;">ACTION</th>
         </tr>
       </thead>
-      <tbody class="text-center " v-if="true">
-        <tr v-for="(items, index) in data" :key="index" class="hover:bg-gray-50 ml-3">
+      <tbody v-for="(items, index) in data" :key="index"  class="text-center " >
+        <tr v-if="index + 1 <= this.count && index + 1 >= this.number"  class="hover:bg-gray-50 ml-3">
           <td class=" py-6 pl-5">{{ index + 1 }}</td>
           <td>{{ items.room }}</td>
           <td>{{ items.name }}</td>
           <td>{{ items.time }}<br> {{ items.date }} </td>
           <td>
-            <p class=" rounded-xl bg-amber-400 text-white text-center p-1 w-3/5 mx-auto">{{ items.status }}</p>
+            <p v-if ="items.status === 'confirm'"
+            class=" rounded-xl bg-emerald-400 text-white text-center p-1 w-3/5 mx-auto"> C{{ items.status }}</p>
+            <p v-else-if ="items.status === 'wait'"
+            class=" rounded-xl bg-amber-400 text-white text-center p-1 w-3/5 mx-auto"> W{{ items.status }}</p>
+            <p v-else ="items.status === 'Refuse'"
+            class=" rounded-xl bg-red-400 text-white text-center p-1 w-3/5 mx-auto"> R{{ items.status }}</p>
           </td>
           <td class="mr-8 ">
             <div class="flex justify-end  mr-8">
@@ -164,8 +172,8 @@ export default {
 
           </button>
           {{ this.count / 10 }}
-          <button @click="next_count()" :class="this.count + 1 >= this.max_obj ? 'opacity-25' : ''"
-            :disabled="this.count + 1 >= this.max_obj" class=" rounded-xl p-3"><svg width="8" height="12" viewBox="0 0 8 12"
+          <button @click="next_count()" :class="this.count  >= this.max_obj ? 'opacity-25' : ''"
+            :disabled="this.count  >= this.max_obj" class=" rounded-xl p-3"><svg width="8" height="12" viewBox="0 0 8 12"
               fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M1.414 11.414L7.121 5.707L1.414 0L0 1.414L4.293 5.707L0 10L1.414 11.414Z" fill="#828282" />
             </svg>

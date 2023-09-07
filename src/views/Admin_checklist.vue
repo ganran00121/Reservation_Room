@@ -1,43 +1,160 @@
 <script>
 import { watchEffect, ref, defineComponent } from "vue";
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+
+
 export default {
 
   components: {
   },
+
   setup() {
+    
+    const data = ref([])
+    const max_obj = ref(0)
+    const user_name = ref([])
+    const Open_detail = ref(false)
+    watchEffect(() => {
+      console.log("Data changed:", data.value);
+    });
     return {
-      count : ref(10),
-      number :ref(1),
-      data: [],
+      Open_detail,
+      count: ref(10),
+      number: ref(1),
+      data,
+      set_detil: {},
     }
   },
   methods: {
-    Approve : function (data) {
+    Approve: function (data) {
       console.log(data);
+      Swal.fire({
+
+        title: 'Are you sure?',
+        text: "You won't be able to Approvee this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Approvee it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+          axios
+            .put(`http://localhost:3000/reservations/${data.id}`,
+              {
+                room_id: data.room,
+                user_id: data.user_id,
+                instructor: data.instructor,
+                phone: data.phone,
+                description: data.description,
+                date: data.date,
+                time_start: data.time_start,
+                time_end: data.time_end,
+                status: "confirm"
+              }
+            )
+            .then((response) => {
+              Swal.fire(
+                'Approvee!',
+                'req Approvee.',
+                'success'
+              )
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            })
+
+        }
+      })
     },
-    Refuse : function (data) {
-      console.log(data);
+    Refuse: function (data) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to Refuse this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Refuse it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .put(`http://localhost:3000/reservations/${data.id}`,
+              {
+                room_id: data.room,
+                user_id: data.user_id,
+                instructor: data.instructor,
+                phone: data.phone,
+                description: data.description,
+                date: data.date,
+                time_start: data.time_start,
+                time_end: data.time_end,
+                status: "Refuse"
+              }
+            )
+            .then((response) => {
+              Swal.fire(
+                'Refuse!',
+                'req Refuse.',
+                'success'
+              )
+              console.log(data);
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            })
+
+        }
+      })
     },
     next_count: function () {
       this.count += 10;
       this.number += 10;
     },
-    prevent_count: function() {
+    prevent_count: function () {
       this.count -= 10;
       this.number -= 10;
-    }
+    },
+    setModalOpen: function (obj) {
+      this.Open_detail = true
+      this.set_detil = obj
+      return
+    },
+    closeModal: function () {
+      this.Open_detail = false
+    },
   },
   async created() {
     try {
+      const test = await axios.get('http://localhost:3000/users');
+      console.log("sdasdsadsad", test.data);
+      let user
+      let users = {}
+      for (var i = 0; i < test.data.length; i++) {
+        user = test.data[i];
+        users[user.user_id] = user;
+      }
+      console.log("wwwwwwwwwwww", users);
+
       const response = await axios.get('http://localhost:3000/reservations');
+      console.log("get:resvervations : ", response);
       this.data = response.data.map(eventnew => ({
+        id: eventnew.id,
         room: eventnew.room_id,
-        name: 'Aucarapon Maunrach  640510689',
+        user_id: eventnew.user_id,
+        instructor: eventnew.instructor,
+        phone: eventnew.phone,
+        time_start: eventnew.time_start,
+        time_end: eventnew.time_end,
+        description: eventnew.description,
+        name: users[eventnew.user_id].firstname + '  ' + users[eventnew.user_id].lastname,
         time: eventnew.time_start + '-' + eventnew.time_end,
         date: eventnew.date,
         status: eventnew.status
       }));
       console.log(this.data);
+      this.max_obj = this.data.length;
     } catch (error) {
       console.error('An error occurred:', error);
     }
@@ -58,17 +175,23 @@ export default {
         </tr>
       </thead>
       <tbody v-for="(items, index) in data" :key="index" class="text-center divide-y ">
-        <tr v-if="index+1 <= this.count && index+1 >= this.number" class="hover:bg-gray-50 border-b-2 ml-3">
-          <td class=" py-6 pl-5">{{ index+1 }}</td>
+        <tr v-if="index + 1 <= this.count && index + 1 >= this.number" class="hover:bg-gray-50 border-b-2 ml-3"
+          @click="setModalOpen">
+          <td class=" py-6 pl-5">{{ index + 1 }}</td>
           <td>{{ items.room }}</td>
           <td>{{ items.name }}</td>
-          <td>{{ items.time }}<br> {{ items.date }} </td>
+          <td>{{ items.time }}<br>{{ items.date }}</td>
           <td>
-            <p class=" rounded-xl bg-amber-400 text-white text-center p-1 w-3/5 mx-auto">{{ items.status }}</p>
+            <p v-if="items.status === 'confirm'"
+              class=" rounded-xl bg-emerald-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
+            <p v-else-if="items.status === 'wait'"
+              class=" rounded-xl bg-amber-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
+            <p v-else="items.status === 'Refuse'" class=" rounded-xl bg-red-400 text-white text-center p-1 w-3/5 mx-auto">
+              {{ items.status }}</p>
           </td>
           <td class="mr-8 ">
             <div class="flex justify-end  mr-8">
-              <div class="flex rounded-xl bg-emerald-400 p-1 px-3 text-white" @click="Approve(items)">
+              <button class="flex rounded-xl bg-emerald-400 p-1 px-3 text-white" @click="Approve(items)">
                 <svg class="my-auto" width="20" height="20" viewBox="0 0 20 20" fill="none"
                   xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -76,8 +199,8 @@ export default {
                     stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
                 <p class="ml-2">Approve</p>
-              </div>
-              <div class="flex rounded-xl bg-red-400 p-1 px-2 text-white ml-3" @click="Refuse(items)">
+              </button>
+              <button class="flex rounded-xl bg-red-400 p-1 px-2 text-white ml-3" @click="Refuse(items)">
                 <svg class="my-auto" width="20" height="20" viewBox="0 0 20 20" fill="none"
                   xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -85,23 +208,38 @@ export default {
                     stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
                 <p class="ml-2 ">Refuse</p>
-              </div>
+              </button>
             </div>
           </td>
-        <div class="relative">
-          <div class="absolute">
-          
+          <div class="relative">
+            <div class="absolute">
+
+            </div>
           </div>
-        </div>
         </tr>
       </tbody>
     </table>
     <div class="flex w-full p-4 pl-8">
       <p class="flex-none "> Showing 1 to 1 of 10 results </p>
       <div class="flex-1 text-end ml-12">
-        <div>
-          <button @click="next_count()" class="bg-emerald-400 rounded-xl p-3">next</button>
-          <button @click="prevent_count()" class="bg-red-400 rounded-xl ml-10 p-3">prevent</button>
+        <div class=" p-3">
+          <button @click="prevent_count()" :class="this.count <= 10 ? 'opacity-25' : ''" 
+          :disabled="this.count <= 10"
+            class=" rounded-xl  p-3 text-red-700">
+            <svg width="8" height="13" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M5.79294 0.792969L0.0859375 6.49997L5.79294 12.207L7.20694 10.793L2.91394 6.49997L7.20694 2.20697L5.79294 0.792969Z"
+                fill="#828282" />
+            </svg>
+
+          </button>
+          {{ this.count / 10 }}
+          <button @click="next_count()" :class="this.count  >= this.max_obj ? 'opacity-25' : ''"
+            :disabled="this.count  >= this.max_obj" class=" rounded-xl p-3"><svg width="8" height="12"
+              viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.414 11.414L7.121 5.707L1.414 0L0 1.414L4.293 5.707L0 10L1.414 11.414Z" fill="#828282" />
+            </svg>
+          </button>
         </div>
       </div>
     </div>

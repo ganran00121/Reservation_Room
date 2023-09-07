@@ -12,14 +12,16 @@ export default {
     ModalCalendar
   },
   setup() {
+    const showModal= ref(false)
     return {
-      data :[],
+      data: [],
       calendar,
+      showModal,
       ModalCalendar,
-      showModal: ref(false),
       newEvent: {
         room_id: 'CSB100',
         date: '',
+        user_refer: 640510673,
         time_start: '',
         time_end: '',
         status: 'wait',
@@ -67,21 +69,22 @@ export default {
       console.log(param);
       axios
         .post('http://localhost:3000/reservations', param)
-        .then((response) => { console.log('POST request successful:', response.data);
-        this.closeModal()
-        this.res_alert(param)
+        .then((response) => {
+          console.log('POST request successful:', response.data);
+          this.closeModal()
+          this.res_alert(param)
         })
         .catch((error) => {
           console.error('Error:', error);
         })
-    }
+    },
   }
 }
 </script>
 <template>
   <!-- <button @click="toggleWeekends()">CHENG</button> -->
   <div class="container rounded-xl mx-auto px-3 py-8 bg-white overflow-hidden">
-    <calendar @dateClick="opendateClick" >
+    <calendar @dateClick="opendateClick">
     </calendar>
   </div>
   <modalCalendar v-if="showModal" :form="newEvent" @closeModal="closeModal" @saveAppt="saveAppt" />
