@@ -70,6 +70,9 @@ export default {
         .then((response) => { console.log('POST request successful:', response.data); 
         this.closeModal() 
         this.showAlert()
+        setTimeout(() => {
+          window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+        }, 1000); 
         })
         .catch((error) => {
           console.error('Error:', error);
@@ -86,7 +89,7 @@ export default {
   },
   async created() {
     try {
-      const response = ref(await axios.get(`http://localhost:3000/users/${1}`));
+      const response = ref(await axios.get(`http://localhost:3000/users/${3}`));
       const namef = ref(response.value.data.firstname)
       const nameE = ref(response.value.data.lastname)
       this.data = response.value.data.reservations.map(eventnew => ({
@@ -135,15 +138,15 @@ export default {
           <td>{{ items.time }}<br> {{ items.date }} </td>
           <td>
             <p v-if ="items.status === 'confirm'"
-            class=" rounded-xl bg-emerald-400 text-white text-center p-1 w-3/5 mx-auto"> C{{ items.status }}</p>
+            class=" rounded-xl bg-emerald-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
             <p v-else-if ="items.status === 'wait'"
-            class=" rounded-xl bg-amber-400 text-white text-center p-1 w-3/5 mx-auto"> W{{ items.status }}</p>
+            class=" rounded-xl bg-amber-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
             <p v-else ="items.status === 'Refuse'"
-            class=" rounded-xl bg-red-400 text-white text-center p-1 w-3/5 mx-auto"> R{{ items.status }}</p>
+            class=" rounded-xl bg-red-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
           </td>
           <td class="mr-8 ">
             <div class="flex justify-end  mr-8">
-              <button class="flex rounded-xl bg-indigo-400 p-1 px-3 text-white" @click="edit(items)">
+              <button class="flex rounded-xl bg-indigo-400 p-1 px-3 text-white" @click="edit(items)" v-if="items.status == 'wait'" > 
                 <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M8.33939 4.09832H3.09697C2.54082 4.09832 2.00745 4.31925 1.61419 4.71251C1.22093 5.10577 1 5.63914 1 6.19529V17.7286C1 18.2848 1.22093 18.8181 1.61419 19.2114C2.00745 19.6047 2.54082 19.8256 3.09697 19.8256H14.6303C15.1864 19.8256 15.7198 19.6047 16.1131 19.2114C16.5063 18.8181 16.7273 18.2848 16.7273 17.7286V12.4862M15.2447 2.61577C15.4381 2.41548 15.6695 2.25573 15.9254 2.14583C16.1812 2.03593 16.4564 1.97808 16.7348 1.97567C17.0132 1.97325 17.2894 2.0263 17.5471 2.13174C17.8048 2.23718 18.0389 2.39288 18.2358 2.58977C18.4327 2.78666 18.5884 3.02079 18.6938 3.2785C18.7993 3.53621 18.8523 3.81234 18.8499 4.09078C18.8475 4.36921 18.7897 4.64437 18.6798 4.90021C18.5699 5.15605 18.4101 5.38744 18.2098 5.58088L9.20753 14.5832H6.24242V11.6181L15.2447 2.61577Z"

@@ -19,9 +19,10 @@ export default {
       showModal,
       ModalCalendar,
       newEvent: {
-        room_id: 'CSB100',
+        room_id: 'CSB201',
+        instructor:'Waraporn Insom',
         date: '',
-        user_refer: 640510673,
+        user_refer: 640510689,
         time_start: '',
         time_end: '',
         status: 'wait',
@@ -65,6 +66,14 @@ export default {
       }
       return
     },
+    set_Newevent: function () {
+      this.newEvent.room_id= ''
+      this.newEvent.date= ''
+      this.newEvent.instructor='Waraporn Insom'
+      this.newEvent.time_start= ''
+      this.newEvent.time_end= ''
+      this.newEvent.status= 'wait'
+    },
     saveAppt: function (param) {
       console.log(param);
       axios
@@ -73,6 +82,10 @@ export default {
           console.log('POST request successful:', response.data);
           this.closeModal()
           this.res_alert(param)
+          this.set_Newevent()
+          setTimeout(() => {
+          window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+        }, 1000); 
         })
         .catch((error) => {
           console.error('Error:', error);

@@ -9,7 +9,7 @@ export default {
   },
 
   setup() {
-    
+
     const data = ref([])
     const max_obj = ref(0)
     const user_name = ref([])
@@ -60,6 +60,9 @@ export default {
                 'req Approvee.',
                 'success'
               )
+              setTimeout(() => {
+                window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+              }, 1000);
             })
             .catch((error) => {
               console.error('Error:', error);
@@ -79,8 +82,11 @@ export default {
         confirmButtonText: 'Yes, Refuse it!'
       }).then((result) => {
         if (result.isConfirmed) {
+          console.log("test",data);
+          const dddd = axios.get('http://localhost:3000/reservations/'+data.id);
+          console.log("getdddddddddddddd : ", dddd.Result);
           axios
-            .put(`http://localhost:3000/reservations/${data.id}`,
+            .put('http://localhost:3000/reservations/'+data.id,
               {
                 room_id: data.room,
                 user_id: data.user_id,
@@ -99,7 +105,9 @@ export default {
                 'req Refuse.',
                 'success'
               )
-              console.log(data);
+              setTimeout(() => {
+                window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+              }, 1000);
             })
             .catch((error) => {
               console.error('Error:', error);
@@ -190,7 +198,7 @@ export default {
               {{ items.status }}</p>
           </td>
           <td class="mr-8 ">
-            <div class="flex justify-end  mr-8">
+            <div class="flex justify-end  mr-8" v-if="items.status === 'wait'">
               <button class="flex rounded-xl bg-emerald-400 p-1 px-3 text-white" @click="Approve(items)">
                 <svg class="my-auto" width="20" height="20" viewBox="0 0 20 20" fill="none"
                   xmlns="http://www.w3.org/2000/svg">
@@ -223,8 +231,7 @@ export default {
       <p class="flex-none "> Showing 1 to 1 of 10 results </p>
       <div class="flex-1 text-end ml-12">
         <div class=" p-3">
-          <button @click="prevent_count()" :class="this.count <= 10 ? 'opacity-25' : ''" 
-          :disabled="this.count <= 10"
+          <button @click="prevent_count()" :class="this.count <= 10 ? 'opacity-25' : ''" :disabled="this.count <= 10"
             class=" rounded-xl  p-3 text-red-700">
             <svg width="8" height="13" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -234,9 +241,9 @@ export default {
 
           </button>
           {{ this.count / 10 }}
-          <button @click="next_count()" :class="this.count  >= this.max_obj ? 'opacity-25' : ''"
-            :disabled="this.count  >= this.max_obj" class=" rounded-xl p-3"><svg width="8" height="12"
-              viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <button @click="next_count()" :class="this.count >= this.max_obj ? 'opacity-25' : ''"
+            :disabled="this.count >= this.max_obj" class=" rounded-xl p-3"><svg width="8" height="12" viewBox="0 0 8 12"
+              fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M1.414 11.414L7.121 5.707L1.414 0L0 1.414L4.293 5.707L0 10L1.414 11.414Z" fill="#828282" />
             </svg>
           </button>
