@@ -22,10 +22,10 @@ export default {
         room_id: 'CSB201',
         instructor:'Waraporn Insom',
         date: '',
-        user_refer: 640510689,
+        user_id: 640510689,
         time_start: '',
         time_end: '',
-        status: 'wait',
+        status: 'Waiting',
       },
       time_A: ref('dasdsad'),
     }
@@ -72,7 +72,7 @@ export default {
       this.newEvent.instructor='Waraporn Insom'
       this.newEvent.time_start= ''
       this.newEvent.time_end= ''
-      this.newEvent.status= 'wait'
+      this.newEvent.status= 'Waiting'
     },
     saveAppt: function (param) {
       console.log(param);

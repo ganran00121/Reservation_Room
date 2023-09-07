@@ -104,7 +104,7 @@ export default {
         date: eventnew.date,
         status: eventnew.status
       }));
-      
+      this.data.sort((a, b) => a.id - b.id);
       this.max_obj = this.data.length
       console.log(this.max_obj);
       
@@ -137,12 +137,12 @@ export default {
           <td>{{ items.name }}</td>
           <td>{{ items.time }}<br> {{ items.date }} </td>
           <td>
-            <p v-if ="items.status === 'confirm'"
-            class=" rounded-xl bg-emerald-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
-            <p v-else-if ="items.status === 'wait'"
-            class=" rounded-xl bg-amber-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
-            <p v-else ="items.status === 'Refuse'"
-            class=" rounded-xl bg-red-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
+            <p v-if="items.status === 'Approved'"
+              class=" rounded-xl bg-emerald-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
+            <p v-else-if="items.status === 'Waiting'"
+              class=" rounded-xl bg-amber-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
+            <p v-else="items.status === 'Rejected'" class=" rounded-xl bg-red-400 text-white text-center p-1 w-3/5 mx-auto">
+              {{ items.status }}</p>
           </td>
           <td class="mr-8 ">
             <div class="flex justify-end  mr-8">

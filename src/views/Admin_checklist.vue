@@ -31,12 +31,12 @@ export default {
       Swal.fire({
 
         title: 'Are you sure?',
-        text: "You won't be able to Approvee this!",
-        icon: 'warning',
+        // text: "Do you want approval?",
+        icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, Approvee it!'
+        confirmButtonText: 'Yes, Approve it!'
       }).then((result) => {
         if (result.isConfirmed) {
 
@@ -51,13 +51,13 @@ export default {
                 date: data.date,
                 time_start: data.time_start,
                 time_end: data.time_end,
-                status: "confirm"
+                status: "Approved"
               }
             )
             .then((response) => {
               Swal.fire(
-                'Approvee!',
-                'req Approvee.',
+                'Approved!',
+                'Approved success.',
                 'success'
               )
               setTimeout(() => {
@@ -74,8 +74,8 @@ export default {
     Refuse: function (data) {
       Swal.fire({
         title: 'Are you sure?',
-        text: "You won't be able to Refuse this!",
-        icon: 'warning',
+        // text: "Do you want to reject this?",
+        icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
@@ -96,7 +96,7 @@ export default {
                 date: data.date,
                 time_start: data.time_start,
                 time_end: data.time_end,
-                status: "Refuse"
+                status: "Rejected"
               }
             )
             .then((response) => {
@@ -161,6 +161,7 @@ export default {
         date: eventnew.date,
         status: eventnew.status
       }));
+      this.data.sort((a, b) => a.id - b.id);
       console.log(this.data);
       this.max_obj = this.data.length;
     } catch (error) {
@@ -190,15 +191,15 @@ export default {
           <td>{{ items.name }}</td>
           <td>{{ items.time }}<br>{{ items.date }}</td>
           <td>
-            <p v-if="items.status === 'confirm'"
+            <p v-if="items.status === 'Approved'"
               class=" rounded-xl bg-emerald-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
-            <p v-else-if="items.status === 'wait'"
+            <p v-else-if="items.status === 'Waiting'"
               class=" rounded-xl bg-amber-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
-            <p v-else="items.status === 'Refuse'" class=" rounded-xl bg-red-400 text-white text-center p-1 w-3/5 mx-auto">
+            <p v-else="items.status === 'Rejected'" class=" rounded-xl bg-red-400 text-white text-center p-1 w-3/5 mx-auto">
               {{ items.status }}</p>
           </td>
           <td class="mr-8 ">
-            <div class="flex justify-end  mr-8" v-if="items.status === 'wait'">
+            <div class="flex justify-end  mr-8" v-if="items.status === 'Waiting'">
               <button class="flex rounded-xl bg-emerald-400 p-1 px-3 text-white" @click="Approve(items)">
                 <svg class="my-auto" width="20" height="20" viewBox="0 0 20 20" fill="none"
                   xmlns="http://www.w3.org/2000/svg">
