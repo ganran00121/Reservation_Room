@@ -42,9 +42,15 @@
                 >
                   <option value="CSB100">CSB100</option>
                   <option value="CSB201">CSB201</option>
+                  <option value="CSB202">CSB202</option>
+                  <option value="CSB203">CSB203</option>
                   <option value="CSB207">CSB207</option>
                   <option value="CSB209">CSB209</option>
                   <option value="CSB210">CSB210</option>
+                  <option value="CSB301">CSB301</option>
+                  <option value="CSB303">CSB303</option>
+                  <option value="CSB307">CSB307</option>
+                  <option value="CSB308">CSB308</option>
                   <option value="CSB309">CSB309</option>
                   <option value="CSB310">CSB310</option>
                 </select>
@@ -85,10 +91,11 @@
                 >Phone number :</label>
                 <input
                   v-model="form.phone"
-                  type="text"
+                  type="tel"
+                  placeholder="080-000-0000" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="exampleFormControlInput1"
-                  placeholder="Phone number ..."
+
                   autocomplete="off"
                 />
               </div>

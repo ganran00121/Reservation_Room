@@ -19,7 +19,7 @@ export default {
       showModal,
       ModalCalendar,
       newEvent: {
-        room_id: 'CSB201',
+        room_id: '',
         instructor:'Waraporn Insom',
         date: '',
         user_id: 640510689,
@@ -51,12 +51,14 @@ export default {
       console.log('datestr: ', obj.dateStr)
       console.log('Grid : ', obj.view.type);
       let grid_type = obj.view.type
-      if (grid_type == "timeGridWeek" || grid_type == "resourceTimeline") {
+      if (grid_type == "timeGridWeek" || grid_type == "Timeline") {
         // 2023-08-30T12:30:00+07:00
         let date_at = obj.dateStr.substr(0, 10)
         let time = obj.dateStr.substr(11, 8)
-        console.log('date: ', date)
+        console.log("resource :" , obj.resource._resource.title);
+        console.log('date: ', date_at)
         console.log('time: ', time)
+        this.newEvent.room_id = obj.resource._resource.title
         this.newEvent.date = date_at
         this.newEvent.time_start = time.substr(0, 8)
       }
@@ -85,7 +87,7 @@ export default {
           this.set_Newevent()
           setTimeout(() => {
           window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-        }, 1000); 
+          }, 1000); 
         })
         .catch((error) => {
           console.error('Error:', error);

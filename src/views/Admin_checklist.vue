@@ -34,7 +34,7 @@ export default {
         // text: "Do you want approval?",
         icon: 'question',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
+        confirmButtonColor: '#10B981',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, Approve it!'
       }).then((result) => {
@@ -136,15 +136,12 @@ export default {
   async created() {
     try {
       const test = await axios.get('http://localhost:3000/users');
-      console.log("sdasdsadsad", test.data);
       let user
       let users = {}
       for (var i = 0; i < test.data.length; i++) {
         user = test.data[i];
         users[user.user_id] = user;
       }
-      console.log("wwwwwwwwwwww", users);
-
       const response = await axios.get('http://localhost:3000/reservations');
       console.log("get:resvervations : ", response);
       this.data = response.data.map(eventnew => ({
