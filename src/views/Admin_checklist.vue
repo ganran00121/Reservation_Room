@@ -1,22 +1,15 @@
 <script>
 import { watchEffect, ref, defineComponent } from "vue";
 import Swal from 'sweetalert2/dist/sweetalert2.js'
-
+import axios from 'axios';
 
 export default {
 
-  components: {
-  },
-
   setup() {
-
     const data = ref([])
     const max_obj = ref(0)
     const user_name = ref([])
     const Open_detail = ref(false)
-    watchEffect(() => {
-      console.log("Data changed:", data.value);
-    });
     return {
       Open_detail,
       count: ref(10),

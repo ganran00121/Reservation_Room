@@ -5,6 +5,7 @@ import adminchecklist from "../views/Admin_checklist.vue";
 import login from "../views/login.vue";
 import userchecklist from "../views/user_checklist .vue";
 import Course from "../views/Admin_Coures.vue";
+import AAAA from "../views/testtype.vue";
 import App from "../App.vue";
 const routes: RouteRecordRaw[] = [
   {
@@ -16,6 +17,11 @@ const routes: RouteRecordRaw[] = [
     path: "/test",
     name: "test",
     component: test,
+  },
+  {
+    path: "/AAAA",
+    name: "AAAA",
+    component: AAAA,
   },
   {
     path: "/login",

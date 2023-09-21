@@ -9,7 +9,7 @@ export default {
   components: {
     editmodal
   },
-  
+
   setup() {
     const data = ref([])
     return {
@@ -19,14 +19,14 @@ export default {
       number: ref(1),
       data,
       room: "",
-      edit_new:{
+      edit_new: {
         room_id: '',
         instructor: '',
         phone: '',
         description: '',
         date: '',
-        time_start:'',
-        time_end:'',
+        time_start: '',
+        time_end: '',
         status: 'wait',
       },
     }
@@ -48,13 +48,13 @@ export default {
     prevent_count: function () {
       this.count -= 10;
       this.number -= 10;
-    }, 
+    },
     set_maxobj: function () {
       this.max_obj = this.data.length
       console.log(this.max_obj);
     },
     setModalOpen: function (obj) {
-      console.log(obj);  
+      console.log(obj);
       this.edit_new.room_id = obj.room;
       this.edit_new.instructor = obj.instructor;
       this.edit_new.phone = obj.phone;
@@ -62,17 +62,18 @@ export default {
       this.edit_new.date = obj.date;
       this.edit_new.time_start = obj.time_start;
       this.edit_new.time_end = obj.time_end;
-      console.log("edit new",this.edit_new);
+      console.log("edit new", this.edit_new);
     },
     saveEdit: function (param) {
       axios
         .put('http://localhost:3000/reservations', param)
-        .then((response) => { console.log('POST request successful:', response.data); 
-        this.closeModal() 
-        this.showAlert()
-        setTimeout(() => {
-          window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-        }, 1000); 
+        .then((response) => {
+          console.log('POST request successful:', response.data);
+          this.closeModal()
+          this.showAlert()
+          setTimeout(() => {
+            window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+          }, 1000);
         })
         .catch((error) => {
           console.error('Error:', error);
@@ -94,20 +95,20 @@ export default {
       const nameE = ref(response.value.data.lastname)
       this.data = response.value.data.reservations.map(eventnew => ({
         room: eventnew.room_id,
-        name: namef.value + "  "+nameE.value ,
+        name: namef.value + "  " + nameE.value,
         time: eventnew.time_start + '-' + eventnew.time_end,
-        phone : eventnew.phone,
-        description : eventnew.description,
-        instructor : eventnew.instructor,
-        time_start : eventnew.time_start,
-        time_end : eventnew.time_end,
+        phone: eventnew.phone,
+        description: eventnew.description,
+        instructor: eventnew.instructor,
+        time_start: eventnew.time_start,
+        time_end: eventnew.time_end,
         date: eventnew.date,
         status: eventnew.status
       }));
       this.data.sort((a, b) => a.id - b.id);
       this.max_obj = this.data.length
       console.log(this.max_obj);
-      
+
     } catch (error) {
       console.error('An error occurred:', error);
     }
@@ -130,8 +131,8 @@ export default {
           <th class="rounded-tr-lg justify-end " style="padding-left: 4%;">ACTION</th>
         </tr>
       </thead>
-      <tbody v-for="(items, index) in data" :key="index"  class="text-center " >
-        <tr v-if="index + 1 <= this.count && index + 1 >= this.number"  class="hover:bg-gray-50 ml-3">
+      <tbody v-for="(items, index) in data" :key="index" class="text-center ">
+        <tr v-if="index + 1 <= this.count && index + 1 >= this.number" class="hover:bg-gray-50 ml-3">
           <td class=" py-6 pl-5">{{ index + 1 }}</td>
           <td>{{ items.room }}</td>
           <td>{{ items.name }}</td>
@@ -140,13 +141,29 @@ export default {
             <p v-if="items.status === 'Approved'"
               class=" rounded-xl bg-emerald-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
             <p v-else-if="items.status === 'Waiting'"
-              class=" rounded-xl bg-amber-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
-            <p v-else="items.status === 'Rejected'" class=" rounded-xl bg-red-400 text-white text-center p-1 w-3/5 mx-auto">
+              class=" rounded-xl bg-amber-400 text-white text-center p-1 w-3/5 mx-auto ">
+            <div class="group cursor-pointer relative inline-block border-b border-gray-400 text-center">
+              {{ items.status }}
+              <div class="opacity-0 w-28 bg-black text-white text-center text-xs rounded-lg py-2 absolute z-10
+                        group-hover:opacity-100 bottom-full 
+                        -left-1/2  px-3 ">
+                {{ items.status }}
+                <svg class="absolute text-black h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255"
+                  xml:space="preserve">
+                  <polygon class="fill-current" points="0,0 127.5,127.5 255,0" />
+                </svg>
+              </div>
+            </div>
+            </p>
+            <p v-else="items.status === 'Rejected'"
+              class=" rounded-xl bg-red-400 text-white text-center p-1 w-3/5 mx-auto">
               {{ items.status }}</p>
           </td>
           <td class="mr-8 ">
             <div class="flex justify-end  mr-8">
-              <button class="flex rounded-xl bg-indigo-400 p-1 px-3 text-white" @click="edit(items)" v-if="items.status == 'wait'" > 
+              <button data-tooltip-target="tooltip-default" type="button"
+                class="flex rounded-xl bg-indigo-400 p-1 px-3 text-white" @click="edit(items)"
+                v-if="items.status == 'Waiting'">
                 <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M8.33939 4.09832H3.09697C2.54082 4.09832 2.00745 4.31925 1.61419 4.71251C1.22093 5.10577 1 5.63914 1 6.19529V17.7286C1 18.2848 1.22093 18.8181 1.61419 19.2114C2.00745 19.6047 2.54082 19.8256 3.09697 19.8256H14.6303C15.1864 19.8256 15.7198 19.6047 16.1131 19.2114C16.5063 18.8181 16.7273 18.2848 16.7273 17.7286V12.4862M15.2447 2.61577C15.4381 2.41548 15.6695 2.25573 15.9254 2.14583C16.1812 2.03593 16.4564 1.97808 16.7348 1.97567C17.0132 1.97325 17.2894 2.0263 17.5471 2.13174C17.8048 2.23718 18.0389 2.39288 18.2358 2.58977C18.4327 2.78666 18.5884 3.02079 18.6938 3.2785C18.7993 3.53621 18.8523 3.81234 18.8499 4.09078C18.8475 4.36921 18.7897 4.64437 18.6798 4.90021C18.5699 5.15605 18.4101 5.38744 18.2098 5.58088L9.20753 14.5832H6.24242V11.6181L15.2447 2.61577Z"
@@ -175,8 +192,8 @@ export default {
 
           </button>
           {{ this.count / 10 }}
-          <button @click="next_count()" :class="this.count  >= this.max_obj ? 'opacity-25' : ''"
-            :disabled="this.count  >= this.max_obj" class=" rounded-xl p-3"><svg width="8" height="12" viewBox="0 0 8 12"
+          <button @click="next_count()" :class="this.count >= this.max_obj ? 'opacity-25' : ''"
+            :disabled="this.count >= this.max_obj" class=" rounded-xl p-3"><svg width="8" height="12" viewBox="0 0 8 12"
               fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M1.414 11.414L7.121 5.707L1.414 0L0 1.414L4.293 5.707L0 10L1.414 11.414Z" fill="#828282" />
             </svg>
