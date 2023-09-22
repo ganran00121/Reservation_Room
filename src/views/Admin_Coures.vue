@@ -54,7 +54,6 @@ export default {
     Approve: function (data) {
       console.log(data);
       Swal.fire({
-
         title: 'Are you sure?',
         // text: "Do you want approval?",
         icon: 'question',
@@ -64,7 +63,7 @@ export default {
         confirmButtonText: 'Yes, Approve it!'
       }).then((result) => {
         if (result.isConfirmed) {
-          // edit
+          // EDIT
           axios
             .put(`http://localhost:3000/reservations/${data.id}`,
               {
@@ -151,6 +150,7 @@ export default {
       this.number -= 10;
     },
   },
+  // GET API users , reservations
   async created() {
     try {
       const test = await axios.get('http://localhost:3000/users');
@@ -185,6 +185,7 @@ export default {
   },
 }
 </script>
+
 <template>
   <admin_reser v-if="showModal" :form="newEvent" @closeModal="closeModal" @saveAppt="saveAppt" />
   <div class="container rounded-xl mx-auto p-0 pt-0 bg-white">

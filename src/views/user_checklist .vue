@@ -35,12 +35,9 @@ export default {
   methods: {
     edit: function (data_edit) {
       this.showEditModal = true
-
       this.setModalOpen(data_edit)
     },
-    closeModal: function () {
-      this.showEditModal = false
-    },
+
     next_count: function () {
       this.count += 10;
       this.number += 10;
@@ -49,10 +46,11 @@ export default {
       this.count -= 10;
       this.number -= 10;
     },
-    set_maxobj: function () {
-      this.max_obj = this.data.length
-      console.log(this.max_obj);
+    // CLOSE MODAL
+      closeModal: function () {
+      this.showEditModal = false
     },
+    // OPEN MODAL
     setModalOpen: function (obj) {
       console.log(obj);
       this.edit_new.room_id = obj.room;
@@ -64,6 +62,7 @@ export default {
       this.edit_new.time_end = obj.time_end;
       console.log("edit new", this.edit_new);
     },
+    // EDIT reservations
     saveEdit: function (param) {
       axios
         .put('http://localhost:3000/reservations', param)
@@ -79,6 +78,7 @@ export default {
           console.error('Error:', error);
         })
     },
+    // showAlert
     showAlert: function () {
       Swal.fire(
         'Good job!',
@@ -107,7 +107,6 @@ export default {
       }));
       this.data.sort((a, b) => a.id - b.id);
       this.max_obj = this.data.length
-      console.log(this.max_obj);
 
     } catch (error) {
       console.error('An error occurred:', error);
@@ -142,7 +141,7 @@ export default {
               class=" rounded-xl bg-emerald-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
             <p v-else-if="items.status === 'Waiting'"
               class=" rounded-xl bg-amber-400 text-white text-center p-1 w-3/5 mx-auto ">
-            <div class="group cursor-pointer relative inline-block border-b border-gray-400 text-center">
+            <div class="group cursor-pointer relative inline-block  text-center">
               {{ items.status }}
               <div class="opacity-0 w-28 bg-black text-white text-center text-xs rounded-lg py-2 absolute z-10
                         group-hover:opacity-100 bottom-full 

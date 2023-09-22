@@ -1,5 +1,5 @@
 <template>
-    <div :class="['container', isSignup ? 'right-panel-active' : '']">
+    <div :class="['container', isSignup ? 'right-panel-active' : '']" class="mb-40">
       <div class="form-container sign-up-container">
         <form>
           <h1>Create Account</h1>

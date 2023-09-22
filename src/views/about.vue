@@ -21,7 +21,7 @@ export default {
       showModal,
       ModalCalendar,
       newEvent: {
-        room_id: '',
+        room_id: 11,
         instructor: 'Waraporn Insom',
         date: '',
         user_id: 640510612,
@@ -34,35 +34,31 @@ export default {
   },
 
   methods: {
+    // switc alert
     res_alert: function (data) {
       Swal.fire(
         'Reservation suscess!',
         'success'
       )
     },
+    // calendar @click
     opendateClick: function (arg) {
-      // 
       this.showModal = true
-      console.log('log_data: ', arg)
-
       this.setModalOpen(arg)
     },
+    
+    // closeModal
     closeModal: function () {
       this.showModal = false
     },
+    // OpenModal
     setModalOpen: function (obj) {
-      console.log('date: ', obj.date)
-      console.log('datestr: ', obj.dateStr)
-      console.log('Grid : ', obj.view.type);
       let grid_type = obj.view.type
       if (grid_type == "timeGridWeek" || grid_type == "Timeline") {
         // 2023-08-30T12:30:00+07:00
         let date_at = obj.dateStr.substr(0, 10)
         let time = obj.dateStr.substr(11, 8)
-        console.log("resource :", obj.resource._resource.title);
-        console.log('date: ', date_at)
-        console.log('time: ', time)
-        this.newEvent.room_id = obj.resource._resource.title
+        this.newEvent.room_id = obj.resource._resource.id
         this.newEvent.date = date_at
         this.newEvent.time_start = time.substr(0, 8)
       }
@@ -72,14 +68,8 @@ export default {
       }
       return
     },
-    set_Newevent: function () {
-      this.newEvent.room_id = ''
-      this.newEvent.date = ''
-      this.newEvent.instructor = 'Waraporn Insom'
-      this.newEvent.time_start = ''
-      this.newEvent.time_end = ''
-      this.newEvent.status = 'Waiting'
-    },
+
+    // POST FORM
     saveAppt: function (param) {
       console.log(param);
       axios
@@ -96,6 +86,15 @@ export default {
         .catch((error) => {
           console.error('Error:', error);
         })
+    },
+    // set newevent defauf
+    set_Newevent: function () {
+      this.newEvent.room_id = 0
+      this.newEvent.date = ''
+      this.newEvent.instructor = 'Waraporn Insom'
+      this.newEvent.time_start = ''
+      this.newEvent.time_end = ''
+      this.newEvent.status = 'Waiting'
     },
   }
 }

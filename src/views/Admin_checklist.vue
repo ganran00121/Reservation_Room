@@ -19,6 +19,7 @@ export default {
     }
   },
   methods: {
+    //Approve
     Approve: function (data) {
       console.log(data);
       Swal.fire({
@@ -32,7 +33,6 @@ export default {
         confirmButtonText: 'Yes, Approve it!'
       }).then((result) => {
         if (result.isConfirmed) {
-
           axios
             .put(`http://localhost:3000/reservations/${data.id}`,
               {
@@ -64,6 +64,7 @@ export default {
         }
       })
     },
+    //Refuse
     Refuse: function (data) {
       Swal.fire({
         title: 'Are you sure?',
@@ -75,9 +76,6 @@ export default {
         confirmButtonText: 'Yes, Refuse it!'
       }).then((result) => {
         if (result.isConfirmed) {
-          console.log("test",data);
-          const dddd = axios.get('http://localhost:3000/reservations/'+data.id);
-          console.log("getdddddddddddddd : ", dddd.Result);
           axios
             .put('http://localhost:3000/reservations/'+data.id,
               {
@@ -126,6 +124,8 @@ export default {
       this.Open_detail = false
     },
   },
+
+  // GET API users , reservations
   async created() {
     try {
       const test = await axios.get('http://localhost:3000/users');
@@ -136,7 +136,6 @@ export default {
         users[user.user_id] = user;
       }
       const response = await axios.get('http://localhost:3000/reservations');
-      console.log("get:resvervations : ", response);
       this.data = response.data.map(eventnew => ({
         id: eventnew.id,
         room: eventnew.room_id,
@@ -152,7 +151,6 @@ export default {
         status: eventnew.status
       }));
       this.data.sort((a, b) => a.id - b.id);
-      console.log(this.data);
       this.max_obj = this.data.length;
     } catch (error) {
       console.error('An error occurred:', error);
@@ -160,6 +158,8 @@ export default {
   },
 }
 </script>
+
+
 <template>
   <div class="container rounded-xl mx-auto p-0 pt-0 bg-white">
     <table class="table-auto w-full rounded-xl">
