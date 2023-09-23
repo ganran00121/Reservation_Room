@@ -19,6 +19,7 @@ export default defineComponent({
     // GET API
     onMounted(async () => {
       try {
+        console.log(`Welcome, ${name}!`);
         const test = await axios.get('http://localhost:3000/users');
         let user
         let users = {}

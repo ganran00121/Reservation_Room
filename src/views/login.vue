@@ -133,6 +133,7 @@
 
 <script>
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 export default {
   data() {
     const form_in = ref({
@@ -149,7 +150,7 @@ export default {
     });
 
     return {
-      isSignup: true,
+      isSignup: false,
       form_in,
       form_regis,
     };
@@ -160,9 +161,20 @@ export default {
     },
     login_acc(info) {
       axios
-        .post("http://localhost:3000/login", info)
+        .post("http://localhost:3000/login", info, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
         .then((response) => {
+          localStorage.setItem("jwtToken", response.data.token);
           console.log("POST Login request successful:", response.data);
+          const token = localStorage.getItem("jwtToken");
+          const decodedToken = jwt_decode(token);
+          const name = decodedToken.name;
+          const admin = decodedToken.admin;
+          console.log("login suscess");
+          console.log("Name:", name);
+          console.log("Admin:", admin);
+          window.location.href = "/dashbord";
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -171,12 +183,17 @@ export default {
     signup(info) {
       console.log("signUp");
       if (info.role === "Staff") {
-        info.user_id = null
+        info.user_id = null;
       }
       axios
         .post("http://localhost:3000/users", info)
         .then((response) => {
           console.log("POST User request successful:", response.data);
+          let login_info = {
+            user: response.email,
+            pass: response.firstname,
+          };
+          this.login_acc(login_info);
         })
         .catch((error) => {
           console.error("Error:", error);

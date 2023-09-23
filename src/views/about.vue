@@ -100,6 +100,7 @@ export default {
 }
 </script>
 <template>
+  <h1> {{ name }}</h1>
   <!-- <button @click="toggleWeekends()">CHENG</button> -->
   <div class="container rounded-xl mx-auto px-3 py-8 bg-white overflow-hidden">
     <calendar @dateClick="opendateClick">

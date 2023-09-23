@@ -9,8 +9,8 @@ import AAAA from "../views/testtype.vue";
 import App from "../App.vue";
 const routes: RouteRecordRaw[] = [
   {
-    path: "/",
-    name: "Home",
+    path: "/dashbord",
+    name: "dashbord",
     component: Home,
   },
   {
