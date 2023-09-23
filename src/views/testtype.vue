@@ -17,7 +17,8 @@ export default defineComponent({
         const handleDateClick = function (clickinfo) {
             if (clickinfo.view.type === "dayGridMonth") {
                 clickTimelineButton(clickinfo);
-                console.log("dsdasdsad ::::", clickinfo);
+                this.calendarTitle = clickinfo.dateStr;
+                console.log("Click Handled", clickinfo);
             }
         };
 
@@ -115,7 +116,7 @@ export default defineComponent({
                 { id: 'CSB310', title: 'CSB310' },
             ],
             events: [],
-
+            calendarTitle: ""
         });
         const calendarKey = ref(0);
         const log_options = (obj) => {
@@ -173,7 +174,7 @@ export default defineComponent({
         const clickTimelineButton = (clickinfo) => {
             const timelineButton = document.querySelector('.fc-Timeline-button');
             const calendar_date = document.querySelector('.fc-toolbar-title');
-            console.log(clickinfo.dateStr, "dasdsadsadsds");
+            console.log(clickinfo.dateStr, "Click Handled");
             if (timelineButton) {
                 timelineButton.click();
                 console.log("",calendar);
@@ -192,6 +193,7 @@ export default defineComponent({
     }
 });
 </script>
+
 <style>
 .custom-event-color {
     color: black;
