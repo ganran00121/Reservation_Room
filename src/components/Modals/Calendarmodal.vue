@@ -89,24 +89,9 @@
                 <label
                   for="exampleFormControlInput1"
                   class="block text-gray-700 text-sm font-bold mb-2"
-                >Phone number :</label>
-                <input
-                  v-model="form.phone"
-                  type="tel"
-                  placeholder="080-000-0000" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="exampleFormControlInput1"
-
-                  autocomplete="off"
-                />
-              </div>
-              <div class="mb-4">
-                <label
-                  for="exampleFormControlInput1"
-                  class="block text-gray-700 text-sm font-bold mb-2"
                 >Description :</label>
                 <input
-                  v-model="form.description"
+                  v-model="form.request_description"
                   type="text"
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="exampleFormControlInput1"
@@ -134,7 +119,7 @@
                   class="block text-gray-700 text-sm font-bold mb-2"
                 >Time-start :</label>
                 <input
-                  v-model="form.time_start"
+                  v-model="form.start_time"
                   type="time"
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="exampleFormControlInput2"
@@ -148,14 +133,12 @@
                   class="block text-gray-700 text-sm font-bold mb-2"
                 >Time-end :</label>
                 <input 
-                  v-model="form.time_end"
+                  v-model="form.end_time"
                   type="time"
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="exampleFormControlInput2"
                 />
-                <!-- type="time" -->
               </div>
-              <!-- end select -->
             </div>
           </div>
           <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">

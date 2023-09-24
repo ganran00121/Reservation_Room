@@ -2,6 +2,7 @@
 import { watchEffect, ref, defineComponent } from "vue";
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import admin_reser from '../components/Modals/admin_reservation.vue';
+import jwt_decode from "jwt-decode";
 
 export default {
 
@@ -11,30 +12,82 @@ export default {
 
   setup() {
     const newEvent = ref({
-      room_id: 'CSB100',
-      instructor:'Waraporn Insom',
-      date: '1',
-      phone: '',
-      description: '',
-      user_id: 640510689,
-      time_start: '12:30',
-      time_end: '14:30',
-      status: 'Waiting',
+
+      course_id: '', //        round 1
+      course_name: '', //          round 1
+      course_description: '', //  round 1
+      type: 'Course', //          round 1  round 2
+      dayofweek: '', //            round 1         coures
+
+      room_refer: '',               // round 2 uint
+      course_refer: '',              // use if coures  round 2
+      course_description: '',       // round 2
+      start_date: '',               // round 2 
+      end_date: '',                 // round 2
+      start_time: '',               // round 2
+      end_time: '',                 // round 2 
 
     })
-    const showModal= ref(false) ;
+    const day_week = ref('');
+    const showModal = ref(false);
     const data = ref([]);
     const max_obj = ref(0);
     const user_name = ref([]);
     const Open_detail = ref(false);
     const opendateClick = (arg) => {
       showModal.value = true
-    } ;
-    const closeModal =  () => {
+      setModalOpen(arg)
+    };
+    const setModalOpe = (obj) => {
+      // 2023-08-30T12:30:00+07:00
+      let date_at = obj.dateStr.substr(0, 10)
+      let time = obj.dateStr.substr(11, 8)
+      console.log("decodedtoken __about__ : ", this.decodedToken);
+      newEvent.user_refer = this.decodedToken.id
+      newEvent.user_id = this.decodedToken.college_id
+      newEvent.room_id = obj.resource._resource.id
+      newEvent.date = date_at
+      newEvent.start_time = time.substr(0, 8)
+      newEvent.date = obj.dateStr.substr(0, 10)
+      newEvent.start_time = 'none'
+    }
+
+    const closeModal = () => {
       showModal.value = false
+
     };
     const saveAppt = (param) => {
-      console.log(param);
+      console.log("saveAppt : ", param);
+      const token = localStorage.getItem("jwtToken");
+      const headers = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+      axios // add courses
+        .post('http://localhost:3000/courses', param, headers)
+        .then((response) => {
+          console.log('POST courses successful : ', response.data);
+          param.course_refer = response.data.id
+          console.log("param : ", param);
+          axios //add ReservationTime
+            .post('http://localhost:3000/reservationtimes', param, headers)
+            .then((reservation) => {
+              console.log('POST reservationtimes successful : ', reservation.data);
+              Swal.fire(
+                'Refuse!',
+                'req Refuse.',
+                'success'
+              )
+              closeModal()
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
     };
     return {
       showModal,
@@ -49,98 +102,9 @@ export default {
       set_detil: {},
     }
   },
-  
+
   methods: {
-    Approve: function (data) {
-      console.log(data);
-      Swal.fire({
-        title: 'Are you sure?',
-        // text: "Do you want approval?",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#10B981',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, Approve it!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // EDIT
-          axios
-            .put(`http://localhost:3000/reservations/${data.id}`,
-              {
-                room_id: data.room,
-                user_id: data.user_id,
-                instructor: data.instructor,
-                phone: data.phone,
-                description: data.description,
-                date: data.date,
-                time_start: data.time_start,
-                time_end: data.time_end,
-                status: "Approved"
-              }
-            )
-            .then((response) => {
-              Swal.fire(
-                'Approved!',
-                'Approved success.',
-                'success'
-              )
-              setTimeout(() => {
-                window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-              }, 1000);
-            })
-            .catch((error) => {
-              console.error('Error:', error);
-            })
 
-        }
-      })
-    },
-    Refuse: function (data) {
-      Swal.fire({
-        title: 'Are you sure?',
-        // text: "Do you want to reject this?",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, Refuse it!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          console.log("test", data);
-          const dddd = axios.get('http://localhost:3000/reservations/' + data.id);
-          console.log("getdddddddddddddd : ", dddd.Result);
-          axios
-           // Delete
-            .put('http://localhost:3000/reservations/' + data.id,
-              {
-                room_id: data.room,
-                user_id: data.user_id,
-                instructor: data.instructor,
-                phone: data.phone,
-                description: data.description,
-                date: data.date,
-                time_start: data.time_start,
-                time_end: data.time_end,
-                status: "Rejected"
-              }
-            )
-            .then((response) => {
-              Swal.fire(
-                'Refuse!',
-                'req Refuse.',
-                'success'
-              )
-              setTimeout(() => {
-                window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-              }, 1000);
-            })
-            .catch((error) => {
-              console.error('Error:', error);
-            })
-
-        }
-      })
-    },
     next_count: function () {
       this.count += 10;
       this.number += 10;
@@ -148,6 +112,23 @@ export default {
     prevent_count: function () {
       this.count -= 10;
       this.number -= 10;
+    },
+
+    saveEdit: function (param) {
+      console.log(param);
+      axios
+        .put(`http://localhost:3000/courses/${param.id}`, param)
+        .then((response) => {
+          console.log('POST request successful:', response.data);
+          this.closeModal()
+          this.showAlert()
+          setTimeout(() => {
+            window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+          }, 1000);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        })
     },
   },
   // GET API users , reservations
@@ -160,25 +141,49 @@ export default {
         user = test.data[i];
         users[user.user_id] = user;
       }
-      const response = await axios.get('http://localhost:3000/reservations');
-      console.log("get:resvervations : ", response);
-      this.data = response.data.map(eventnew => ({
-        id: eventnew.id,
-        room: eventnew.room_id,
-        user_id: eventnew.user_id,
-        instructor: eventnew.instructor,
-        phone: eventnew.phone,
-        time_start: eventnew.time_start,
-        time_end: eventnew.time_end,
-        description: eventnew.description,
-        name: users[eventnew.user_id].firstname + '  ' + users[eventnew.user_id].lastname,
-        time: eventnew.time_start + '-' + eventnew.time_end,
-        date: eventnew.date,
-        status: eventnew.status
-      }));
-      this.data.sort((a, b) => a.id - b.id);
-      console.log(this.data);
-      this.max_obj = this.data.length;
+      const response = await axios.get('http://localhost:3000/courses');
+      if (Array.isArray(response.data)) {
+
+        this.data = response.data.map(eventnew => {
+          console.log("dayofweek : ", eventnew.dayofweek);
+          let dayofweek = eventnew.dayofweek;
+          if (dayofweek == "1") {
+            this.day_week = "Mon"
+          } else if (dayofweek == "2") {
+            this.day_week = "Tue"
+          } else if (dayofweek == "3") {
+            this.day_week = "Wed"
+          } else if (dayofweek == "4") {
+            this.day_week = "Thu"
+          } else if (dayofweek == "5") {
+            this.day_week = "Fri"
+          } else if (dayofweek == "1,4") {
+            this.day_week = "Mon-Thu"
+          } else if (dayofweek == "2,5") {
+            this.day_week = "Tue-Fri"
+          }
+          return {
+            id: eventnew.id,
+            room: eventnew.data_reservationtime.room_refer,
+            instructor: "instructor", //eventnew.instructor
+            phone: "Phone", // eventnew.phone
+            start_time: eventnew.data_reservationtime.start_time, // 
+            end_time: eventnew.data_reservationtime.end_time,
+            description: eventnew.course_description,
+            course_id: '( ' + eventnew.course_id + ' )',
+            course_name: eventnew.course_name,
+            time: eventnew.data_reservationtime.start_time + ' - ' + eventnew.data_reservationtime.end_time,
+            start_date: eventnew.data_reservationtime.start_date,
+            end_date: eventnew.data_reservationtime.end_date,
+            dayofweek: this.day_week,
+          };
+        }).filter(event => event !== null);;
+        this.data.sort((a, b) => a.id - b.id);
+        console.log(this.data);
+        this.max_obj = this.data.length;
+      } else {
+        console.error('Invalid response data:', eventnew.data);
+      }
     } catch (error) {
       console.error('An error occurred:', error);
     }
@@ -191,7 +196,8 @@ export default {
   <div class="container rounded-xl mx-auto p-0 pt-0 bg-white">
     <div class="m-5">
       <div class="p-5 border-b-2">
-        <button @click="opendateClick" class="text-center w-full  bg-blue-500 rounded-lg p-5 text-white"> ADD COURSE</button>
+        <button @click="opendateClick" class="text-center w-full  bg-blue-500 rounded-lg p-5 text-white"> ADD
+          COURSE</button>
       </div>
     </div>
     <div class=" p-4">
@@ -224,11 +230,11 @@ export default {
             </td>
             <td class="mr-8 ">
               <div class="flex justify-end  mr-8">
-                <button class="flex rounded-xl bg-emerald-400 p-1 px-3 text-white" @click="Approve(items)">
+                <button class="flex rounded-xl bg-emerald-400 p-1 px-3 text-white" @click="saveEdit(items)">
                   <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M8.33939 4.09832H3.09697C2.54082 4.09832 2.00745 4.31925 1.61419 4.71251C1.22093 5.10577 1 5.63914 1 6.19529V17.7286C1 18.2848 1.22093 18.8181 1.61419 19.2114C2.00745 19.6047 2.54082 19.8256 3.09697 19.8256H14.6303C15.1864 19.8256 15.7198 19.6047 16.1131 19.2114C16.5063 18.8181 16.7273 18.2848 16.7273 17.7286V12.4862M15.2447 2.61577C15.4381 2.41548 15.6695 2.25573 15.9254 2.14583C16.1812 2.03593 16.4564 1.97808 16.7348 1.97567C17.0132 1.97325 17.2894 2.0263 17.5471 2.13174C17.8048 2.23718 18.0389 2.39288 18.2358 2.58977C18.4327 2.78666 18.5884 3.02079 18.6938 3.2785C18.7993 3.53621 18.8523 3.81234 18.8499 4.09078C18.8475 4.36921 18.7897 4.64437 18.6798 4.90021C18.5699 5.15605 18.4101 5.38744 18.2098 5.58088L9.20753 14.5832H6.24242V11.6181L15.2447 2.61577Z"
-                    stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                      d="M8.33939 4.09832H3.09697C2.54082 4.09832 2.00745 4.31925 1.61419 4.71251C1.22093 5.10577 1 5.63914 1 6.19529V17.7286C1 18.2848 1.22093 18.8181 1.61419 19.2114C2.00745 19.6047 2.54082 19.8256 3.09697 19.8256H14.6303C15.1864 19.8256 15.7198 19.6047 16.1131 19.2114C16.5063 18.8181 16.7273 18.2848 16.7273 17.7286V12.4862M15.2447 2.61577C15.4381 2.41548 15.6695 2.25573 15.9254 2.14583C16.1812 2.03593 16.4564 1.97808 16.7348 1.97567C17.0132 1.97325 17.2894 2.0263 17.5471 2.13174C17.8048 2.23718 18.0389 2.39288 18.2358 2.58977C18.4327 2.78666 18.5884 3.02079 18.6938 3.2785C18.7993 3.53621 18.8523 3.81234 18.8499 4.09078C18.8475 4.36921 18.7897 4.64437 18.6798 4.90021C18.5699 5.15605 18.4101 5.38744 18.2098 5.58088L9.20753 14.5832H6.24242V11.6181L15.2447 2.61577Z"
+                      stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
                   <p class="ml-2">Edit</p>
                 </button>

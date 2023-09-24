@@ -9,8 +9,8 @@ import AAAA from "../views/testtype.vue";
 import App from "../App.vue";
 const routes: RouteRecordRaw[] = [
   {
-    path: "/dashbord",
-    name: "dashbord",
+    path: "/dashboard",
+    name: "dashboard",
     component: Home,
   },
   {
@@ -39,7 +39,7 @@ const routes: RouteRecordRaw[] = [
     component: Course,
   },
   {
-    path: "/user",
+    path: "/My_reservations",
     name: "userchecklist",
     component: userchecklist,
   },

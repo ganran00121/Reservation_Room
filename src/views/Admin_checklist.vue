@@ -34,7 +34,7 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-            .put(`http://localhost:3000/reservations/${data.id}`,
+            .put(`http://localhost:3000/reservations/${data.id}`, // ต้องส่งไป reservationTime ส่ง type เป็น request
               {
                 room_id: data.room,
                 user_id: data.user_id,
@@ -60,7 +60,6 @@ export default {
             .catch((error) => {
               console.error('Error:', error);
             })
-
         }
       })
     },

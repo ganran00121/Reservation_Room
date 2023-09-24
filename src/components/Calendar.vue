@@ -6,7 +6,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import compoDetail from "../components/Modals/showDetail.vue";
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import timeGridPlugin from '@fullcalendar/timegrid';
-
+import jwt_decode from "jwt-decode";
 import axios from 'axios';
 
 export default defineComponent({
@@ -15,11 +15,16 @@ export default defineComponent({
     compoDetail
   },
   setup(props, context) {
-
+    const decodedToken = ref({});
+    // token
     // GET API
     onMounted(async () => {
       try {
-        console.log(`Welcome, ${name}!`);
+        const token = localStorage.getItem("jwtToken");
+        if (token) {
+          decodedToken.value = jwt_decode(token);
+        }
+        console.log("token : ", decodedToken);
         const test = await axios.get('http://localhost:3000/users');
         let user
         let users = {}
@@ -27,9 +32,11 @@ export default defineComponent({
           user = test.data[i];
           users[user.user_id] = user;
         }
-        const response = await axios.get('http://localhost:3000/reservations');
+        const response = await axios.get('http://localhost:3000/requests');
         if (Array.isArray(response.data)) {
+          console.log("response : ", response.data);
           events_data.value = response.data.map(reservation => {
+            console.log("response : ", reservation.data_user);
             let status = reservation.status;
             if (status == "Approved") {
               status = 'custom-event-color-status-approve'
@@ -41,20 +48,24 @@ export default defineComponent({
             }
             return {
               title: reservation.room_id,
-              name: users[reservation.user_id].firstname + '  ' + users[reservation.user_id].lastname,
+              name: users[reservation.user_id].first_name + '  ' + users[reservation.user_id].last_name,
               resourceIds: [reservation.room_id],
-              description: reservation.description,
+              description: reservation.request_description,
               show_date: reservation.date,
               show_instructor: reservation.instructor,
               status: reservation.status,
-              start: reservation.date + 'T' + reservation.time_start,
-              end: reservation.date + 'T' + reservation.time_end,
-              time: reservation.time_start + '-' + reservation.time_end,
+              start: reservation.date + 'T' + reservation.start_time,
+              end: reservation.date + 'T' + reservation.end_time,
+              time: reservation.start_time + '-' + reservation.end_time,
+              email: users[reservation.user_id].email,
+              phone: users[reservation.user_id].phone,
+              role: users[reservation.user_id].role,
               classNames: [status],
             };
           }).filter(event => event !== null);;
           generateEvents();
           calendarOptions.value.events = events_data.value;
+          console.log("calendarOptions.value.events : ", calendarOptions.value.events);
         } else {
           console.error('Invalid response data:', response.data);
         }
@@ -70,7 +81,7 @@ export default defineComponent({
       room_id: '',
       instructor: '',
       date: '',
-      user_id: 640510673,
+      user_id: 640510673, //token user_id
       time_start: '',
       description: '',
       time_end: '',
@@ -106,6 +117,27 @@ export default defineComponent({
     const start_day_cours = 20;
     const end_day_cours = 18;
     const events_data = ref([]); // keep event course
+    
+    //code for dayOfweek 
+    // let dayofweek = eventnew.dayofweek;
+    //       if (dayofweek == "1") {
+    //         dayofweek = [ 1 ]
+    //       } else if (dayofweek == "2") {
+    //         dayofweek = [ 2 ] 
+    //       } else if (status == "3") {
+    //         dayofweek = [ 3 ]
+    //       }else if (status == "4") {
+    //         dayofweek = [ 4 ]
+    //       }
+    //       else if (status == "5") {
+    //         dayofweek = [ 5 ]
+    //       }else if (status == "1,4") {
+    //         dayofweek = [ 1 , 4 ]
+    //       }else if (status == "2,5") {
+    //         dayofweek = [ 2 , 5 ]
+    //       }
+    //end
+
     // Funtions set course
     const generateEvents = () => {
       for (let month = startMonth; month <= endMonth; month++) {
@@ -134,7 +166,7 @@ export default defineComponent({
                 time: '12:30 - 14:30',
                 repeat: {
                   frequency: 'weekly',
-                  daysOfWeek: ['1', '4'],
+                  daysOfWeek: [1, 4],
                   startTime: '12:30',
                   endTime: '14:30',
                 },

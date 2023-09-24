@@ -47,7 +47,7 @@ export default {
       this.number -= 10;
     },
     // CLOSE MODAL
-      closeModal: function () {
+    closeModal: function () {
       this.showEditModal = false
     },
     // OPEN MODAL
@@ -62,7 +62,7 @@ export default {
       this.edit_new.time_end = obj.time_end;
       console.log("edit new", this.edit_new);
     },
-    // EDIT reservations
+    // EDIT reservations not yup
     saveEdit: function (param) {
       axios
         .put('http://localhost:3000/reservations', param)
@@ -90,7 +90,7 @@ export default {
   },
   async created() {
     try {
-      const response = ref(await axios.get(`http://localhost:3000/users/${3}`));
+      const response = ref(await axios.get(`http://localhost:3000/users/${3}`)); // ID
       const namef = ref(response.value.data.firstname)
       const nameE = ref(response.value.data.lastname)
       this.data = response.value.data.reservations.map(eventnew => ({
@@ -176,7 +176,7 @@ export default {
         </tr>
       </tbody>
     </table>
-    <div class="flex w-full p-4 pl-8">
+    <div v-if="max_obj != 0" class="flex w-full p-4 pl-8 ">
       <p class="flex-none text-center"> Showing 1 to 1 of 10 results </p>
       <div class="flex-1 text-end ml-12">
 
@@ -200,6 +200,9 @@ export default {
         </div>
 
       </div>
+    </div>
+    <div v-if="max_obj == 0" class="flex w-full p-4 pl-8 text-center w-full py-14">
+      <p class="text-center w-full text-">You haven't logged in or made any reservations yet.</p>
     </div>
   </div>
   <editmodal v-if="showEditModal" :form="edit_new" @closeModal="closeModal" @saveEdit="saveEdit" />

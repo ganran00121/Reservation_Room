@@ -38,7 +38,7 @@
                     class="block text-gray-700 text-sm font-bold mb-2"
                   >Room</label>
                   <select
-                    v-model="form.room_id"
+                    v-model="form.room_refer"
                     id="exampleFormControlInput1"
                     class="mt-1 block form-select w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                   >
@@ -62,15 +62,16 @@
                   <label
                     for="exampleFormControlInput1"
                     class="block text-gray-700 text-sm font-bold mb-2"
-                  >Instructor :</label>
+                  >Course code :</label>
                   <!-- Buscador way -->
                   <div class="flex flex-col relative">
                     <div class="w-full">
                       <div class="my-2 p-1 bg-white flex border border-gray-200 rounded">
                         <div class="flex flex-auto flex-wrap"></div>
                         <input
-                            v-model="form.instructor"
-                          placeholder="Teacher's name ..."
+                            v-model="form.course_id"
+                            type="number"
+                          placeholder="204..."
                           class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
                         />
                       </div>
@@ -85,43 +86,71 @@
                   </div>
                   <!-- comienzo input -->
                 </div>
-                <!-- end Buscador -->
+
                 <div class="mb-4">
                   <label
                     for="exampleFormControlInput1"
                     class="block text-gray-700 text-sm font-bold mb-2"
-                  >Phone number :</label>
-                  <input
-                    type="tel"
-                    v-model="form.phone"
-                    placeholder="080-000-0000" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="exampleFormControlInput1"
-  
-                    autocomplete="off"
-                  />
+                  >Course Name :</label>
+                  <!-- Buscador way -->
+                  <div class="flex flex-col relative">
+                    <div class="w-full">
+                      <div class="my-2 p-1 bg-white flex border border-gray-200 rounded">
+                        <div class="flex flex-auto flex-wrap"></div>
+                        <input
+                          v-model="form.course_name"
+                          type="text"
+                          placeholder="204..."
+                          class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                        />
+                      </div>
+                    </div>
+                    <!-- Options select -->
+                    <div
+                      class="absolute shadow bg-white top-100 z-40 w-full lef-0 rounded max-h-select overflow-y-auto svelte-5uyqqj"
+                    >
+                      <!-- partial component -->
+                    </div>
+                    <!-- end Options -->
+                  </div>
+                  <!-- comienzo input -->
                 </div>
+
                 <div class="mb-4">
                   <label
                     for="exampleFormControlInput1"
-                    class="block text-gray-700 text-sm font-bold mb-2 flex"
-                  >Course Code  : </label>
-                  <input
-                    type="text"
-                    v-model="form.description"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="exampleFormControlInput1"
-                    placeholder="204365"
-                    autocomplete="off"
-                  />
+                    class="block text-gray-700 text-sm font-bold mb-2"
+                  >Description :</label>
+                  <!-- Buscador way -->
+                  <div class="flex flex-col relative">
+                    <div class="w-full">
+                      <div class="my-2 p-1 bg-white flex border border-gray-200 rounded">
+                        <div class="flex flex-auto flex-wrap"></div>
+                        <input
+                          v-model="form.course_description"
+                          type="text"
+                          placeholder="204..."
+                          class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                        />
+                      </div>
+                    </div>
+                    <!-- Options select -->
+                    <div
+                      class="absolute shadow bg-white top-100 z-40 w-full lef-0 rounded max-h-select overflow-y-auto svelte-5uyqqj"
+                    >
+                      <!-- partial component -->
+                    </div>
+                    <!-- end Options -->
+                  </div>
+                  <!-- comienzo input -->
                 </div>
                 <div class="col-span-6 sm:col-span-3 mb-4">
                   <label
                     for="exampleFormControlInput1"
                     class="block text-gray-700 text-sm font-bold mb-2"
-                  >DaysOfWeek</label>
+                  >DaysOfWeek :</label>
                   <select
-                    v-model="form.date"
+                    v-model="form.dayofweek"
                     id="exampleFormControlInput1"
                     class="mt-1 block form-select w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                   >
@@ -134,20 +163,50 @@
                     <option value="2,5">Tue-Fri</option>
                   </select>
                 </div>
-  
+                
+                <div class="mb-4">
+                  <label
+                    for="exampleFormControlInput2"
+                    class="block text-gray-700 text-sm font-bold mb-2"
+                  >Date-start :</label>
+                  <input
+                    v-model="form.start_date"
+                    type="date"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="exampleFormControlInput2"
+                  />
+                  <!-- type="time" -->
+                </div>
+                <div class="mb-4">
+                  <label
+                    for="exampleFormControlInput2"
+                    class="block text-gray-700 text-sm font-bold mb-2"
+                  >Date-end :</label>
+                  <input
+                    v-model="form.end_date"
+                    type="date"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="exampleFormControlInput2"
+                  />
+                  <!-- type="time" -->
+                </div>
+
                 <div class="mb-4">
                   <label
                     for="exampleFormControlInput2"
                     class="block text-gray-700 text-sm font-bold mb-2"
                   >Time-start :</label>
                   <input
-                  v-model="form.time_start"
+                  v-model="form.start_time"
                     type="time"
+                    min="12:00"
+                    max="18:00"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     id="exampleFormControlInput2"
                   />
                   <!-- type="time" -->
                 </div>
+                
                 <!-- start select -->
                 <div class="mb-4">
                   <label
@@ -155,7 +214,7 @@
                     class="block text-gray-700 text-sm font-bold mb-2"
                   >Time-end :</label>
                   <input 
-                  v-model="form.time_end"
+                  v-model="form.end_time"
                     type="time"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     id="exampleFormControlInput2"
