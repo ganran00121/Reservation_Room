@@ -1,6 +1,6 @@
 <template>
-  <div :class="['container', isSignup ? 'right-panel-active' : '']" class="mb-40">
-    <div class="form-container sign-up-container">
+  <div :class="['container', isSignup ? 'right-panel-active' : '']" class="mb-80 ">
+    <div class="form-container sign-up-container h-screen ">
       <form>
         <h1>Create Account</h1>
         <input v-if="form_regis.role === 'Student'" v-model="form_regis.college_id" type="number" name="ID"
@@ -101,7 +101,7 @@ export default {
     },
     login_acc(info) {
       axios
-        .post("http://localhost:3000/login", info, {
+        .post("http://localhost:3000/api/login", info, {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((response) => {
@@ -115,7 +115,18 @@ export default {
             'Sign In success.',
             'success'
           )
-          window.location.href = "/dashboard";
+          Swal.fire({
+            title: 'Sign In',
+            text: "Sign In success.",
+            icon: 'success',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = "/dashboard";
+            }
+          })
+
         })
         .catch((error) => {
           Swal.fire({
@@ -133,7 +144,7 @@ export default {
         info.college_id = null;
       }
       axios
-        .post("http://localhost:3000/users", info)
+        .post("http://localhost:3000/api/users/add", info)
         .then((response) => {
           this.form_in.user = response.data.email,
           this.form_in.pass = response.data.password,

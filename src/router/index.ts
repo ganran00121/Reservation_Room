@@ -1,22 +1,22 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import Home from "../views/about.vue";
-import test from "../views/test.vue";
+import dashboard from "../views/about.vue";
 import adminchecklist from "../views/Admin_checklist.vue";
 import login from "../views/login.vue";
 import userchecklist from "../views/user_checklist .vue";
 import Course from "../views/Admin_Coures.vue";
 import AAAA from "../views/testtype.vue";
+import Getstart from "../views/Getstart.vue";
 import App from "../App.vue";
 const routes: RouteRecordRaw[] = [
   {
-    path: "/dashboard",
-    name: "dashboard",
-    component: Home,
+    path: "/Home",
+    name: "Getstart",
+    component: Getstart,
   },
   {
-    path: "/test",
-    name: "test",
-    component: test,
+    path: "/dashboard",
+    name: "dashboard",
+    component: dashboard,
   },
   {
     path: "/AAAA",

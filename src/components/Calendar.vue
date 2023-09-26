@@ -15,6 +15,7 @@ export default defineComponent({
     compoDetail
   },
   setup(props, context) {
+    // post get  20-06-2030
     const decodedToken = ref({});
     // token
     // GET API
@@ -25,18 +26,23 @@ export default defineComponent({
           decodedToken.value = jwt_decode(token);
         }
         console.log("token : ", decodedToken);
-        const test = await axios.get('http://localhost:3000/users');
+        const test = await axios.get('http://localhost:3000/api/users/list');
         let user
         let users = {}
         for (var i = 0; i < test.data.length; i++) {
           user = test.data[i];
-          users[user.user_id] = user;
+          users[user.college_id] = user;
         }
-        const response = await axios.get('http://localhost:3000/requests');
+        const response = await axios.get('http://localhost:3000/api/reservations/list');
         if (Array.isArray(response.data)) {
-          console.log("response : ", response.data);
+          console.log("response : ", response.data)          
           events_data.value = response.data.map(reservation => {
-            console.log("response : ", reservation.data_user);
+            var start_date = reservation.start_date.split('-'); // แยกวันที่ออกจากกัน
+            reservation.start_date = start_date[2] + '-' + start_date[1] + '-' + start_date[0];
+            if (response.end_time != null) {
+              var end_time = reservation.start_date.split('-'); // แยกวันที่ออกจากกัน
+              reservation.end_time = end_time[2] + '-' + end_time[1] + '-' + end_time[0];
+            }
             let status = reservation.status;
             if (status == "Approved") {
               status = 'custom-event-color-status-approve'
@@ -46,24 +52,68 @@ export default defineComponent({
               status = 'test'
               // return null;
             }
-            return {
-              title: reservation.room_id,
-              name: users[reservation.user_id].first_name + '  ' + users[reservation.user_id].last_name,
-              resourceIds: [reservation.room_id],
-              description: reservation.request_description,
-              show_date: reservation.date,
-              show_instructor: reservation.instructor,
-              status: reservation.status,
-              start: reservation.date + 'T' + reservation.start_time,
-              end: reservation.date + 'T' + reservation.end_time,
-              time: reservation.start_time + '-' + reservation.end_time,
-              email: users[reservation.user_id].email,
-              phone: users[reservation.user_id].phone,
-              role: users[reservation.user_id].role,
-              classNames: [status],
-            };
+            if (reservation.type == "request") {
+              return {
+                title: reservation.room_refer,
+                name: users[user.college_id].first_name + '  ' + users[user.college_id].last_name,
+                resourceIds: [reservation.room_refer],
+                description: reservation.description,
+                show_date: reservation.start_date,
+                show_instructor: reservation.course_instructor,
+                status: reservation.status,
+                start: reservation.start_date + 'T' + reservation.start_time,
+                end: reservation.start_date + 'T' + reservation.end_time,
+                time: reservation.start_time + '-' + reservation.end_time,
+                email: users[user.college_id].email,
+                phone: users[user.college_id].phone,
+                role: users[user.college_id].role,
+                classNames: [status],
+              };
+            } else if (reservation.type == "course") {
+    //             eventBackgroundColor: '#FF5733',
+    //             name: "Waraporn Insom",
+    //             title: "CSB100",
+    //             resourceIds: ['CSB100'],
+    //             groupId: 'redEvents',
+    //             show_date: eventStartDate,
+    //             start: eventStartDate,
+    //             end: eventEndDate,
+    //             show_instructor: "Waraporn Insom",
+    //             status: "Approved",
+    //             description: "description...",
+    //             time: '12:30 - 14:30',
+    //             repeat: {
+    //               frequency: 'weekly',
+    //               daysOfWeek: [1, 4],
+    //               startTime: '12:30',
+    //               endTime: '14:30',
+    //             },
+    //             classNames: ['custom-event-color'],
+
+              return {
+                eventBackgroundColor: '#FF5733',
+                name: reservation.course_instructor,
+                title: reservation.room_refer,
+                resourceIds: [reservation.room_refer],
+                groupId: 'redEvents',
+                show_date : reservation.start_date,
+                start : reservation.start_date,
+                end : reservation.start_date,
+                show_instructor : reservation.course_instructor,
+                status : reservation.status,
+                description: reservation.description,
+                time : reservation.start_time + '-' + reservation.end_time,
+                repeat: {
+                  frequency: 'weekly',
+                  daysOfWeek: [1, 4],
+                  startTime: '12:30',
+                  endTime: '14:30',
+                },
+                classNames: ['custom-event-color'],
+              };
+            }
           }).filter(event => event !== null);;
-          generateEvents();
+          generateEvents()
           calendarOptions.value.events = events_data.value;
           console.log("calendarOptions.value.events : ", calendarOptions.value.events);
         } else {
@@ -109,7 +159,6 @@ export default defineComponent({
 
 
     // SET COURSE
-    const events_test = ref();
     const today = new Date();
     const year = today.getFullYear();
     const startMonth = 6;
@@ -117,31 +166,11 @@ export default defineComponent({
     const start_day_cours = 20;
     const end_day_cours = 18;
     const events_data = ref([]); // keep event course
-    
-    //code for dayOfweek 
-    // let dayofweek = eventnew.dayofweek;
-    //       if (dayofweek == "1") {
-    //         dayofweek = [ 1 ]
-    //       } else if (dayofweek == "2") {
-    //         dayofweek = [ 2 ] 
-    //       } else if (status == "3") {
-    //         dayofweek = [ 3 ]
-    //       }else if (status == "4") {
-    //         dayofweek = [ 4 ]
-    //       }
-    //       else if (status == "5") {
-    //         dayofweek = [ 5 ]
-    //       }else if (status == "1,4") {
-    //         dayofweek = [ 1 , 4 ]
-    //       }else if (status == "2,5") {
-    //         dayofweek = [ 2 , 5 ]
-    //       }
-    //end
 
     // Funtions set course
     const generateEvents = () => {
       for (let month = startMonth; month <= endMonth; month++) {
-        for (let dayOfWeek of [1, 4]) {
+        for (let dayOfWeek of ["1", "4"]) {
           const firstDay = new Date(year, month - 1, 1);
           let day = (dayOfWeek - firstDay.getDay() + 7) % 7 + 1;
 
@@ -151,6 +180,8 @@ export default defineComponent({
             if ((month == startMonth && day < start_day_cours) || (month == endMonth && day > end_day_cours)) {
               day += 7;
             } else {
+              console.log("eventStartDate : ",eventStartDate);
+              console.log("eventEndDate : ",eventEndDate);
               events_data.value.push({
                 eventBackgroundColor: '#FF5733',
                 name: "Waraporn Insom",
@@ -198,6 +229,7 @@ export default defineComponent({
     }
     //DATE CLICK
     const handleDateClick = function (clickinfo) {
+      console.log(clickinfo);
       if (clickinfo.view.type === "Timeline") {
         context.emit('dateClick', clickinfo);
       }
@@ -215,8 +247,8 @@ export default defineComponent({
       allDaySlot: false,
       eventTime: false,
       displayEventTime: true,
-      slotMinTime: '08:00:00',
-      slotMaxTime: '22:00:00',
+      slotMinTime: '08:00',
+      slotMaxTime: '22:00',
 
       color: '#FF5733',
       views: {
@@ -224,7 +256,7 @@ export default defineComponent({
           dateClick: handleDateClick,
           type: 'resourceTimeline',
           duration: { days: 1 },
-          slotDuration: '00:30:00',
+          slotDuration: '00:30',
           slotLabelInterval: { hours: 1 }
         }
       },

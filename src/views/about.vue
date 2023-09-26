@@ -19,7 +19,7 @@ export default {
     onMounted(() => {
       const token = localStorage.getItem("jwtToken");
       if (token) {
-        decodedToken.value = jwt_decode(token); 
+        decodedToken.value = jwt_decode(token);
       }
     });
     return {
@@ -28,21 +28,31 @@ export default {
       showModal,
       ModalCalendar,
       newEvent: {
-        room_id: 11,
-        user_refer: null, //id user 
-        instructor: 'Waraporn Insom',
-        admin_refer: null,
-        date: '',
-        user_id: 640510612, // token user_id
-        request_description: '',
-        start_time: '',
-        end_time: '',
-        status: 'Waiting',
+        user_refer: null, // int  user_id
+        admin_refer: null, // int  admin คนไหนกด
+        room_refer: null, // string room_id
+
+        // course
+        course_id: null, //null เพราะใช้กับ course
+        course_section: null, //null เพราะใช้กับ course
+        course_name: null, //null เพราะใช้กับ course
+        course_type: null, //null เพราะใช้กับ course
+        course_instructor: null, //null เพราะใช้กับ course
+        course_instructor_email: null, //null เพราะใช้กับ course
+        day_of_week: null, //null เพราะใช้กับ courseฃ
+        end_date: null, // ให้มันเป็น null ถ้าจะ add ธรรมดา string
+        // end course
+
+        description: '', // string
+        start_time: '', //16:30 string
+        end_time: '', //16:30 string
+        start_date: '', // ต้องใช้ dd-mm-yyyy string
+        type: 'request', // string
+        status: 'Waiting', // string
       },
       time_A: ref('dasdsad'),
     }
   },
-
   methods: {
     // switc alert
     res_alert: function (data) {
@@ -69,15 +79,14 @@ export default {
         // 2023-08-30T12:30:00+07:00
         let date_at = obj.dateStr.substr(0, 10)
         let time = obj.dateStr.substr(11, 8)
-        console.log("decodedtoken __about__ : ",this.decodedToken);
+        console.log("decodedtoken __about__ : ", this.decodedToken);
         this.newEvent.user_refer = this.decodedToken.id
-        this.newEvent.user_id = this.decodedToken.college_id
-        this.newEvent.room_id = obj.resource._resource.id
-        this.newEvent.date = date_at
-        this.newEvent.start_time = time.substr(0, 8)
+        this.newEvent.room_refer = obj.resource._resource.id
+        this.newEvent.start_date = date_at
+        this.newEvent.start_time = time.substr(0, 5)
       }
       else {
-        this.newEvent.date = obj.dateStr.substr(0, 10)
+        this.newEvent.start_date = obj.dateStr.substr(0, 10)
         this.newEvent.start_time = 'none'
       }
       return
@@ -86,16 +95,23 @@ export default {
     // POST FORM
 
     saveAppt: function (param) {
-      console.log("log param :",param);
       const token = localStorage.getItem("jwtToken");
       const headers = {
         headers: {
           Authorization: `Bearer ${token}`
         }
       };
+      console.log(param.start_date); // dd/mm/yyyy  yyyy/mm/dd
+      let startDate = new Date(param.start_date);
+      let day = startDate.getDate().toString().padStart(2, '0');
+      let month = (startDate.getMonth() + 1).toString().padStart(2, '0');
+      let year = startDate.getFullYear().toString();
       
+      let formattedDate = `${day}-${month}-${year}`;
+      param.start_date = formattedDate
+      console.log("log param  :", param);
       axios
-        .post('http://localhost:3000/requests', param, headers)
+        .post('http://localhost:3000/api/reservations/add', param, headers)
         .then((response) => {
           console.log('POST request successful:', response.data);
           this.closeModal()
@@ -122,10 +138,10 @@ export default {
   }
 }
 </script>
+
 <template>
   <h1> {{ name }}</h1>
-  <!-- <button @click="toggleWeekends()">CHENG</button> -->
-  <div class="container rounded-xl mx-auto px-3 py-8 bg-white overflow-hidden">
+  <div class="container rounded-xl mx-auto p-10 bg-white overflow-hidden my-8">
     <calendar @dateClick="opendateClick">
     </calendar>
   </div>

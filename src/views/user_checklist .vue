@@ -3,6 +3,7 @@ import { watchEffect, ref, defineComponent } from "vue";
 import editmodal from "../components/Modals/editmodal.vue";
 import axios from 'axios';
 import Swal from 'sweetalert2/dist/sweetalert2.js'
+import jwt_decode from "jwt-decode";
 
 export default {
 
@@ -12,28 +13,41 @@ export default {
 
   setup() {
     const data = ref([])
+    const token_id =ref(null);
     return {
       showEditModal: ref(false),
+      token_id,
       max_obj: 0,
       count: ref(10),
       number: ref(1),
       data,
       room: "",
       edit_new: {
-        room_id: '',
-        instructor: '',
-        phone: '',
-        description: '',
-        date: '',
-        time_start: '',
-        time_end: '',
-        status: 'wait',
+        id: null,
+        user_refer: null,
+        admin_refer: null,
+        room_refer: null,
+        course_id: null,
+        course_section: null,
+        course_name: null,
+        course_type: null,
+        course_instructor: null,
+        course_instructor_email: null,
+        day_of_week: null,
+        description: null,
+        start_time: null,
+        end_time: null,
+        date: null,
+        end_date: null,
+        type: null,
+        status: null
       },
     }
   },
 
   methods: {
     edit: function (data_edit) {
+      console.log("AAAAAAAAAAA : ", data_edit);
       this.showEditModal = true
       this.setModalOpen(data_edit)
     },
@@ -52,20 +66,22 @@ export default {
     },
     // OPEN MODAL
     setModalOpen: function (obj) {
-      console.log(obj);
-      this.edit_new.room_id = obj.room;
-      this.edit_new.instructor = obj.instructor;
-      this.edit_new.phone = obj.phone;
+      this.edit_new.id = obj.id;
+      this.edit_new.user_refer = this.token_id;
+      this.edit_new.room_refer = obj.room;
+      this.edit_new.course_instructor = obj.instructor;
       this.edit_new.description = obj.description;
       this.edit_new.date = obj.date;
-      this.edit_new.time_start = obj.time_start;
-      this.edit_new.time_end = obj.time_end;
+      this.edit_new.start_time = obj.time_start;
+      this.edit_new.end_time = obj.time_end;
+      this.edit_new.type = obj.type;
+      this.edit_new.status = obj.status;
       console.log("edit new", this.edit_new);
     },
     // EDIT reservations not yup
     saveEdit: function (param) {
       axios
-        .put('http://localhost:3000/reservations', param)
+        .put(`http://localhost:3000/api/reservations/update/${param.id}`, param)
         .then((response) => {
           console.log('POST request successful:', response.data);
           this.closeModal()
@@ -90,24 +106,38 @@ export default {
   },
   async created() {
     try {
-      const response = ref(await axios.get(`http://localhost:3000/users/${3}`)); // ID
-      const namef = ref(response.value.data.firstname)
-      const nameE = ref(response.value.data.lastname)
-      this.data = response.value.data.reservations.map(eventnew => ({
-        room: eventnew.room_id,
-        name: namef.value + "  " + nameE.value,
-        time: eventnew.time_start + '-' + eventnew.time_end,
-        phone: eventnew.phone,
+      const token = localStorage.getItem("jwtToken");
+      const token_id = ref(null);
+      if (token) {
+        const decodedToken = jwt_decode(token);
+        token_id.value = decodedToken.id;
+        this.token_id = decodedToken.id;
+        console.log(token_id.value);
+      }
+      const response = ref(await axios.get(`http://localhost:3000/api/users/get/${token_id.value}`)); // ID
+      console.log("response : ", response);
+      const user_first_name = ref(response.value.data.first_name)
+      const user_last_name = ref(response.value.data.last_name)
+      const user_college_id = ref(response.value.data.college_id)
+      const user_phone = ref(response.value.data.phone)
+
+      this.data = response.value.data.request.map(eventnew => ({
+        id: eventnew.id,
+        room: eventnew.room_refer,
+        name: user_first_name.value + "  " + user_last_name.value,
+        time: eventnew.start_time + '-' + eventnew.end_time,
+        phone: user_phone.value,
         description: eventnew.description,
-        instructor: eventnew.instructor,
-        time_start: eventnew.time_start,
-        time_end: eventnew.time_end,
-        date: eventnew.date,
+        instructor: eventnew.course_instructor,
+        time_start: eventnew.start_time,
+        time_end: eventnew.end_time,
+        type: eventnew.type,
+        date: eventnew.start_date,
         status: eventnew.status
       }));
       this.data.sort((a, b) => a.id - b.id);
       this.max_obj = this.data.length
-
+      console.log("response : ", this.data);
     } catch (error) {
       console.error('An error occurred:', error);
     }
@@ -118,7 +148,7 @@ export default {
 }
 </script>
 <template>
-  <div class="container rounded-xl mx-auto p-0 pt-0 bg-white">
+  <div class="container rounded-xl mx-auto p-0 pt-0 bg-white h-screen my-8">
     <table class="table-auto w-full rounded-xl">
       <thead class="bg-gray-200 bg-gray-200 text-gray-600 rounded-xl">
         <tr>

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen transition ease-in-out duration-500">
+  <div class="flex transition ease-in-out duration-500">
     <div class="flex bg-[#020314]  ">
       <!-- Backdrop /-->
       <div class="fixed inset-0 z-30 transition-opacity bg-black opacity-50 xl:hidden"
@@ -11,13 +11,13 @@
         "
         class="fixed inset-y-0 left-0 z-30  overflow-y-auto transition ease-in-out duration-500 bg-[#020314] overflow-x-hidden">
         <div class="flex items-center justify-center mt-8">
-          <div class="flex items-center">
+          <router-link class="flex items-center" to="/Home">
             <img
               src="data:image/png;base64,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"
               class="rounded-3xl w-14 my-auto py-auto" :class="isOpen ? 'w-24 h-24' : ''" alt="" />
 
             <!-- <span class="mx-2 text-2xl font-semibold text-white">IOT Dashboard</span> -->
-          </div>
+          </router-link>
         </div>
         <div class="w-full grid text-center py-2">
           <span v-if="isOpen" class="text-white mx-auto text-center"> Computer Science CMU </span>
@@ -41,7 +41,7 @@
           </router-link>
 
           <div>
-            <router-link 
+            <router-link
               class="px-4 flex items-center cursor-pointer py-3 mt-2 duration-200 rounded text-sm font-medium border-gray-900  hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100"
               :class="isActive_Course ? 'text-sky-400 ' : 'text-gray-500'" to="/Course"
               @click="Active_funtions('Course')">
@@ -56,7 +56,7 @@
               <span v-if="isOpen" class="mx-4 tracking-wide font-medium">Add Course</span>
             </router-link>
             <!-- v-if="admin != null" for 59 -->
-            <router-link 
+            <router-link
               class="px-4 flex items-center cursor-pointer py-3 mt-2 duration-200 rounded text-sm font-medium border-gray-900  hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100"
               :class="isActive_admin ? 'text-sky-400 ' : 'text-gray-500'" to="/admin" @click="Active_funtions('admin')">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -110,13 +110,14 @@
       </div>
     </div>
 
-    <div class="flex-1 flex flex-col overflow-hidden transition ease-in-out duration-500 bg-main" :class="isOpen ? 'translate-x-0  ease-out  lg:translate-x-0 ' : ''
+    <div class="flex-1 z-10 relative flex flex-col overflow-hidden transition  ease-in-out duration-500 " :class="isOpen ? 'translate-x-0  ease-out  lg:translate-x-0 ' : ''
       // : '' -translate-x-full ease-in
       ">
-      <main class="overflow-x-hidden overflow-y-auto shadow-t transition ease-in-out duration-500">
-        <header class="flex items-center justify-between px-6 py-4 shadow-md bg-sec text-gray-500 z-40">
+
+      <main class="overflow-x-hidden overflow-y-auto shadow-t transition  ease-in-out duration-500  top-0 sticky">
+        <header class="flex items-center justify-between px-6 py-4  bg-transparent text-gray-500 z-40">
           <div class="flex items-center">
-            <button class="text-gray-500 focus:outline-none mr-4 p-2 rounded-xl hover:text-black hover:bg-gray-100"
+            <button class="text-white focus:outline-none mr-4 p-2 rounded-xl hover:text-black hover:bg-gray-100"
               @click="isOpen = !isOpen">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 6H20M4 12H20M4 18H11" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -127,12 +128,9 @@
 
           <div class="flex items-center">
             <div class="relative">
-              <div class="relative z-10 hidden sm:block w-10 h-10 overflow-hidden rounded-full shadow focus:outline-none">
-                <div class="center con-avatars flex justify-items-center">
-                  <vs-avatar class="">
-                    <i class="bx bx-user"></i>
-                  </vs-avatar>
-                </div>
+              <div
+                class="relative z-10 hidden sm:block w-10 h-10 overflow-hidden bg-white rounded-full shadow focus:outline-none">
+                <img src="./assets/Profile.jpg" alt="" class="object-cover min-h-full cursor-pointer ">
               </div>
               <button
                 class="relative z-10 block sm:hidden w-10 h-10 overflow-hidden rounded-full shadow focus:outline-none"
@@ -161,13 +159,16 @@
               </transition>
             </div>
             <div class="hidden sm:block relative ml-3">
-              <p class="flex gap-2">
-                Hi, test
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                  class="h-6 w-4 transform cursor-pointer transition-transform duration-200 ease-in-out"
-                  :class="dropdownOpen ? 'rotate-180' : 'rotate-0'" @click="dropdownOpen = !dropdownOpen">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
+              <p class="flex gap-2  ">
+              <p class="text-white p-1 px-2 rounded-xl hover:bg-white hover:text-black transition 
+                 ease-in-out duration-500 ">
+                Aucarapon Maunrach
+              </p>
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                class="h-6 w-4 transform cursor-pointer text-white transition-transform duration-200 ease-in-out"
+                :class="dropdownOpen ? 'rotate-180' : 'rotate-0'" @click="dropdownOpen = !dropdownOpen">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
               </p>
               <div v-show="dropdownOpen" class="fixed inset-0 z-10 w-full h-full" @click="dropdownOpen = false"></div>
 
@@ -185,8 +186,9 @@
             </div>
           </div>
         </header>
-        <div class="flex-1 z-10 py-8">
-          <router-view />
+        <div class="flex-1  ">
+          <router-view class="bg-main ">
+          </router-view>
         </div>
       </main>
     </div>
@@ -339,7 +341,9 @@ export default {
     // set navbar start
     onMounted(() => {
       const pathArray = window.location.pathname.split('/');
+
       currentRoute.value = pathArray[pathArray.length - 1];
+      console.log("asdasds", currentRoute.value);
       if (currentRoute.value == 'dashboard') {
         isActive_Dashboard.value = true
         isActive_Course.value = false
@@ -371,17 +375,19 @@ export default {
         isActive_My_reservations.value = false
         isActive_login.value = true
       }
+      console.log("currentRoute : ",currentRoute.value);
     });
     // get token
     const currentUserData = ref({
 
     });
     onMounted(() => {
+      
       const token = localStorage.getItem("jwtToken");
       if (token) {
         const decodedToken = jwt_decode(token);
         name.value = decodedToken.first_name;
-
+        console.log(decodedToken.id);
       }
     });
     const currentRoute = ref(null);
@@ -397,6 +403,7 @@ export default {
     const isOpen = ref(false);
     const show = ref(false);
     return {
+      currentRoute,
       isActive_Dashboard,
       isActive_Course,
       isActive_admin,
@@ -436,10 +443,14 @@ export default {
 
 body {
   background-color: #fff !important;
-
+  background-image: url(./assets/background.png);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
   font-family: inherit !important;
   line-height: inherit !important;
   @apply tracking-wide;
+
 }
 
 @media (max-width: 325px) {
