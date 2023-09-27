@@ -83,7 +83,7 @@ export default defineConfig({
       // Custom resolvers, compatible with `unplugin-vue-components`
       // see https://github.com/antfu/unplugin-auto-import/pull/23/
       resolvers: [
-        /* ... */
+
       ],
 
       // Generate corresponding .eslintrc-auto-import.json file.
