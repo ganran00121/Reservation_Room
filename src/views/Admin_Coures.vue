@@ -269,7 +269,7 @@ export default {
       </table>
     </div>
     <div class="flex w-full p-4 pl-8">
-      <p class="flex-none "> Showing 1 to 1 of 10 results </p>
+      <p class="flex-none "> Showing 1 to 1 of 10 results eeeeee </p>
       <div class="flex-1 text-end ml-12">
         <div class=" p-3">
           <button @click="prevent_count()" :class="this.count <= 10 ? 'opacity-25' : ''" :disabled="this.count <= 10"
