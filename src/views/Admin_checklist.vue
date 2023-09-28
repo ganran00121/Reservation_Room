@@ -1,6 +1,7 @@
 <script>
 import { watchEffect, ref, defineComponent } from "vue";
 import Swal from 'sweetalert2/dist/sweetalert2.js'
+import jwt_decode from "jwt-decode";
 import axios from 'axios';
 
 export default {
@@ -14,7 +15,26 @@ export default {
       Open_detail,
       count: ref(10),
       number: ref(1),
-      data,
+      data: ref({
+        id: null,
+        user_refer: null,
+        admin_refer: null,
+        room_refer: null,
+        course_id: null,
+        course_section: null,
+        course_name: null,
+        course_type: null,
+        course_instructor: null,
+        course_instructor_email: null,
+        day_of_week: null,
+        description: null,
+        start_time: null,
+        end_time: null,
+        date: null,
+        end_date: null,
+        type: null,
+        status: null
+      }),
       set_detil: {},
     }
   },
@@ -23,7 +43,6 @@ export default {
     Approve: function (data) {
       console.log(data);
       Swal.fire({
-
         title: 'Are you sure?',
         // text: "Do you want approval?",
         icon: 'question',
@@ -33,20 +52,18 @@ export default {
         confirmButtonText: 'Yes, Approve it!'
       }).then((result) => {
         if (result.isConfirmed) {
+          const token = localStorage.getItem("jwtToken");
+          const token_id = ref(null);
+          if (token) {
+            const decodedToken = jwt_decode(token);
+            token_id.value = decodedToken.id;
+            this.token_id = decodedToken.id;
+            console.log(token_id.value);
+          }
+          data.admin_refer = token_id.value
+          data.status = "Approved"
           axios
-            .put(`http://localhost:3000/reservations/${data.id}`, // ต้องส่งไป reservationTime ส่ง type เป็น request
-              {
-                room_id: data.room,
-                user_id: data.user_id,
-                instructor: data.instructor,
-                phone: data.phone,
-                description: data.description,
-                date: data.date,
-                time_start: data.time_start,
-                time_end: data.time_end,
-                status: "Approved"
-              }
-            )
+            .put(`http://localhost:3000/api/reservations/update/${data.id}`, data)
             .then((response) => {
               Swal.fire(
                 'Approved!',
@@ -75,33 +92,31 @@ export default {
         confirmButtonText: 'Yes, Refuse it!'
       }).then((result) => {
         if (result.isConfirmed) {
-          axios
-            .put('http://localhost:3000/reservations/'+data.id,
-              {
-                room_id: data.room,
-                user_id: data.user_id,
-                instructor: data.instructor,
-                phone: data.phone,
-                description: data.description,
-                date: data.date,
-                time_start: data.time_start,
-                time_end: data.time_end,
-                status: "Rejected"
-              }
-            )
-            .then((response) => {
-              Swal.fire(
-                'Refuse!',
-                'req Refuse.',
-                'success'
-              )
-              setTimeout(() => {
-                window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-              }, 1000);
-            })
-            .catch((error) => {
-              console.error('Error:', error);
-            })
+          const token = localStorage.getItem("jwtToken");
+          const token_id = ref(null);
+          if (token) {
+            const decodedToken = jwt_decode(token);
+            token_id.value = decodedToken.id;
+            this.token_id = decodedToken.id;
+            console.log(token_id.value);
+          }
+          data.admin_refer = token_id.value
+          data.status = "Rejected"
+            axios
+              .put(`http://localhost:3000/api/reservations/update/${data.id}`, data )
+              .then((response) => {
+                Swal.fire(
+                  'Refuse!',
+                  'req Refuse.',
+                  'success'
+                )
+                setTimeout(() => {
+                  window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+                }, 1000);
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+              })
 
         }
       })
@@ -127,30 +142,52 @@ export default {
   // GET API users , reservations
   async created() {
     try {
-      const test = await axios.get('http://localhost:3000/users');
+      const token = localStorage.getItem("jwtToken");
+      const token_id = ref(null);
+      if (token) {
+        const decodedToken = jwt_decode(token);
+        token_id.value = decodedToken.id;
+        this.token_id = decodedToken.id;
+        console.log(token_id.value);
+      }
+      const test = await axios.get('http://localhost:3000/api/users/list');
       let user
       let users = {}
       for (var i = 0; i < test.data.length; i++) {
         user = test.data[i];
-        users[user.user_id] = user;
+        users[user.college_id] = user;
       }
-      const response = await axios.get('http://localhost:3000/reservations');
+      const response = await axios.get(`http://localhost:3000/api/reservations/list/request`); // ID
+      console.log("response : ", response);
       this.data = response.data.map(eventnew => ({
+        admin_refer: eventnew.admin_refer,
+        // course
+        course_id: null, //null เพราะใช้กับ course
+        course_section: null, //null เพราะใช้กับ course
+        course_name: null, //null เพราะใช้กับ course
+        course_type: null, //null เพราะใช้กับ course
+        course_instructor_email: null, //null เพราะใช้กับ course
+        day_of_week: null, //null เพราะใช้กับ courseฃ
+        end_date: null, // ให้มันเป็น null ถ้าจะ add ธรรมดา string
+        // end course
         id: eventnew.id,
-        room: eventnew.room_id,
-        user_id: eventnew.user_id,
-        instructor: eventnew.instructor,
-        phone: eventnew.phone,
-        time_start: eventnew.time_start,
-        time_end: eventnew.time_end,
+        user_refer: eventnew.user_refer,
+        room_refer: eventnew.room_refer,
+        name: users[user.college_id].first_name + "  " + users[user.college_id].last_name,
+        time: eventnew.start_time + '-' + eventnew.end_time,
+        phone: users[user.college_id].phone,
+        email: users[user.college_id].email,
         description: eventnew.description,
-        name: users[eventnew.user_id].firstname + '  ' + users[eventnew.user_id].lastname,
-        time: eventnew.time_start + '-' + eventnew.time_end,
-        date: eventnew.date,
+        course_instructor: eventnew.course_instructor,
+        start_time: eventnew.start_time,
+        end_time: eventnew.end_time,
+        type: eventnew.type,
+        start_date: eventnew.start_date,
         status: eventnew.status
       }));
       this.data.sort((a, b) => a.id - b.id);
-      this.max_obj = this.data.length;
+      this.max_obj = this.data.length
+      console.log("response : ", this.data);
     } catch (error) {
       console.error('An error occurred:', error);
     }
@@ -161,6 +198,7 @@ export default {
 
 <template>
   <div class="container rounded-xl mx-auto p-0 pt-0 bg-white">
+    <p class="text-center text-3xl p-6"> Check lsit </p>
     <table class="table-auto w-full rounded-xl">
       <thead class="bg-gray-200 bg-gray-200 text-gray-600 rounded-xl">
         <tr>
@@ -178,13 +216,14 @@ export default {
           <td class=" py-6 pl-5">{{ index + 1 }}</td>
           <td>{{ items.room }}</td>
           <td>{{ items.name }}</td>
-          <td>{{ items.time }}<br>{{ items.date }}</td>
+          <td>{{ items.time }}<br>{{ items.start_date }}</td>
           <td>
             <p v-if="items.status === 'Approved'"
               class=" rounded-xl bg-emerald-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
             <p v-else-if="items.status === 'Waiting'"
               class=" rounded-xl bg-amber-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
-            <p v-else="items.status === 'Rejected'" class=" rounded-xl bg-red-400 text-white text-center p-1 w-3/5 mx-auto">
+            <p v-else="items.status === 'Rejected'"
+              class=" rounded-xl bg-red-400 text-white text-center p-1 w-3/5 mx-auto">
               {{ items.status }}</p>
           </td>
           <td class="mr-8 ">
@@ -211,7 +250,6 @@ export default {
           </td>
           <div class="relative">
             <div class="absolute">
-
             </div>
           </div>
         </tr>

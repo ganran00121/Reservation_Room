@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import dashboard from "../views/about.vue";
+import dashboard from "../views/Dashboard.vue";
 import adminchecklist from "../views/Admin_checklist.vue";
 import login from "../views/login.vue";
-import userchecklist from "../views/user_checklist .vue";
-import Course from "../views/Admin_Coures.vue";
+import userchecklist from "../views/Myreq.vue";
+import Course from "../views/Coures.vue";
 import AAAA from "../views/testtype.vue";
 import Getstart from "../views/Getstart.vue";
 import App from "../App.vue";

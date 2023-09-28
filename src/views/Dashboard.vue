@@ -14,16 +14,18 @@ export default {
   },
   setup() {
     const showModal = ref(false)
-    const data = ref([]);
+    const log_in = ref(false);
     const decodedToken = ref({});
     onMounted(() => {
       const token = localStorage.getItem("jwtToken");
       if (token) {
+        log_in.value = true
         decodedToken.value = jwt_decode(token);
       }
     });
     return {
       decodedToken,
+      log_in,
       calendar,
       showModal,
       ModalCalendar,
@@ -63,8 +65,20 @@ export default {
     },
     // calendar @click
     opendateClick: function (arg) {
-      this.showModal = true
-      this.setModalOpen(arg)
+      console.log("(this.log_in : ",this.log_in);
+      if (this.log_in) {
+        this.showModal = true
+        this.setModalOpen(arg)
+      } else {
+        Swal.fire({
+          position: 'top',
+          icon: 'warning',
+          title: 'Please log in first to make a reservation.',
+          showConfirmButton: false,
+          timer: 1800
+        })
+      }
+
     },
 
     // closeModal
@@ -84,16 +98,14 @@ export default {
         this.newEvent.room_refer = obj.resource._resource.id
         this.newEvent.start_date = date_at
         this.newEvent.start_time = time.substr(0, 5)
-      }
-      else {
+        console.log(this.newEvent.start_date);
+      } else {
         this.newEvent.start_date = obj.dateStr.substr(0, 10)
         this.newEvent.start_time = 'none'
       }
       return
     },
-
     // POST FORM
-
     saveAppt: function (param) {
       const token = localStorage.getItem("jwtToken");
       const headers = {
@@ -101,12 +113,12 @@ export default {
           Authorization: `Bearer ${token}`
         }
       };
-      console.log(param.start_date); // dd/mm/yyyy  yyyy/mm/dd
+      console.log(param); // dd/mm/yyyy  yyyy/mm/dd
       let startDate = new Date(param.start_date);
       let day = startDate.getDate().toString().padStart(2, '0');
       let month = (startDate.getMonth() + 1).toString().padStart(2, '0');
       let year = startDate.getFullYear().toString();
-      
+      console.log(`day : ${day}-${month}-${year}`);
       let formattedDate = `${day}-${month}-${year}`;
       param.start_date = formattedDate
       console.log("log param  :", param);
@@ -124,7 +136,6 @@ export default {
         .catch((error) => {
           console.error('Error:', error);
         });
-
     },
     // set newevent defauf
     set_Newevent: function () {
@@ -140,8 +151,7 @@ export default {
 </script>
 
 <template>
-  <h1> {{ name }}</h1>
-  <div class="container rounded-xl mx-auto p-10 bg-white overflow-hidden my-8">
+  <div class="container rounded-xl mx-auto p-0 md:p-8 lg:p-10 bg-white overflow-hidden my-8">
     <calendar @dateClick="opendateClick">
     </calendar>
   </div>

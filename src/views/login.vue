@@ -110,11 +110,6 @@ export default {
           const decodedToken = jwt_decode(token);
           const name = decodedToken.name;
           const admin = decodedToken.admin;
-          Swal.fire(
-            'Sign In',
-            'Sign In success.',
-            'success'
-          )
           Swal.fire({
             title: 'Sign In',
             text: "Sign In success.",

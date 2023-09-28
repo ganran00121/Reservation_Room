@@ -12,7 +12,7 @@
           <div class="flex justify-between border-b border-gray-100 px-5 py-4">
             <div>
               <i class="fas fa-exclamation-circle text-blue-500"></i>
-              <span class="font-bold text-gray-700 text-lg">Reservas _ Cours</span>
+              <span class="font-bold text-gray-700 text-lg">Edit Course</span>
             </div>
             <div>
               <button>
@@ -79,23 +79,7 @@
                   </div>
                 </div>
               </div>
-              <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">
-                  sections 
-                  :</label>
-                <div class="flex flex-col relative">
-                  <div class="w-full">
-                    <div class="my-2 p-1 bg-white flex border border-gray-200 rounded">
-                      <div class="flex flex-auto flex-wrap"></div>
-                      <input v-model="form.course_section" type="number" placeholder="204..."
-                        class="p-1 px-2 appearance-none outline-none w-full text-gray-800" />
-                    </div>
-                  </div>
-                  <div
-                    class="absolute shadow bg-white top-100 z-40 w-full lef-0 rounded max-h-select overflow-y-auto svelte-5uyqqj">
-                  </div>
-                </div>
-              </div>
+          
               <div class="flex items-center space-x-6 my-5">
                 <div class="flex items-center">
                   <input value="Lecture" v-model="form.course_type" type="radio" name="radio1" id="radioButton1"
@@ -164,6 +148,7 @@
                 <label  class="block text-gray-700 text-sm font-bold mb-2">Date-start
                   :</label>
                 <input v-model="form.start_date" type="date"
+                  placeholder="dd-mm-yyyy"
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                    />
               </div>
@@ -171,6 +156,7 @@
                 <label  class="block text-gray-700 text-sm font-bold mb-2">Date-end
                   :</label>
                 <input v-model="form.end_date" type="date"
+                  placeholder="dd-mm-yyyy"
                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                    />
               </div>
@@ -179,7 +165,8 @@
                 <label  class="block text-gray-700 text-sm font-bold mb-2">Time-start
                   :</label>
                 <input v-model="form.start_time" type="time"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 
+                  leading-tight focus:outline-none focus:shadow-outline"
                    />
               </div>
 

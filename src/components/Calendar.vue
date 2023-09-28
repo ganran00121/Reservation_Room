@@ -37,6 +37,7 @@ export default defineComponent({
         if (Array.isArray(response.data)) {
           console.log("response : ", response.data)          
           events_data.value = response.data.map(reservation => {
+            var show_time = reservation.start_date
             var start_date = reservation.start_date.split('-'); // แยกวันที่ออกจากกัน
             reservation.start_date = start_date[2] + '-' + start_date[1] + '-' + start_date[0];
             if (response.end_time != null) {
@@ -50,7 +51,7 @@ export default defineComponent({
               status = 'custom-event-color-status-wait'
             } else if (status == "Rejected") {
               status = 'test'
-              // return null;
+              return null;
             }
             if (reservation.type == "request") {
               return {
@@ -58,7 +59,7 @@ export default defineComponent({
                 name: users[user.college_id].first_name + '  ' + users[user.college_id].last_name,
                 resourceIds: [reservation.room_refer],
                 description: reservation.description,
-                show_date: reservation.start_date,
+                show_date: show_time,
                 show_instructor: reservation.course_instructor,
                 status: reservation.status,
                 start: reservation.start_date + 'T' + reservation.start_time,
@@ -96,7 +97,7 @@ export default defineComponent({
                 title: reservation.room_refer,
                 resourceIds: [reservation.room_refer],
                 groupId: 'redEvents',
-                show_date : reservation.start_date,
+                show_date : show_time,
                 start : reservation.start_date,
                 end : reservation.start_date,
                 show_instructor : reservation.course_instructor,
@@ -138,14 +139,18 @@ export default defineComponent({
       status: '',
     })
     const setnewEvent = (info) => {
+      console.log("Data detail info : ", info);
       const setinfo = info.event._def;
       newEvent.value.room_id = setinfo.title
+      newEvent.value.email = setinfo.extendedProps.email
+      newEvent.value.name = setinfo.extendedProps.name
       newEvent.value.date = setinfo.extendedProps.show_date
       newEvent.value.instructor = setinfo.extendedProps.show_instructor
       newEvent.value.description = setinfo.extendedProps.description
       newEvent.value.time_start = setinfo.extendedProps.time
       newEvent.value.time_end = setinfo.extendedProps.time
       newEvent.value.status = setinfo.extendedProps.status
+      console.log("Data detail: ", newEvent);
     }
     const showDetail = ref(false)
     const openDetail = (info) => {
@@ -156,8 +161,7 @@ export default defineComponent({
       showDetail.value = false;
     }
     // END SET DETAIL
-
-
+    
     // SET COURSE
     const today = new Date();
     const year = today.getFullYear();

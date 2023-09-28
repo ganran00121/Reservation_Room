@@ -1,6 +1,6 @@
 <script>
 import { watchEffect, ref, defineComponent } from "vue";
-import editmodal from "../components/Modals/editmodal.vue";
+import editmodal from "../components/Modals/edit_user_modal.vue";
 import axios from 'axios';
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import jwt_decode from "jwt-decode";
@@ -13,7 +13,7 @@ export default {
 
   setup() {
     const data = ref([])
-    const token_id =ref(null);
+    const token_id = ref(null);
     return {
       showEditModal: ref(false),
       token_id,
@@ -37,7 +37,7 @@ export default {
         description: null,
         start_time: null,
         end_time: null,
-        date: null,
+        start_date: null,
         end_date: null,
         type: null,
         status: null
@@ -66,18 +66,10 @@ export default {
     },
     // OPEN MODAL
     setModalOpen: function (obj) {
-      this.edit_new.id = obj.id;
-      this.edit_new.user_refer = this.token_id;
-      this.edit_new.room_refer = obj.room;
-      this.edit_new.course_instructor = obj.instructor;
-      this.edit_new.description = obj.description;
-      this.edit_new.date = obj.date;
-      this.edit_new.start_time = obj.time_start;
-      this.edit_new.end_time = obj.time_end;
-      this.edit_new.type = obj.type;
-      this.edit_new.status = obj.status;
+      this.edit_new = obj
       console.log("edit new", this.edit_new);
     },
+
     // EDIT reservations not yup
     saveEdit: function (param) {
       axios
@@ -94,6 +86,35 @@ export default {
           console.error('Error:', error);
         })
     },
+    // delete
+    delete_req: function (param) {
+      Swal.fire({
+        title: 'Are you sure?',
+        // text: "Do you want to reject this?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Refuse it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .delete(`http://localhost:3000/api/reservations/delete/${param.id}`, param)
+            .then((response) => {
+              console.log('POST request successful:', response.data);
+              this.closeModal()
+              setTimeout(() => {
+                window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+              }, 1000);
+
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            })
+        }
+      })
+
+    },
     // showAlert
     showAlert: function () {
       Swal.fire(
@@ -102,7 +123,6 @@ export default {
         'success'
       )
     },
-
   },
   async created() {
     try {
@@ -115,25 +135,33 @@ export default {
         console.log(token_id.value);
       }
       const response = ref(await axios.get(`http://localhost:3000/api/users/get/${token_id.value}`)); // ID
-      console.log("response : ", response);
+      console.log("response AAA : ", response);
       const user_first_name = ref(response.value.data.first_name)
       const user_last_name = ref(response.value.data.last_name)
       const user_college_id = ref(response.value.data.college_id)
       const user_phone = ref(response.value.data.phone)
-
       this.data = response.value.data.request.map(eventnew => ({
         id: eventnew.id,
-        room: eventnew.room_refer,
         name: user_first_name.value + "  " + user_last_name.value,
-        time: eventnew.start_time + '-' + eventnew.end_time,
         phone: user_phone.value,
-        description: eventnew.description,
-        instructor: eventnew.course_instructor,
-        time_start: eventnew.start_time,
-        time_end: eventnew.end_time,
-        type: eventnew.type,
-        date: eventnew.start_date,
-        status: eventnew.status
+        user_refer: eventnew.user_refer,
+        admin_refer: eventnew.admin_refer,
+        room_refer: eventnew.room_refer,
+        course_id: eventnew.course_id,
+        course_section: eventnew.course_section,
+        course_name: eventnew.course_name,
+        course_type: eventnew.course_type,
+        course_instructor: eventnew.course_instructor,
+        course_instructor_email: eventnew.course_instructor_email,
+        day_of_week: eventnew.day_of_week,
+        end_date: eventnew.end_date,
+        description: eventnew.course_description, // string
+        start_time: eventnew.start_time, //16:30 string
+        end_time: eventnew.end_time,
+        start_date: eventnew.start_date,
+        time: eventnew.start_time + ' - ' + eventnew.end_time,
+        type: eventnew.type, // string
+        status: eventnew.status, // string
       }));
       this.data.sort((a, b) => a.id - b.id);
       this.max_obj = this.data.length
@@ -148,7 +176,8 @@ export default {
 }
 </script>
 <template>
-  <div class="container rounded-xl mx-auto p-0 pt-0 bg-white h-screen my-8">
+  <div class="container rounded-xl mx-auto p-0 pt-0 bg-white min-h-screen my-8">
+    <p class="text-center text-3xl p-6"> My reservations </p>
     <table class="table-auto w-full rounded-xl">
       <thead class="bg-gray-200 bg-gray-200 text-gray-600 rounded-xl">
         <tr>
@@ -163,7 +192,7 @@ export default {
       <tbody v-for="(items, index) in data" :key="index" class="text-center ">
         <tr v-if="index + 1 <= this.count && index + 1 >= this.number" class="hover:bg-gray-50 ml-3">
           <td class=" py-6 pl-5">{{ index + 1 }}</td>
-          <td>{{ items.room }}</td>
+          <td>{{ items.room_refer }}</td>
           <td>{{ items.name }}</td>
           <td>{{ items.time }}<br> {{ items.date }} </td>
           <td>
@@ -190,6 +219,7 @@ export default {
           </td>
           <td class="mr-8 ">
             <div class="flex justify-end  mr-8">
+
               <button data-tooltip-target="tooltip-default" type="button"
                 class="flex rounded-xl bg-indigo-400 p-1 px-3 text-white" @click="edit(items)"
                 v-if="items.status == 'Waiting'">
@@ -198,9 +228,20 @@ export default {
                     d="M8.33939 4.09832H3.09697C2.54082 4.09832 2.00745 4.31925 1.61419 4.71251C1.22093 5.10577 1 5.63914 1 6.19529V17.7286C1 18.2848 1.22093 18.8181 1.61419 19.2114C2.00745 19.6047 2.54082 19.8256 3.09697 19.8256H14.6303C15.1864 19.8256 15.7198 19.6047 16.1131 19.2114C16.5063 18.8181 16.7273 18.2848 16.7273 17.7286V12.4862M15.2447 2.61577C15.4381 2.41548 15.6695 2.25573 15.9254 2.14583C16.1812 2.03593 16.4564 1.97808 16.7348 1.97567C17.0132 1.97325 17.2894 2.0263 17.5471 2.13174C17.8048 2.23718 18.0389 2.39288 18.2358 2.58977C18.4327 2.78666 18.5884 3.02079 18.6938 3.2785C18.7993 3.53621 18.8523 3.81234 18.8499 4.09078C18.8475 4.36921 18.7897 4.64437 18.6798 4.90021C18.5699 5.15605 18.4101 5.38744 18.2098 5.58088L9.20753 14.5832H6.24242V11.6181L15.2447 2.61577Z"
                     stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-
-                <p class="ml-2">Edits</p>
+                <p class="ml-2"> Edits </p>
               </button>
+
+              <button data-tooltip-target="tooltip-default" type="button"
+                class="flex rounded-xl bg-red-400 p-1 px-3 text-white ml-2" @click="delete_req(items)">
+                <svg class="my-auto" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M8 12L10 10M10 10L12 8M10 10L8 8M10 10L12 12M19 10C19 11.1819 18.7672 12.3522 18.3149 13.4442C17.8626 14.5361 17.1997 15.5282 16.364 16.364C15.5282 17.1997 14.5361 17.8626 13.4442 18.3149C12.3522 18.7672 11.1819 19 10 19C8.8181 19 7.64778 18.7672 6.55585 18.3149C5.46392 17.8626 4.47177 17.1997 3.63604 16.364C2.80031 15.5282 2.13738 14.5361 1.68508 13.4442C1.23279 12.3522 1 11.1819 1 10C1 7.61305 1.94821 5.32387 3.63604 3.63604C5.32387 1.94821 7.61305 1 10 1C12.3869 1 14.6761 1.94821 16.364 3.63604C18.0518 5.32387 19 7.61305 19 10Z"
+                    stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p class="ml-2"> Delete </p>
+              </button>
+
             </div>
           </td>
         </tr>
