@@ -143,7 +143,6 @@ export default {
     };
 
     const closeModal_add = () => {
-
       showModal.value = false
 
     };
@@ -254,7 +253,6 @@ export default {
             .delete(`http://localhost:3000/api/reservations/delete_course/${param.course_id}/${param.course_section}/${param.course_type}`, param)
             .then((response) => {
               console.log('POST request successful:', response.data);
-              this.closeModal()
               setTimeout(() => {
                 window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
               }, 1000);

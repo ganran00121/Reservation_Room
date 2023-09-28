@@ -26,8 +26,8 @@
             </p>
             <div class>
               <div class="col-span-6 sm:col-span-3 mb-4">
-                <label  class="block text-gray-700 text-sm font-bold mb-2">Room</label>
-                <select v-model="form.room_refer" 
+                <label class="block text-gray-700 text-sm font-bold mb-2">Room</label>
+                <select v-model="form.room_refer"
                   class="mt-1 block form-select w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
                   <option value="CSB100">CSB100</option>
                   <option value="CSB201">CSB201</option>
@@ -46,7 +46,7 @@
               </div>
 
               <div class="mb-4">
-                <label  class="block text-gray-700 text-sm font-bold mb-2">
+                <label class="block text-gray-700 text-sm font-bold mb-2">
                   Course code
                   :</label>
                 <div class="flex flex-col relative">
@@ -63,7 +63,7 @@
                 </div>
               </div>
               <div class="mb-4">
-                <label  class="block text-gray-700 text-sm font-bold mb-2">
+                <label class="block text-gray-700 text-sm font-bold mb-2">
                   Course name
                   :</label>
                 <div class="flex flex-col relative">
@@ -79,12 +79,28 @@
                   </div>
                 </div>
               </div>
-          
+              <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">
+                  sections
+                  :</label>
+                <div class="flex flex-col relative">
+                  <div class="w-full">
+                    <div class="my-2 p-1 bg-white flex border border-gray-200 rounded">
+                      <div class="flex flex-auto flex-wrap"></div>
+                      <input v-model="form.course_section" type="number" placeholder="204..."
+                        class="p-1 px-2 appearance-none outline-none w-full text-gray-800" />
+                    </div>
+                  </div>
+                  <div
+                    class="absolute shadow bg-white top-100 z-40 w-full lef-0 rounded max-h-select overflow-y-auto svelte-5uyqqj">
+                  </div>
+                </div>
+              </div>
               <div class="flex items-center space-x-6 my-5">
                 <div class="flex items-center">
                   <input value="Lecture" v-model="form.course_type" type="radio" name="radio1" id="radioButton1"
                     class="h-5 w-5" />
-                  <label  class="pl-3 text-base font-medium text-[#07074D]">
+                  <label class="pl-3 text-base font-medium text-[#07074D]">
                     Lecture
                   </label>
                 </div>
@@ -114,7 +130,7 @@
                 </div>
               </div>
               <div class="mb-4">
-                <label  class="block text-gray-700 text-sm font-bold mb-2">
+                <label class="block text-gray-700 text-sm font-bold mb-2">
                   instructor_email :</label>
                 <div class="flex flex-col relative">
                   <div class="w-full">
@@ -130,9 +146,9 @@
                 </div>
               </div>
               <div class="col-span-6 sm:col-span-3 mb-4">
-                <label  class="block text-gray-700 text-sm font-bold mb-2">DaysOfWeek
+                <label class="block text-gray-700 text-sm font-bold mb-2">DaysOfWeek
                   :</label>
-                <select v-model="form.day_of_week" 
+                <select v-model="form.day_of_week"
                   class="mt-1 block form-select w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
                   <option value="1">Mon</option>
                   <option value="2">Tue</option>
@@ -145,37 +161,30 @@
               </div>
 
               <div class="mb-4">
-                <label  class="block text-gray-700 text-sm font-bold mb-2">Date-start
+                <label class="block text-gray-700 text-sm font-bold mb-2">Date-start
                   :</label>
-                <input v-model="form.start_date" type="date"
-                  placeholder="dd-mm-yyyy"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                   />
+                <input v-model="form.start_date" type="date" placeholder="dd-mm-yyyy"
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
               </div>
               <div class="mb-4">
-                <label  class="block text-gray-700 text-sm font-bold mb-2">Date-end
+                <label class="block text-gray-700 text-sm font-bold mb-2">Date-end
                   :</label>
-                <input v-model="form.end_date" type="date"
-                  placeholder="dd-mm-yyyy"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                   />
+                <input v-model="form.end_date" type="date" placeholder="dd-mm-yyyy"
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
               </div>
 
               <div class="mb-4">
-                <label  class="block text-gray-700 text-sm font-bold mb-2">Time-start
+                <label class="block text-gray-700 text-sm font-bold mb-2">Time-start
                   :</label>
-                <input v-model="form.start_time" type="time"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 
-                  leading-tight focus:outline-none focus:shadow-outline"
-                   />
+                <input v-model="form.start_time" type="time" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 
+                  leading-tight focus:outline-none focus:shadow-outline" />
               </div>
 
               <div class="mb-4">
-                <label  class="block text-gray-700 text-sm font-bold mb-2">Time-end
+                <label class="block text-gray-700 text-sm font-bold mb-2">Time-end
                   :</label>
                 <input v-model="form.end_time" type="time"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                   />
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
               </div>
             </div>
           </div>
