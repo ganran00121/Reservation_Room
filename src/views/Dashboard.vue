@@ -65,17 +65,24 @@ export default {
         confirmButtonColor: '#3085d6',
         confirmButtonText: 'OK'
       }).then((result) => {
-        if (result.isConfirmed) {
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
-        }
+        // if (result.isConfirmed) {
+        //   setTimeout(() => {
+        //     window.location.reload();
+        //   }, 1000);
+        // }
       })
     },
     res_alert_false: function () {
       Swal.fire(
         'Reservation false',
         'Please double-check the time, as there may already be a booking during this period!',
+        'warning'
+      )
+    },
+    alert_time_false: function () {
+      Swal.fire(
+        'Reservation false',
+        'The start time cannot be after the end time.',
         'warning'
       )
     },
@@ -124,13 +131,11 @@ export default {
     },
     // OpenModal
     setModalOpen: function (obj) {
-      console.log();
       let grid_type = obj.view.type
       if (grid_type == "timeGridWeek" || grid_type == "Timeline") {
         // 2023-08-30T12:30:00+07:00
         let date_at = obj.dateStr.substr(0, 10)
         let time = obj.dateStr.substr(11, 8)
-        console.log("decodedtoken __about__ : ", this.decodedToken);
         this.newEvent.user_refer = this.decodedToken.id
         this.newEvent.room_refer = obj.resource._resource.id
         this.newEvent.start_date = date_at
@@ -162,7 +167,7 @@ export default {
 
       startDate.setHours(startTime[0], startTime[1]);
       endDate.setHours(endTime[0], endTime[1]);
-
+      console.log("startDate : ", startDate);
       axios.get('http://localhost:3000/api/reservations/list', headers)
         .then((response) => {
           const reservations = response.data;
@@ -173,15 +178,29 @@ export default {
             const reservationEndTime = reservation.end_time.split(":");
             reservationStartDate.setHours(reservationStartTime[0], reservationStartTime[1]);
             reservationEndDate.setHours(reservationEndTime[0], reservationEndTime[1]);
-            return (startDate < reservationEndDate && endDate > reservationStartDate && reservation.room_refer == param.room_refer);
+
+            // เพิ่มเงื่อนไขที่ตรวจสอบว่า param.start_time มากกว่า param.end_time
+            if (startDate > endDate) {
+              return true;
+            }
+
+            return (
+              startDate < reservationEndDate &&
+              endDate > reservationStartDate &&
+              reservation.room_refer == param.room_refer &&
+              reservation.status != "Rejected"
+            );
           });
 
-          if (overlappingReservation) {
-            this.res_alert_false()
+          if (overlappingReservation || startTime[0] > endTime[0]) {
+            if (startTime[0] > endTime[0]) {
+              this.alert_time_false()
+            } else {
+              this.res_alert_false()
+            }
           } else {
             axios.post('http://localhost:3000/api/reservations/add', param, headers)
               .then((response) => {
-                console.log('POST request successful:', response.data);
                 this.closeModal();
                 this.res_alert_success(param);
                 this.set_form();

@@ -70,9 +70,9 @@ export default {
                 'Approved success.',
                 'success'
               )
-              setTimeout(() => {
-                window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-              }, 1000);
+              // setTimeout(() => {
+              //   window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+              // }, 1000);
             })
             .catch((error) => {
               console.error('Error:', error);
@@ -110,9 +110,9 @@ export default {
                   'req Refuse.',
                   'success'
                 )
-                setTimeout(() => {
-                  window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-                }, 1000);
+                // setTimeout(() => {
+                //   window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+                // }, 1000);
               })
               .catch((error) => {
                 console.error('Error:', error);
@@ -214,7 +214,7 @@ export default {
         <tr v-if="index + 1 <= this.count && index + 1 >= this.number" class="hover:bg-gray-50 border-b-2 ml-3"
           @click="setModalOpen">
           <td class=" py-6 pl-5">{{ index + 1 }}</td>
-          <td>{{ items.room }}</td>
+          <td>{{ items.room_refer }}</td>
           <td>{{ items.name }}</td>
           <td>{{ items.time }}<br>{{ items.start_date }}</td>
           <td>
