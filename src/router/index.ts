@@ -9,7 +9,7 @@ import Getstart from "../views/Getstart.vue";
 import App from "../App.vue";
 const routes: RouteRecordRaw[] = [
   {
-    path: "/Home",
+    path: "/",
     name: "Getstart",
     component: Getstart,
   },

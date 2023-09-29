@@ -34,12 +34,12 @@
                 <label
                   for="exampleFormControlInput1"
                   class="block text-gray-700 text-sm font-bold mb-2"
-                >Room</label>
+                  >Room</label
+                >
                 <select
-                 
                   v-model="form.room_refer"
                   id="exampleFormControlInput1"
-                  class="mt-1 block form-select w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                  class="mt-1 block form-select w-full py-3 px-3 border border-gray-200 bg-gray-100 rounded-2xl shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 >
                   <option value="CSB100">CSB100</option>
                   <option value="CSB201">CSB201</option>
@@ -60,17 +60,20 @@
               <div class="mb-4">
                 <label
                   for="exampleFormControlInput1"
-                  class="block text-gray-700 text-sm font-bold mb-2"
-                >Instructor :</label>
+                  class="block text-gray-700 text-sm font-bold"
+                  >Instructor</label
+                >
                 <!-- Buscador way -->
                 <div class="flex flex-col relative">
                   <div class="w-full">
-                    <div class="my-2 p-1 bg-white flex border border-gray-200 rounded">
+                    <div
+                      class="my-2 p-1 py-1 flex border border-gray-200 bg-gray-100 rounded-2xl shadow-sm"
+                    >
                       <div class="flex flex-auto flex-wrap"></div>
                       <input
                         v-model="form.course_instructor"
                         placeholder="Teacher's name ..."
-                        class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                        class="p-1 px-2 appearance-none outline-none w-full text-gray-800 bg-gray-100"
                       />
                     </div>
                   </div>
@@ -89,11 +92,12 @@
                 <label
                   for="exampleFormControlInput1"
                   class="block text-gray-700 text-sm font-bold mb-2"
-                >Description :</label>
+                  >Description</label
+                >
                 <input
                   v-model="form.description"
                   type="text"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  class="appearance-none border w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm py-3"
                   id="exampleFormControlInput1"
                   placeholder="Description ..."
                   autocomplete="off"
@@ -103,41 +107,46 @@
                 <label
                   for="exampleFormControlInput1"
                   class="block text-gray-700 text-sm font-bold mb-2"
-                >Date :</label>
+                  >Date</label
+                >
                 <input
                   v-model="form.start_date"
                   disabled="true"
                   type="text"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
                   id="exampleFormControlInput1"
                   placeholder="Enter pass"
                 />
               </div>
-              <div class="mb-4">
-                <label
-                  for="exampleFormControlInput2"
-                  class="block text-gray-700 text-sm font-bold mb-2"
-                >Time-start :</label>
-                <input
-                  v-model="form.start_time"
-                  type="time"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="exampleFormControlInput2"
-                />
-                <!-- type="time" -->
-              </div>
-              <!-- start select -->
-              <div class="mb-4">
-                <label
-                  for="exampleFormControlInput2"
-                  class="block text-gray-700 text-sm font-bold mb-2"
-                >Time-end :</label>
-                <input 
-                  v-model="form.end_time"
-                  type="time"
-                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="exampleFormControlInput2"
-                />
+              <div class="flex flex-wrap gap-x-4">
+                <div class="mb-4 w-full md:w-5/12">
+                  <label
+                    for="exampleFormControlInput2"
+                    class="block text-gray-700 text-sm font-bold mb-2"
+                    >Time Start :</label
+                  >
+                  <input
+                    v-model="form.start_time"
+                    type="time"
+                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
+                    id="exampleFormControlInput2"
+                  />
+                  <!-- type="time" -->
+                </div>
+                <!-- start select -->
+                <div class="mb-4 w-full md:w-5/12">
+                  <label
+                    for="exampleFormControlInput2"
+                    class="block text-gray-700 text-sm font-bold mb-2"
+                    >Time End</label
+                  >
+                  <input
+                    v-model="form.end_time"
+                    type="time"
+                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
+                    id="exampleFormControlInput2"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -145,14 +154,32 @@
             <button
               @click.prevent="store(form)"
               type="button"
-              class="inline-flex justify-center w-full border border-teal-500 bg-teal-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-teal-600 focus:outline-none focus:shadow-outline"
-            >Confrim</button>
+              class="inline-flex justify-center w-full border border-green-500 bg-green-500 hover:bg-green-600 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease-in select-none focus:outline-none focus:shadow-outline"
+            >
+              Confrim
+            </button>
 
             <button
               @click.prevent="closeModal"
               type="button"
-              class="inline-flex justify-center w-full border border-gray-200 bg-gray-200 text-gray-700 rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-gray-300 focus:outline-none focus:shadow-outline"
-            >cancle</button>
+              class="inline-flex justify-center w-full border border-gray-200 bg-gray-200 text-gray-700 rounded-md px-4 py-2 m-2 transition duration-500 ease-in select-none hover:bg-gray-300 focus:outline-none focus:shadow-outline"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <p class="px-1">Cancle</p>
+            </button>
           </div>
         </form>
       </div>
@@ -161,26 +188,24 @@
 </template>
 
 <script>
-
 export default {
   name: "Modal",
-  props:{
-    form:{
+  props: {
+    form: {
       type: Object,
-      default: ()=>{}
-    }
-  },
-  components: {
-  },
-  
-  methods:{
-    closeModal(){
-      this.$emit('closeModal')
+      default: () => {},
     },
-    store(form){
-      this.$emit('saveAppt',form)
-    }
-  }
+  },
+  components: {},
+
+  methods: {
+    closeModal() {
+      this.$emit("closeModal");
+    },
+    store(form) {
+      this.$emit("saveAppt", form);
+    },
+  },
 };
 </script>
 

@@ -3,23 +3,22 @@ import { watchEffect, ref, defineComponent } from "vue";
 import calendar from "../components/Calendar.vue";
 import ModalCalendar from "../components/Modals/Calendarmodal.vue";
 import jwt_decode from "jwt-decode";
-import Swal from 'sweetalert2/dist/sweetalert2.js'
-import axios from 'axios';
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import axios from "axios";
 
 export default {
-
   components: {
     calendar,
     ModalCalendar,
   },
   setup() {
-    const showModal = ref(false)
+    const showModal = ref(false);
     const log_in = ref(false);
     const decodedToken = ref({});
     onMounted(() => {
       const token = localStorage.getItem("jwtToken");
       if (token) {
-        log_in.value = true
+        log_in.value = true;
         decodedToken.value = jwt_decode(token);
       }
     });
@@ -45,121 +44,119 @@ export default {
         end_date: null, // ให้มันเป็น null ถ้าจะ add ธรรมดา string
         // end course
 
-        description: '', // string
-        start_time: '', //16:30 string
-        end_time: '', //16:30 string
-        start_date: '', // ต้องใช้ dd-mm-yyyy string
-        type: 'request', // string
-        status: 'Waiting', // string
+        description: "", // string
+        start_time: "", //16:30 string
+        end_time: "", //16:30 string
+        start_date: "", // ต้องใช้ dd-mm-yyyy string
+        type: "request", // string
+        status: "Waiting", // string
       },
-      time_A: ref('dasdsad'),
-    }
+      time_A: ref("dasdsad"),
+    };
   },
   methods: {
     // switc alert
     res_alert_success: function () {
       Swal.fire({
-        title: 'Good job!',
+        title: "Good job!",
         text: "Reservation suscess.",
-        icon: 'success',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'OK'
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK",
       }).then((result) => {
         // if (result.isConfirmed) {
         //   setTimeout(() => {
         //     window.location.reload();
         //   }, 1000);
         // }
-      })
+      });
     },
     res_alert_false: function () {
       Swal.fire(
-        'Reservation false',
-        'Please double-check the time, as there may already be a booking during this period!',
-        'warning'
-      )
+        "Reservation false",
+        "Please double-check the time, as there may already be a booking during this period!",
+        "warning"
+      );
     },
     alert_time_false: function () {
       Swal.fire(
-        'Reservation false',
-        'The start time cannot be after the end time.',
-        'warning'
-      )
+        "Reservation false",
+        "The start time cannot be after the end time.",
+        "warning"
+      );
     },
     // calendar @click
     opendateClick: function (arg) {
       if (this.log_in) {
-        this.showModal = true
-        this.setModalOpen(arg)
+        this.showModal = true;
+        this.setModalOpen(arg);
       } else {
         Swal.fire({
-          position: 'top',
-          icon: 'warning',
-          title: 'Please log in first to make a reservation.',
+          position: "top",
+          icon: "warning",
+          title: "Please log in first to make a reservation.",
           showConfirmButton: false,
-          timer: 1800
-        })
+          timer: 1800,
+        });
       }
-
     },
     set_form: function () {
-
-      this.newEvent.user_refer = null // int  user_id
-      this.newEvent.admin_refer = null // int  admin คนไหนกด
-      this.newEvent.room_refer = null // string room_id
+      this.newEvent.user_refer = null; // int  user_id
+      this.newEvent.admin_refer = null; // int  admin คนไหนกด
+      this.newEvent.room_refer = null; // string room_id
       // course
-      this.newEvent.course_id = null //null เพราะใช้กับ course
-      this.newEvent.course_section = null //null เพราะใช้กับ course
-      this.newEvent.course_name = null //null เพราะใช้กับ course
-      this.newEvent.course_type = null //null เพราะใช้กับ course
-      this.newEvent.course_instructor = null, //null เพราะใช้กับ course
-        this.newEvent.course_instructor_email = null //null เพราะใช้กับ course
-      this.newEvent.day_of_week = null //null เพราะใช้กับ courseฃ
-      this.newEvent.end_date = null // ให้มันเป็น null ถ้าจะ add ธรรมดา string
+      this.newEvent.course_id = null; //null เพราะใช้กับ course
+      this.newEvent.course_section = null; //null เพราะใช้กับ course
+      this.newEvent.course_name = null; //null เพราะใช้กับ course
+      this.newEvent.course_type = null; //null เพราะใช้กับ course
+      (this.newEvent.course_instructor = null), //null เพราะใช้กับ course
+        (this.newEvent.course_instructor_email = null); //null เพราะใช้กับ course
+      this.newEvent.day_of_week = null; //null เพราะใช้กับ courseฃ
+      this.newEvent.end_date = null; // ให้มันเป็น null ถ้าจะ add ธรรมดา string
       // end course
 
-      this.newEvent.description = '' // string
-      this.newEvent.start_time = '' //16:30 string
-      this.newEvent.end_time = '' //16:30 string
-      this.newEvent.start_date = '' // ต้องใช้ dd-mm-yyyy string
-      this.newEvent.type = 'request' // string
-      this.newEvent.status = 'Waiting' // string
+      this.newEvent.description = ""; // string
+      this.newEvent.start_time = ""; //16:30 string
+      this.newEvent.end_time = ""; //16:30 string
+      this.newEvent.start_date = ""; // ต้องใช้ dd-mm-yyyy string
+      this.newEvent.type = "request"; // string
+      this.newEvent.status = "Waiting"; // string
     },
     // closeModal
     closeModal: function () {
-      this.showModal = false
+      this.showModal = false;
     },
     // OpenModal
     setModalOpen: function (obj) {
-      let grid_type = obj.view.type
+      let grid_type = obj.view.type;
       if (grid_type == "timeGridWeek" || grid_type == "Timeline") {
         // 2023-08-30T12:30:00+07:00
-        let date_at = obj.dateStr.substr(0, 10)
-        let time = obj.dateStr.substr(11, 8)
-        this.newEvent.user_refer = this.decodedToken.id
-        this.newEvent.room_refer = obj.resource._resource.id
-        this.newEvent.start_date = date_at
-        this.newEvent.start_time = time.substr(0, 5)
+        let date_at = obj.dateStr.substr(0, 10);
+        let time = obj.dateStr.substr(11, 8);
+        this.newEvent.user_refer = this.decodedToken.id;
+        this.newEvent.room_refer = obj.resource._resource.id;
+        this.newEvent.start_date = date_at;
+        this.newEvent.start_time = time.substr(0, 5);
       } else {
-        this.newEvent.start_date = obj.dateStr.substr(0, 10)
-        this.newEvent.start_time = 'none'
+        this.newEvent.start_date = obj.dateStr.substr(0, 10);
+        this.newEvent.start_time = "none";
       }
-      return
+      return;
     },
     // POST FORM
     saveAppt: function (param) {
       const token = localStorage.getItem("jwtToken");
       const headers = {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       };
       let setdate = new Date(param.start_date);
-      let day = setdate.getDate().toString().padStart(2, '0');
-      let month = (setdate.getMonth() + 1).toString().padStart(2, '0');
+      let day = setdate.getDate().toString().padStart(2, "0");
+      let month = (setdate.getMonth() + 1).toString().padStart(2, "0");
       let year = setdate.getFullYear().toString();
       let formattedDate = `${day}-${month}-${year}`;
-      param.start_date = formattedDate
+      param.start_date = formattedDate;
       let startDate = new Date(param.start_date);
       let endDate = new Date(param.start_date);
       let startTime = param.start_time.split(":");
@@ -168,16 +165,23 @@ export default {
       startDate.setHours(startTime[0], startTime[1]);
       endDate.setHours(endTime[0], endTime[1]);
       console.log("startDate : ", startDate);
-      axios.get('http://localhost:3000/api/reservations/list', headers)
+      axios
+        .get("http://localhost:3000/api/reservations/list", headers)
         .then((response) => {
           const reservations = response.data;
-          const overlappingReservation = reservations.find(reservation => {
+          const overlappingReservation = reservations.find((reservation) => {
             const reservationStartDate = new Date(reservation.start_date);
             const reservationEndDate = new Date(reservation.start_date);
             const reservationStartTime = reservation.start_time.split(":");
             const reservationEndTime = reservation.end_time.split(":");
-            reservationStartDate.setHours(reservationStartTime[0], reservationStartTime[1]);
-            reservationEndDate.setHours(reservationEndTime[0], reservationEndTime[1]);
+            reservationStartDate.setHours(
+              reservationStartTime[0],
+              reservationStartTime[1]
+            );
+            reservationEndDate.setHours(
+              reservationEndTime[0],
+              reservationEndTime[1]
+            );
 
             // เพิ่มเงื่อนไขที่ตรวจสอบว่า param.start_time มากกว่า param.end_time
             if (startDate > endDate) {
@@ -194,24 +198,29 @@ export default {
 
           if (overlappingReservation || startTime[0] > endTime[0]) {
             if (startTime[0] > endTime[0]) {
-              this.alert_time_false()
+              this.alert_time_false();
             } else {
-              this.res_alert_false()
+              this.res_alert_false();
             }
           } else {
-            axios.post('http://localhost:3000/api/reservations/add', param, headers)
+            axios
+              .post(
+                "http://localhost:3000/api/reservations/add",
+                param,
+                headers
+              )
               .then((response) => {
                 this.closeModal();
                 this.res_alert_success(param);
                 this.set_form();
               })
               .catch((error) => {
-                console.error('Error:', error);
+                console.error("Error:", error);
               });
           }
         })
         .catch((error) => {
-          console.error('Error:', error);
+          console.error("Error:", error);
         });
     },
     // saveAppt: function (param) {
@@ -247,22 +256,32 @@ export default {
     //     });
     // },
     // set newevent defauf
-
-  }
-}
+  },
+};
 </script>
 
 <template>
-  <div class="container rounded-xl mx-auto p-0 md:p-8 lg:p-10 bg-white overflow-hidden my-8">
-    <calendar @dateClick="opendateClick">
-    </calendar>
-  </div>
-  <modalCalendar v-if="showModal" :form="newEvent" @closeModal="closeModal" @saveAppt="saveAppt" />
+    <div
+      class="container rounded-xl mx-auto p-0 md:p-8 lg:p-10 bg-white overflow-hidden my-8"
+    >
+      <calendar @dateClick="opendateClick" class=""> </calendar>
+    </div>
+    <modalCalendar
+      v-if="showModal"
+      :form="newEvent"
+      @closeModal="closeModal"
+      @saveAppt="saveAppt"
+    />
 </template>
 
 <style>
+.fc-license-message {
+  display: none;
+  z-index: 0;
+}
 body {
   color: black;
   background-color: black;
 }
+
 </style>

@@ -176,111 +176,125 @@ export default {
 }
 </script>
 <template>
-  <div class="container rounded-xl mx-auto p-0 pt-0 bg-white min-h-screen my-8">
-    <p class="text-center text-3xl p-6"> My reservations </p>
-    <table class="table-auto w-full rounded-xl">
-      <thead class="bg-gray-200 bg-gray-200 text-gray-600 rounded-xl">
-        <tr>
-          <th class="rounded-tl-lg pl-5">ID</th>
-          <th>ROOM</th>
-          <th>NAME</th>
-          <th>TIME</th>
-          <th class="p-3">STATUS</th>
-          <th class="rounded-tr-lg justify-end " style="padding-left: 4%;">ACTION</th>
-        </tr>
-      </thead>
-      <tbody v-for="(items, index) in data" :key="index" class="text-center ">
-        <tr v-if="index + 1 <= this.count && index + 1 >= this.number" class="hover:bg-gray-50 ml-3">
-          <td class=" py-6 pl-5">{{ index + 1 }}</td>
-          <td>{{ items.room_refer }}</td>
-          <td>{{ items.name }}</td>
-          <td>{{ items.time }}<br> {{ items.date }} </td>
-          <td>
-            <p v-if="items.status === 'Approved'"
-              class=" rounded-xl bg-emerald-400 text-white text-center p-1 w-3/5 mx-auto"> {{ items.status }}</p>
-            <p v-else-if="items.status === 'Waiting'"
-              class=" rounded-xl bg-amber-400 text-white text-center p-1 w-3/5 mx-auto ">
-            <div class="group cursor-pointer relative inline-block  text-center">
-              {{ items.status }}
-              <div class="opacity-0 w-28 bg-black text-white text-center text-xs rounded-lg py-2 absolute z-10
-                        group-hover:opacity-100 bottom-full 
-                        -left-1/2  px-3 ">
-                {{ items.status }}
-                <svg class="absolute text-black h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255"
-                  xml:space="preserve">
-                  <polygon class="fill-current" points="0,0 127.5,127.5 255,0" />
-                </svg>
-              </div>
-            </div>
-            </p>
-            <p v-else="items.status === 'Rejected'"
-              class=" rounded-xl bg-red-400 text-white text-center p-1 w-3/5 mx-auto">
-              {{ items.status }}</p>
-          </td>
-          <td class="mr-8 ">
-            <div class="flex justify-end  mr-8">
-
-              <button data-tooltip-target="tooltip-default" type="button"
-                class="flex rounded-xl bg-indigo-400 p-1 px-3 text-white" @click="edit(items)"
-                v-if="items.status == 'Waiting'">
-                <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M8.33939 4.09832H3.09697C2.54082 4.09832 2.00745 4.31925 1.61419 4.71251C1.22093 5.10577 1 5.63914 1 6.19529V17.7286C1 18.2848 1.22093 18.8181 1.61419 19.2114C2.00745 19.6047 2.54082 19.8256 3.09697 19.8256H14.6303C15.1864 19.8256 15.7198 19.6047 16.1131 19.2114C16.5063 18.8181 16.7273 18.2848 16.7273 17.7286V12.4862M15.2447 2.61577C15.4381 2.41548 15.6695 2.25573 15.9254 2.14583C16.1812 2.03593 16.4564 1.97808 16.7348 1.97567C17.0132 1.97325 17.2894 2.0263 17.5471 2.13174C17.8048 2.23718 18.0389 2.39288 18.2358 2.58977C18.4327 2.78666 18.5884 3.02079 18.6938 3.2785C18.7993 3.53621 18.8523 3.81234 18.8499 4.09078C18.8475 4.36921 18.7897 4.64437 18.6798 4.90021C18.5699 5.15605 18.4101 5.38744 18.2098 5.58088L9.20753 14.5832H6.24242V11.6181L15.2447 2.61577Z"
-                    stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                <p class="ml-2"> Edits </p>
-              </button>
-
-              <button data-tooltip-target="tooltip-default" type="button"
-                class="flex rounded-xl bg-red-400 p-1 px-3 text-white ml-2" @click="delete_req(items)">
-                <svg class="my-auto" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M8 12L10 10M10 10L12 8M10 10L8 8M10 10L12 12M19 10C19 11.1819 18.7672 12.3522 18.3149 13.4442C17.8626 14.5361 17.1997 15.5282 16.364 16.364C15.5282 17.1997 14.5361 17.8626 13.4442 18.3149C12.3522 18.7672 11.1819 19 10 19C8.8181 19 7.64778 18.7672 6.55585 18.3149C5.46392 17.8626 4.47177 17.1997 3.63604 16.364C2.80031 15.5282 2.13738 14.5361 1.68508 13.4442C1.23279 12.3522 1 11.1819 1 10C1 7.61305 1.94821 5.32387 3.63604 3.63604C5.32387 1.94821 7.61305 1 10 1C12.3869 1 14.6761 1.94821 16.364 3.63604C18.0518 5.32387 19 7.61305 19 10Z"
-                    stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                <p class="ml-2"> Delete </p>
-              </button>
-
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div v-if="max_obj != 0" class="flex w-full p-4 pl-8 ">
-      <p class="flex-none text-center"> Showing 1 to 1 of 10 results </p>
-      <div class="flex-1 text-end ml-12">
-
-        <div class=" p-3">
-          <button @click="prevent_count()" :class="this.count <= 10 ? 'opacity-25' : ''" :disabled="this.count <= 10"
-            class=" rounded-xl  p-3 text-red-700">
-            <svg width="8" height="13" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M5.79294 0.792969L0.0859375 6.49997L5.79294 12.207L7.20694 10.793L2.91394 6.49997L7.20694 2.20697L5.79294 0.792969Z"
-                fill="#828282" />
-            </svg>
-
-          </button>
-          {{ this.count / 10 }}
-          <button @click="next_count()" :class="this.count >= this.max_obj ? 'opacity-25' : ''"
-            :disabled="this.count >= this.max_obj" class=" rounded-xl p-3"><svg width="8" height="12" viewBox="0 0 8 12"
-              fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1.414 11.414L7.121 5.707L1.414 0L0 1.414L4.293 5.707L0 10L1.414 11.414Z" fill="#828282" />
-            </svg>
-          </button>
-        </div>
-
-      </div>
-    </div>
-    <div v-if="max_obj == 0" class="flex w-full p-4 pl-8 text-center w-full py-14">
-      <p class="text-center w-full text-">You haven't logged in or made any reservations yet.</p>
-    </div>
+<div class="media">
+  <div class="flex items-center max-w-xl justify-center">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-yellow-300">
+      <path fill-rule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5zM18 1.5a.75.75 0 01.728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 010 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 01-1.456 0l-.258-1.036a2.625 2.625 0 00-1.91-1.91l-1.036-.258a.75.75 0 010-1.456l1.036-.258a2.625 2.625 0 001.91-1.91l.258-1.036A.75.75 0 0118 1.5zM16.5 15a.75.75 0 01.712.513l.394 1.183c.15.447.5.799.948.948l1.183.395a.75.75 0 010 1.422l-1.183.395c-.447.15-.799.5-.948.948l-.395 1.183a.75.75 0 01-1.422 0l-.395-1.183a1.5 1.5 0 00-.948-.948l-1.183-.395a.75.75 0 010-1.422l1.183-.395c.447-.15.799-.5.948-.948l.395-1.183A.75.75 0 0116.5 15z" clip-rule="evenodd" />
+    </svg>
+    <p class="text-start text-white text-3xl md:mx-0 p-2 "> My reservations </p>
   </div>
+  <div class="container md:w-10/12 bg-white my-8 mx-auto rounded-xl">
+   
+   <div class="overflow-x-auto rounded-xl">
+     <table class="table-auto w-full ">
+       <thead class="bg-gray-200 text-gray-600 rounded-xl">
+         <tr>
+           <th class="px-4 pl-2">ID</th>
+           <th class="px-4 pl-2">ROOM</th>
+           <th class="px-4 pl-2">NAME</th>
+           <th class="px-4 pl-2">TIME</th>
+           <th class="py-3 px-4 pl-2">STATUS</th>
+           <th class="px-4 pl-2" style="padding-left: 4%;">ACTION</th>
+         </tr>
+       </thead>
+
+     <tbody v-for="(items, index) in data" :key="index" class="text-center ">
+       <tr v-if="index + 1 <= this.count && index + 1 >= this.number" class="hover:bg-gray-50 ml-3 text-slate-800 border-b-2 ml-3 ">
+         <td class="px-4 py-5">{{ index + 1 }}</td>
+         <td class="px-4">{{ items.room_refer }}</td>
+         <td class="px-4">{{ items.name }}</td>
+         <td class="px-4">{{ items.time }}<br> {{ items.date }} </td>
+         <td class="px-4">
+             <p v-if="items.status === 'Approved'"
+               class=" rounded-xl bg-emerald-400 text-white text-center p-1 md:w-3/5 mx-auto text-sm"> {{ items.status }}</p>
+             <p v-else-if="items.status === 'Waiting'"
+               class=" rounded-xl bg-amber-400 text-white text-center p-1 md:w-3/5 mx-auto text-sm">
+               <div class="group cursor-pointer relative inline-block  text-center">
+                   {{ items.status }}
+                 <div class="opacity-0 w-28 bg-black text-white text-center text-xs rounded-lg py-2 absolute z-10
+                       group-hover:opacity-100 bottom-full 
+                       -left-1/2  px-3 ">
+                       {{ items.status }}
+                   <svg class="absolute text-black h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255"
+                     xml:space="preserve">
+                     <polygon class="fill-current" points="0,0 127.5,127.5 255,0" />
+                   </svg>
+                 </div>
+               </div>
+             </p>
+             <p v-else="items.status === 'Rejected'"
+               class=" rounded-xl bg-red-400 text-white text-center p-1 md:w-3/5 mx-auto text-sm">
+               {{ items.status }}</p>
+           </td>
+           <td class="mr-4">
+             <div class="flex  items-center justify-center ">
+               <button data-tooltip-target="tooltip-default" type="button"
+                 class="flex rounded-md bg-indigo-400 p-1 px-3 text-white  hover:bg-indigo-600" @click="edit(items)"
+                 v-if="items.status == 'Waiting'">
+                 <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                   <path
+                   d="M8.33939 4.09832H3.09697C2.54082 4.09832 2.00745 4.31925 1.61419 4.71251C1.22093 5.10577 1 5.63914 1 6.19529V17.7286C1 18.2848 1.22093 18.8181 1.61419 19.2114C2.00745 19.6047 2.54082 19.8256 3.09697 19.8256H14.6303C15.1864 19.8256 15.7198 19.6047 16.1131 19.2114C16.5063 18.8181 16.7273 18.2848 16.7273 17.7286V12.4862M15.2447 2.61577C15.4381 2.41548 15.6695 2.25573 15.9254 2.14583C16.1812 2.03593 16.4564 1.97808 16.7348 1.97567C17.0132 1.97325 17.2894 2.0263 17.5471 2.13174C17.8048 2.23718 18.0389 2.39288 18.2358 2.58977C18.4327 2.78666 18.5884 3.02079 18.6938 3.2785C18.7993 3.53621 18.8523 3.81234 18.8499 4.09078C18.8475 4.36921 18.7897 4.64437 18.6798 4.90021C18.5699 5.15605 18.4101 5.38744 18.2098 5.58088L9.20753 14.5832H6.24242V11.6181L15.2447 2.61577Z"
+                   stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                 </svg>
+                 <p class="ml-2"> Edits </p>
+               </button>
+
+               <button data-tooltip-target="tooltip-default" type="button"
+                 class="flex rounded-md bg-red-400 p-1 px-3 text-white ml-2 hover:bg-red-600" @click="delete_req(items)">
+                 <svg class="my-auto" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                   xmlns="http://www.w3.org/2000/svg">
+                  <path
+                     d="M8 12L10 10M10 10L12 8M10 10L8 8M10 10L12 12M19 10C19 11.1819 18.7672 12.3522 18.3149 13.4442C17.8626 14.5361 17.1997 15.5282 16.364 16.364C15.5282 17.1997 14.5361 17.8626 13.4442 18.3149C12.3522 18.7672 11.1819 19 10 19C8.8181 19 7.64778 18.7672 6.55585 18.3149C5.46392 17.8626 4.47177 17.1997 3.63604 16.364C2.80031 15.5282 2.13738 14.5361 1.68508 13.4442C1.23279 12.3522 1 11.1819 1 10C1 7.61305 1.94821 5.32387 3.63604 3.63604C5.32387 1.94821 7.61305 1 10 1C12.3869 1 14.6761 1.94821 16.364 3.63604C18.0518 5.32387 19 7.61305 19 10Z"
+                     stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                 </svg>
+                 <p class="ml-2"> Delete </p>
+               </button>
+
+             </div>
+           </td>
+         </tr>
+       </tbody>
+     </table>
+   </div>
+   <div v-if="max_obj != 0" class="flex w-full p-4 pl-8 ">
+     <p class="flex-none text-center"> Showing 1 to 1 of 10 results </p>
+     <div class="flex-1 text-end ml-12">
+
+       <div class="flex justify-end items-center ">
+         <button @click="prevent_count()" :class="this.count <= 10 ? 'opacity-25' : ''" :disabled="this.count <= 10"
+           class=" rounded-xl  px-3  text-red-700">
+           <svg width="8" height="13" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+             <path
+               d="M5.79294 0.792969L0.0859375 6.49997L5.79294 12.207L7.20694 10.793L2.91394 6.49997L7.20694 2.20697L5.79294 0.792969Z"
+               fill="#828282" />
+           </svg>
+
+         </button>
+         {{ this.count / 10 }}
+         <button @click="next_count()" :class="this.count >= this.max_obj ? 'opacity-25' : ''"
+           :disabled="this.count >= this.max_obj" class=" rounded-xl px-3"><svg width="8" height="12" viewBox="0 0 8 12"
+             fill="none" xmlns="http://www.w3.org/2000/svg">
+             <path d="M1.414 11.414L7.121 5.707L1.414 0L0 1.414L4.293 5.707L0 10L1.414 11.414Z" fill="#828282" />
+           </svg>
+         </button>
+       </div>
+
+     </div>
+   </div>
+   <div v-if="max_obj == 0" class="flex w-full p-4 pl-8 text-center w-full py-14">
+     <p class="text-center w-full text-">You haven't logged in or made any reservations yet.</p>
+   </div>
+ </div>
+</div>
   <editmodal v-if="showEditModal" :form="edit_new" @closeModal="closeModal" @saveEdit="saveEdit" />
 </template>
 <style>
 body {
+  height: 1080px;
   color: black;
   background-color: black;
+}
+.media{
+  height: 800px;
 }
 </style>
