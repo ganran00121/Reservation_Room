@@ -57,15 +57,30 @@ export default {
   },
   methods: {
     // switc alert
-    res_alert: function (data) {
+    res_alert_success: function () {
+      Swal.fire({
+        title: 'Good job!',
+        text: "Reservation suscess.",
+        icon: 'success',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'OK'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        }
+      })
+    },
+    res_alert_false: function () {
       Swal.fire(
-        'Reservation suscess!',
-        'success'
+        'Reservation false',
+        'Please double-check the time, as there may already be a booking during this period!',
+        'warning'
       )
     },
     // calendar @click
     opendateClick: function (arg) {
-      console.log("(this.log_in : ",this.log_in);
       if (this.log_in) {
         this.showModal = true
         this.setModalOpen(arg)
@@ -80,14 +95,36 @@ export default {
       }
 
     },
+    set_form: function () {
 
+      this.newEvent.user_refer = null // int  user_id
+      this.newEvent.admin_refer = null // int  admin คนไหนกด
+      this.newEvent.room_refer = null // string room_id
+      // course
+      this.newEvent.course_id = null //null เพราะใช้กับ course
+      this.newEvent.course_section = null //null เพราะใช้กับ course
+      this.newEvent.course_name = null //null เพราะใช้กับ course
+      this.newEvent.course_type = null //null เพราะใช้กับ course
+      this.newEvent.course_instructor = null, //null เพราะใช้กับ course
+        this.newEvent.course_instructor_email = null //null เพราะใช้กับ course
+      this.newEvent.day_of_week = null //null เพราะใช้กับ courseฃ
+      this.newEvent.end_date = null // ให้มันเป็น null ถ้าจะ add ธรรมดา string
+      // end course
+
+      this.newEvent.description = '' // string
+      this.newEvent.start_time = '' //16:30 string
+      this.newEvent.end_time = '' //16:30 string
+      this.newEvent.start_date = '' // ต้องใช้ dd-mm-yyyy string
+      this.newEvent.type = 'request' // string
+      this.newEvent.status = 'Waiting' // string
+    },
     // closeModal
     closeModal: function () {
       this.showModal = false
     },
     // OpenModal
     setModalOpen: function (obj) {
-
+      console.log();
       let grid_type = obj.view.type
       if (grid_type == "timeGridWeek" || grid_type == "Timeline") {
         // 2023-08-30T12:30:00+07:00
@@ -98,7 +135,6 @@ export default {
         this.newEvent.room_refer = obj.resource._resource.id
         this.newEvent.start_date = date_at
         this.newEvent.start_time = time.substr(0, 5)
-        console.log(this.newEvent.start_date);
       } else {
         this.newEvent.start_date = obj.dateStr.substr(0, 10)
         this.newEvent.start_time = 'none'
@@ -113,39 +149,86 @@ export default {
           Authorization: `Bearer ${token}`
         }
       };
-      console.log(param); // dd/mm/yyyy  yyyy/mm/dd
-      let startDate = new Date(param.start_date);
-      let day = startDate.getDate().toString().padStart(2, '0');
-      let month = (startDate.getMonth() + 1).toString().padStart(2, '0');
-      let year = startDate.getFullYear().toString();
-      console.log(`day : ${day}-${month}-${year}`);
+      let setdate = new Date(param.start_date);
+      let day = setdate.getDate().toString().padStart(2, '0');
+      let month = (setdate.getMonth() + 1).toString().padStart(2, '0');
+      let year = setdate.getFullYear().toString();
       let formattedDate = `${day}-${month}-${year}`;
       param.start_date = formattedDate
-      console.log("log param  :", param);
-      axios
-        .post('http://localhost:3000/api/reservations/add', param, headers)
+      let startDate = new Date(param.start_date);
+      let endDate = new Date(param.start_date);
+      let startTime = param.start_time.split(":");
+      let endTime = param.end_time.split(":");
+
+      startDate.setHours(startTime[0], startTime[1]);
+      endDate.setHours(endTime[0], endTime[1]);
+
+      axios.get('http://localhost:3000/api/reservations/list', headers)
         .then((response) => {
-          console.log('POST request successful:', response.data);
-          this.closeModal()
-          this.res_alert(param)
-          this.set_Newevent()
-          // setTimeout(() => {
-          //   window.location.reload();
-          // }, 1000);
+          const reservations = response.data;
+          const overlappingReservation = reservations.find(reservation => {
+            const reservationStartDate = new Date(reservation.start_date);
+            const reservationEndDate = new Date(reservation.start_date);
+            const reservationStartTime = reservation.start_time.split(":");
+            const reservationEndTime = reservation.end_time.split(":");
+            reservationStartDate.setHours(reservationStartTime[0], reservationStartTime[1]);
+            reservationEndDate.setHours(reservationEndTime[0], reservationEndTime[1]);
+            return (startDate < reservationEndDate && endDate > reservationStartDate && reservation.room_refer == param.room_refer);
+          });
+
+          if (overlappingReservation) {
+            this.res_alert_false()
+          } else {
+            axios.post('http://localhost:3000/api/reservations/add', param, headers)
+              .then((response) => {
+                console.log('POST request successful:', response.data);
+                this.closeModal();
+                this.res_alert_success(param);
+                this.set_form();
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+              });
+          }
         })
         .catch((error) => {
           console.error('Error:', error);
         });
     },
+    // saveAppt: function (param) {
+    //   const token = localStorage.getItem("jwtToken");
+    //   const headers = {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`
+    //     }
+    //   };
+
+    //   console.log(param); // dd/mm/yyyy  yyyy/mm/dd
+    //   let startDate = new Date(param.start_date);
+    //   let day = startDate.getDate().toString().padStart(2, '0');
+    //   let month = (startDate.getMonth() + 1).toString().padStart(2, '0');
+    //   let year = startDate.getFullYear().toString();
+    //   console.log(`day : ${day}-${month}-${year}`);
+    //   let formattedDate = `${day}-${month}-${year}`;
+    //   param.start_date = formattedDate
+    //   console.log("log param  :", param);
+    //   axios
+    //     .post('http://localhost:3000/api/reservations/add', param, headers)
+    //     .then((response) => {
+    //       console.log('POST request successful:', response.data);
+    //       this.closeModal()
+    //       this.res_alert(param)
+    //       this.set_Newevent()
+    //       // setTimeout(() => {
+    //       //   window.location.reload();
+    //       // }, 1000);
+    //     })
+    //     .catch((error) => {
+    //       console.error('Error:', error);
+    //     });
+    // },
     // set newevent defauf
-    set_Newevent: function () {
-      this.newEvent.room_id = 0
-      this.newEvent.date = ''
-      this.newEvent.instructor = 'Waraporn Insom'
-      this.newEvent.time_start = ''
-      this.newEvent.time_end = ''
-      this.newEvent.status = 'Waiting'
-    },
+
   }
 }
 </script>
