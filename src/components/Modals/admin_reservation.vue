@@ -347,4 +347,9 @@ export default {
 .max-h-select {
   max-height: 300px;
 }
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none; /* Safari */
+  margin: 0; /* Removes the default margin */
+}
 </style>
