@@ -13,7 +13,7 @@
         style=" position: fixed;
 ">
         <div class="flex items-center justify-center mt-8">
-          <router-link class="flex items-center" to="/Home">
+          <router-link class="flex items-center" to="/">
             <img
               src="data:image/png;base64,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"
               class="rounded-3xl w-14 my-auto py-auto" :class="isOpen ? 'w-24 h-24' : ''" alt="" />
@@ -41,7 +41,7 @@
           </router-link>
 
           <div>
-            <router-link
+            <router-link v-if="admin == true"
               class="px-4 flex items-center cursor-pointer py-3 mt-2 duration-200 rounded text-sm font-medium border-gray-900  hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100"
               :class="isActive_Course ? 'text-sky-400 ' : 'text-gray-500'" to="/Course"
               @click="Active_funtions('Course')">
@@ -56,7 +56,7 @@
               <span v-if="isOpen" class="mx-4 tracking-wide font-medium">Add Course</span>
             </router-link>
             <!-- v-if="admin != null" for 59 -->
-            <router-link
+            <router-link v-if="admin == true"
               class="px-4 flex items-center cursor-pointer py-3 mt-2 duration-200 rounded text-sm font-medium border-gray-900  hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100"
               :class="isActive_admin ? 'text-sky-400 ' : 'text-gray-500'" to="/admin" @click="Active_funtions('admin')">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -70,7 +70,7 @@
 
               <span v-if="isOpen" class="mx-4 tracking-wide font-medium">Nofitication A</span>
             </router-link>
-            <router-link v-if="admin == null"
+            <router-link v-if="admin == false"
               class="px-4 flex items-center cursor-pointer py-3 mt-2 duration-200 rounded text-sm font-medium border-gray-900  hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100"
               :class="isActive_My_reservations ? 'text-sky-400 ' : 'text-gray-500'" to="/My_reservations"
               @click="Active_funtions('My_reservations')">
@@ -83,7 +83,7 @@
 
               <span v-if="isOpen" class="mx-4 tracking-wide font-medium">Nofitication U</span>
             </router-link>
-            <router-link v-if="name == null"
+            <router-link v-if="email_user == '' || email_user == null"
               class="px-4 flex items-center cursor-pointer py-3 mt-2 duration-200 rounded text-sm font-medium border-gray-900  hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100"
               :class="isActive_login ? 'text-sky-400 ' : 'text-gray-500'" to="/login" @click="Active_funtions('login')">
               <svg class="w-5 h-5" :class="isOpen ? '' : 'mx-auto'" fill="currentColor" viewBox="0 0 20 20">
@@ -94,8 +94,8 @@
 
               <span v-if="isOpen" class="mx-4 tracking-wide font-medium">Sign in</span>
             </router-link>
-            <router-link @click="logout"
-              class="px-4 flex items-center cursor-pointer py-3 mt-2 duration-200 rounded text-sm font-medium border-gray-900  hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100"
+            <router-link @click="logout"  v-if="email_user != ''"
+              class="px-4 flex items-center cursor-pointer py-3 mt-2 duration-200 rounded text-sm font-medium border-gray-900  hover:bg-red-500 hover:bg-opacity-50 hover:text-gray-100"
               :class="isActive_login ? 'text-sky-400 ' : 'text-gray-500'" to="/login">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-6 h-6" :class="isOpen ? '' : 'mx-auto'">
@@ -144,7 +144,7 @@
 
               <div v-show="dropdownOpen" class="fixed block sm:hidden inset-0 z-10 w-full h-full"
                 @click="dropdownOpen = false"></div>
-
+<!-- 
               <transition enter-active-class="transition duration-150 ease-out transform"
                 enter-from-class="scale-95 opacity-0" enter-to-class="scale-100 opacity-100"
                 leave-active-class="transition duration-150 ease-in transform" leave-from-class="scale-100 opacity-100"
@@ -156,7 +156,7 @@
                   <a href="#"
                     class="block px-4 py-3 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Products</a>
                 </div>
-              </transition>
+              </transition> -->
             </div>
             <div class="hidden sm:block relative ml-3">
               <p class="flex gap-2  ">
@@ -173,18 +173,11 @@
               </div>
               <p v-if="token_user" class="text-white p-1 px-2 cursor-pointer rounded-xl hover:bg-white text-xs hover:text-black transition 
                  ease-in-out duration-100 ">
-                email
+                {{ email_user }}
+              </p>
               </p>
 
-              <svg v-if="token_user" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                class="h-6 w-4 transform cursor-pointer my-auto text-white mr-12 transition-transform duration-200 ease-in-out"
-                :class="dropdownOpen ? 'rotate-180' : 'rotate-0'" @click="dropdownOpen = !dropdownOpen">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-              </p>
-              <div v-show="dropdownOpen" class="fixed inset-0 z-10 w-full h-full" @click="dropdownOpen = false"></div>
-
-              <transition enter-active-class="transition duration-150 ease-out transform"
+              <!-- <transition enter-active-class="transition duration-150 ease-out transform"
                 enter-from-class="scale-95 opacity-0" enter-to-class="scale-100 opacity-100"
                 leave-active-class="transition duration-150 ease-in transform" leave-from-class="scale-100 opacity-100"
                 leave-to-class="scale-95 opacity-0">
@@ -194,7 +187,7 @@
                   <a href="#"
                     class="block px-4 py-3 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Products</a>
                 </div>
-              </transition>
+              </transition> -->
             </div>
           </div>
         </header>
@@ -205,7 +198,7 @@
       </main>
     </div>
   </div>
-  <footer class="relative py-10 flex flex-col items-center bg-cyan-900 overflow-hidden md:py-40">
+  <footer class="relative py-10 flex flex-col items-center bg-[#020314] overflow-hidden md:py-40">
     <div class="relative z-[1] container m-auto px-6 md:px-12">
       <div class="m-auto md:w-10/12 lg:w-8/12 xl:w-6/12">
         <div class="flex flex-wrap items-center justify-between md:flex-nowrap">
@@ -263,7 +256,9 @@
               <a href="https://www.cs.science.cmu.ac.th/"
                 class="flex items-center space-x-3 hover:text-sky-400 transition">
 
-                <span class="uppercase "> Computer Science CMU</span>
+                <img
+              src="data:image/png;base64,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"
+              class="rounded-3xl w-14 my-auto py-auto" :class="isOpen ? 'w-24 h-24' : ''" alt="" /><span class="uppercase "> Computer Science CMU</span>
               </a>
             </span>
             <span class="block text-gray-300 py-3">Department of Computer Science<br> Chiang Mai University,
@@ -311,12 +306,16 @@ import jwt_decode from "jwt-decode";
 export default {
   setup() {
     const name = ref(null)
+    const admin = ref(false)
     // navbar larf active
     const isActive_Dashboard = ref(false);
     const isActive_Course = ref(false);
     const isActive_admin = ref(false);
     const isActive_My_reservations = ref(false);
     const isActive_login = ref(false);
+    const token_user = ref(false);
+    const decodedToken = ref({});
+    const email_user = ref('');
     const Active_funtions = (info) => {
       if (info == 'Dashboard') {
         isActive_Dashboard.value = true
@@ -390,18 +389,18 @@ export default {
       console.log("currentRoute : ", currentRoute.value);
     });
     // get token
-    const token_user = ref(false);
-    const decodedToken = ref({});
-    const email_user = ref('');
     onMounted(() => {
-
       const token = localStorage.getItem("jwtToken");
       if (token) {
         token_user.value = true
         decodedToken.value = jwt_decode(token);
         name.value = decodedToken.first_name
-        console.log("email_user :::  ",email_user);
-        console.log("decodedToken : ", decodedToken.value.email);
+        email_user.value = decodedToken.value.email
+        if(decodedToken.role == 'admin') {
+          admin.value == true
+        }
+        console.log("email_user :::  ",typeof email_user );
+        console.log("decodedToken : ", email_user.value);
       } else {
         token_user.value = false
       }
@@ -435,6 +434,7 @@ export default {
       logout,
       dropdownOpen,
       name,
+      admin,
       isOpen,
       show,
     };

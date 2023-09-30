@@ -204,23 +204,24 @@ export default {
          <td class="px-4">{{ items.room_refer }}</td>
          <td class="px-4">{{ items.name }}</td>
          <td class="px-4">{{ items.time }}<br> {{ items.date }} </td>
-         <td class="px-4">
+         <td class="px-4 cursor-default" >
              <p v-if="items.status === 'Approved'"
                class=" rounded-xl bg-emerald-400 text-white text-center p-1 md:w-3/5 mx-auto text-sm"> {{ items.status }}</p>
              <p v-else-if="items.status === 'Waiting'"
                class=" rounded-xl bg-amber-400 text-white text-center p-1 md:w-3/5 mx-auto text-sm">
-               <div class="group cursor-pointer relative inline-block  text-center">
+               {{ items.status }}
+               <!-- <div class="group cursor-pointer relative inline-block  text-center">
                    {{ items.status }}
                  <div class="opacity-0 w-28 bg-black text-white text-center text-xs rounded-lg py-2 absolute z-10
                        group-hover:opacity-100 bottom-full 
                        -left-1/2  px-3 ">
-                       {{ items.status }}
+                       
                    <svg class="absolute text-black h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255"
                      xml:space="preserve">
                      <polygon class="fill-current" points="0,0 127.5,127.5 255,0" />
                    </svg>
                  </div>
-               </div>
+               </div> -->
              </p>
              <p v-else="items.status === 'Rejected'"
                class=" rounded-xl bg-red-400 text-white text-center p-1 md:w-3/5 mx-auto text-sm">

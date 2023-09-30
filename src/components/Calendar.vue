@@ -68,11 +68,14 @@ export default defineComponent({
                   resourceIds: [reservation.room_refer],
                   description: reservation.description,
                   show_date: show_time,
+                  new_title: reservation.description,
+                  new_detail: null,
                   show_instructor: reservation.course_instructor,
                   status: reservation.status,
                   start: reservation.start_date + "T" + reservation.start_time,
                   end: reservation.start_date + "T" + reservation.end_time,
                   time: reservation.start_time + "-" + reservation.end_time,
+                  type: reservation.type,
                   email: users[user.college_id].email,
                   phone: users[user.college_id].phone,
                   role: users[user.college_id].role,
@@ -104,6 +107,9 @@ export default defineComponent({
                   name: reservation.course_instructor,
                   title: reservation.room_refer,
                   resourceIds: [reservation.room_refer],
+                  new_title: reservation.course_name,
+                  new_detail: reservation.course_id + "(sec.00" + reservation.course_section + ")",
+                  email: reservation.course_instructor_email,
                   groupId: "redEvents",
                   show_date: show_time,
                   start: reservation.start_date,
@@ -111,6 +117,7 @@ export default defineComponent({
                   show_instructor: reservation.course_instructor,
                   status: reservation.status,
                   description: reservation.description,
+                  type: reservation.type,
                   time: reservation.start_time + "-" + reservation.end_time,
                   repeat: {
                     frequency: "weekly",
@@ -242,7 +249,7 @@ export default defineComponent({
     };
     //DATE CLICK
     const handleDateClick = function (clickinfo) {
-      console.log(clickinfo);
+      console.log("handleDateClick : ", clickinfo);
       if (clickinfo.view.type === "Timeline") {
         context.emit("dateClick", clickinfo);
       }
@@ -312,23 +319,43 @@ export default defineComponent({
 
 <template>
   <FullCalendar :options="calendarOptions">
-    <template v-slot:eventContent="arg" class="h-16 overflow-auto">
-      <div
-        class="w-full grid group cursor-pointer relative inline-block text-center"
-      >
-        <div class="w-full flex" @click="openDetail(arg)">
+    <template v-slot:eventContent="arg" class="h-16">
+      <div class="w-full grid group cursor-pointer relative inline-block text-center">
+        <div class="w-full flex p-" @click="openDetail(arg)">
           <div class="w-100 mx-auto grid">
+            <div class="flex">
+              <b class="mx-auto flex font-semibold ">
+
+                <svg v-if="arg.event.extendedProps.type !== 'course' && arg.event.extendedProps.status == 'Approved'"
+                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="w-6 h-6 mr-1">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+
+                <svg v-if="arg.event.extendedProps.type !== 'course' && arg.event.extendedProps.status == 'Waiting'" xmlns="http://www.w3.org/2000/svg" fill="none"
+                  viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-1">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+
+                <b v-if="arg.event.extendedProps.type !== 'course'"  class="font-semibold my-auto">{{ arg.event.extendedProps.status }}</b></b>
+            </div>
             <div class="grid">
-              <b class="mx-auto">{{ arg.event.extendedProps.description }}</b>
+              <b v-if="arg.event.extendedProps.type == 'course' " class="mx-auto font-semibold p-1">{{ arg.event.extendedProps.new_title }}</b>
+              <b v-if="arg.event.extendedProps.type !== 'course'" class="mx-auto font-medium">{{ arg.event.extendedProps.new_title }}</b>
+            </div>
+            <div class="grid">
+              <b class="mx-auto font-medium">{{ arg.event.extendedProps.new_detail }}</b>
             </div>
             <div class="flex">
-              <b class="">{{ arg.event.extendedProps.time }}</b>
-              <b class="ml-3" v-if="arg.view.type !== 'Timeline'">{{
+              <b class="font-medium">{{ arg.event.extendedProps.time }}</b>
+              <b class="ml-3 font-medium" v-if="arg.view.type !== 'Timeline'">{{
                 arg.event.title
               }}</b>
             </div>
           </div>
-          <div
+          <!-- <div
             class="opacity-0 w-full hidden bg-gray-400 text-white text-center text-xs rounded-lg py-3 absolute z-10 group-hover:block opacity-100 bottom-full left-auto px-3"
           >
             {{ arg.event.extendedProps.name }}
@@ -341,16 +368,12 @@ export default defineComponent({
             >
               <polygon class="fill-current" points="0,0 127.5,127.5 255,0" />
             </svg>
-          </div>
+          </div> -->
         </div>
       </div>
     </template>
   </FullCalendar>
-  <compoDetail
-    v-if="showDetail"
-    :setdetail="newEvent"
-    @closeDetail="closeDetail"
-  />
+  <compoDetail v-if="showDetail" :setdetail="newEvent" @closeDetail="closeDetail" />
 </template>
 
 <style>
@@ -359,23 +382,30 @@ body {
   background-color: black;
 }
 
+/* rgb(30 41 59) */
+b {
+  color: rgb(30 41 59);
+  font-weight: 500;
+}
+
 .custom-event-color {
-  color: black;
-  background-color: rgb(45, 115, 245);
+  background-color: #6366f1;
   border: none;
   border-radius: 7px;
 }
 
 .custom-event-color-status-wait {
-  color: black;
-  background-color: rgb(255, 196, 0);
+  color: rgb(30 41 59);
+  background-color: #fbbf24;
   border: none;
   border-radius: 7px;
 }
 
+/* #f97316  #3b82f6 */
 .custom-event-color-status-approve {
   color: black;
-  background-color: rgb(20, 211, 45);
+  background-color: #6cb2eb;
+  font-weight: 300 !important;
   border: none;
   border-radius: 7px;
 }
@@ -384,9 +414,4 @@ body {
   background-color: aqua;
   border: none;
   border-radius: 7px;
-}
-
-.custom-event-color:hover {
-  background-color: rgba(2, 115, 22);
-}
-</style>
+}</style>

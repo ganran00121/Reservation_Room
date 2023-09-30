@@ -210,6 +210,11 @@ export default {
 </script>
 
 <style scoped>
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none; /* Safari */
+  margin: 0; /* Removes the default margin */
+}
 .top-100 {
   top: 100%;
 }

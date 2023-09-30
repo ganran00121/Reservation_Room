@@ -280,7 +280,7 @@ export default {
   z-index: 0;
 }
 body {
-  color: black;
+  color: rgb(30 41 59);
   background-color: black;
 }
 

@@ -134,7 +134,7 @@ export default {
               closeModal_add();
               setTimeout(() => {
                 window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-              }, 1000);
+              }, 10);
             })
             .catch((error) => {
               console.error("Error:", error);
@@ -363,14 +363,14 @@ export default {
     @closeModal="closeModal_edit"
     @saveAppt="saveAppt_edit"
   />
-  <div class="media">
+  <div class="min-h-screen">
     <div class="container md:w-10/12 bg-white my-8 mx-auto rounded-xl">
-      <p class="text-center text-3xl p-6">Add course</p>
+      <p class="text-center text-3xl p-6 ">Add course</p>
       <div class="m-5">
         <div class="p-5 border-b-2">
           <button
             @click="opendateClick"
-            class="text-center w-full bg-blue-500 rounded-lg p-5 text-white flex justify-center"
+            class="text-center w-full bg-blue-500 rounded-lg p-5 text-white flex justify-center  hover:opacity-90 "
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
