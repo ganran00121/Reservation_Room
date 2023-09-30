@@ -70,6 +70,19 @@ button.ghost-up {
   background-color: transparent;
   border-color: #ffffff;
 }
+button.ghost-up-sm {
+  margin: 5px;
+  background-color: transparent;
+  border-color: #3B82F6;
+  color: #3B82F6;
+}
+button.ghost-in-sm {
+  padding: 12px 45px;
+  margin: 4px;
+  background-color: transparent;
+  border-color: #3B82F6;
+  color: #3B82F6;
+}
 button.ghost-up:hover {
   background-color: #ffffff;
   border-color:#738AF7;
@@ -232,4 +245,22 @@ input {
   margin: 0 5px;
   height: 40px;
   width: 40px;
+}
+@media (max-width: 767px) {
+  form p {
+    margin: 0%;
+  }
+  .overlay-container{
+    transform: translateX(-50%);
+    display: none; 
+  }
+  .sign-in-container{
+    width: 100%;
+  }
+  .sign-up-container{
+    width: 100%;
+  }
+  .container.right-panel-active .sign-up-container{
+    transform: translateX(0%);
+  }
 }

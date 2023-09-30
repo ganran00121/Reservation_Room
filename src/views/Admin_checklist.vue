@@ -197,177 +197,179 @@ export default {
 </script>
 
 <template>
-  <div class="flex items-center max-w-xl justify-center">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      class="w-6 h-6 text-yellow-300"
-    >
-      <path
-        fill-rule="evenodd"
-        d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5zM18 1.5a.75.75 0 01.728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 010 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 01-1.456 0l-.258-1.036a2.625 2.625 0 00-1.91-1.91l-1.036-.258a.75.75 0 010-1.456l1.036-.258a2.625 2.625 0 001.91-1.91l.258-1.036A.75.75 0 0118 1.5zM16.5 15a.75.75 0 01.712.513l.394 1.183c.15.447.5.799.948.948l1.183.395a.75.75 0 010 1.422l-1.183.395c-.447.15-.799.5-.948.948l-.395 1.183a.75.75 0 01-1.422 0l-.395-1.183a1.5 1.5 0 00-.948-.948l-1.183-.395a.75.75 0 010-1.422l1.183-.395c.447-.15.799-.5.948-.948l.395-1.183A.75.75 0 0116.5 15z"
-        clip-rule="evenodd"
-      />
-    </svg>
-    <p class="text-center text-3xl p-2 text-white">Check lsit</p>
-  </div>
-  <div class="container md:w-10/12 bg-white my-8 mx-auto rounded-xl">
-    <div class="overflow-x-auto rounded-xl">
-      <table class="table-auto w-full rounded-xl table-container">
-        <thead class="bg-gray-200 text-gray-600 rounded-xl">
-          <tr>
-            <th class="px-4 pl-2">ID</th>
-            <th class="px-4 pl-2">ROOM</th>
-            <th class="px-4 pl-2">NAME</th>
-            <th class="px-4 pl-2">TIME</th>
-            <th class="px-4 pl-2 py-3">STATUS</th>
-            <th class="px-4 pl-2" style="padding-left: 4%">ACTION</th>
-          </tr>
-        </thead>
-        <tbody
-          v-for="(items, index) in data"
-          :key="index"
-          class="text-center divide-y"
-        >
-          <tr
-            v-if="index + 1 <= this.count && index + 1 >= this.number"
-            class="hover:bg-gray-50 border-b-2 ml-3 text-slate-800"
-            @click="setModalOpen"
-          >
-            <td class="px-5 py-5">{{ index + 1 }}</td>
-            <td class="px-4">{{ items.room_refer }}</td>
-            <td class="px-4">{{ items.name }}</td>
-            <td class="px-4">{{ items.time }}<br />{{ items.start_date }}</td>
-            <td class="px-4">
-              <p
-                v-if="items.status === 'Approved'"
-                class="rounded-xl bg-emerald-400 text-white text-center p-1 md:w-3/5 mx-auto text-sm"
-              >
-                {{ items.status }}
-              </p>
-              <p
-                v-else-if="items.status === 'Waiting'"
-                class="rounded-xl bg-amber-400 text-white text-center p-1 md:w-3/5 mx-auto text-sm"
-              >
-                {{ items.status }}
-              </p>
-              <p
-                v-else="items.status === 'Rejected'"
-                class="rounded-xl bg-red-400 text-white text-center p-1 md:w-3/5 mx-auto text-sm"
-              >
-                {{ items.status }}
-              </p>
-            </td>
-            <td>
-              <div
-                class="flex justify-center items-center"
-                v-if="items.status === 'Waiting'"
-              >
-                <button
-                  class="flex rounded-md bg-emerald-400 p-1 px-3 text-white hover:bg-emerald-600"
-                  @click="Approve(items)"
-                >
-                  <svg
-                    class="my-auto"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M6.92661 9.92661L8.92661 11.9266L12.9266 7.92661M5.76161 2.62361C6.47892 2.56636 7.15989 2.28431 7.70761 1.81761C8.32652 1.28988 9.11325 1 9.92661 1C10.74 1 11.5267 1.28988 12.1456 1.81761C12.6933 2.28431 13.3743 2.56636 14.0916 2.62361C14.9024 2.68811 15.6636 3.03943 16.2387 3.61453C16.8138 4.18963 17.1651 4.95086 17.2296 5.76161C17.2869 6.47892 17.5689 7.15989 18.0356 7.70761C18.5633 8.32652 18.8532 9.11325 18.8532 9.92661C18.8532 10.74 18.5633 11.5267 18.0356 12.1456C17.5689 12.6933 17.2869 13.3743 17.2296 14.0916C17.1651 14.9024 16.8138 15.6636 16.2387 16.2387C15.6636 16.8138 14.9024 17.1651 14.0916 17.2296C13.3743 17.2869 12.6933 17.5689 12.1456 18.0356C11.5267 18.5633 10.74 18.8532 9.92661 18.8532C9.11325 18.8532 8.32652 18.5633 7.70761 18.0356C7.15989 17.5689 6.47892 17.2869 5.76161 17.2296C4.95086 17.1651 4.18963 16.8138 3.61453 16.2387C3.03943 15.6636 2.68811 14.9024 2.62361 14.0916C2.56636 13.3743 2.28431 12.6933 1.81761 12.1456C1.28988 11.5267 1 10.74 1 9.92661C1 9.11325 1.28988 8.32652 1.81761 7.70761C2.28431 7.15989 2.56636 6.47892 2.62361 5.76161C2.68811 4.95086 3.03943 4.18963 3.61453 3.61453C4.18963 3.03943 4.95086 2.68811 5.76161 2.62361Z"
-                      stroke="white"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                  <p class="ml-2">Approve</p>
-                </button>
-                <button
-                  class="flex rounded-md bg-red-400 p-1 px-2 text-white ml-3 hover:bg-red-600"
-                  @click="Refuse(items)"
-                >
-                  <svg
-                    class="my-auto"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M8 12L10 10M10 10L12 8M10 10L8 8M10 10L12 12M19 10C19 11.1819 18.7672 12.3522 18.3149 13.4442C17.8626 14.5361 17.1997 15.5282 16.364 16.364C15.5282 17.1997 14.5361 17.8626 13.4442 18.3149C12.3522 18.7672 11.1819 19 10 19C8.8181 19 7.64778 18.7672 6.55585 18.3149C5.46392 17.8626 4.47177 17.1997 3.63604 16.364C2.80031 15.5282 2.13738 14.5361 1.68508 13.4442C1.23279 12.3522 1 11.1819 1 10C1 7.61305 1.94821 5.32387 3.63604 3.63604C5.32387 1.94821 7.61305 1 10 1C12.3869 1 14.6761 1.94821 16.364 3.63604C18.0518 5.32387 19 7.61305 19 10Z"
-                      stroke="white"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                  <p class="ml-2">Refuse</p>
-                </button>
-              </div>
-            </td>
-            <div class="relative">
-              <div class="absolute"></div>
-            </div>
-          </tr>
-        </tbody>
-      </table>
+  <div class="">
+    <div class="flex items-center max-w-xl justify-center">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        class="w-6 h-6 text-yellow-300"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5zM18 1.5a.75.75 0 01.728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 010 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 01-1.456 0l-.258-1.036a2.625 2.625 0 00-1.91-1.91l-1.036-.258a.75.75 0 010-1.456l1.036-.258a2.625 2.625 0 001.91-1.91l.258-1.036A.75.75 0 0118 1.5zM16.5 15a.75.75 0 01.712.513l.394 1.183c.15.447.5.799.948.948l1.183.395a.75.75 0 010 1.422l-1.183.395c-.447.15-.799.5-.948.948l-.395 1.183a.75.75 0 01-1.422 0l-.395-1.183a1.5 1.5 0 00-.948-.948l-1.183-.395a.75.75 0 010-1.422l1.183-.395c.447-.15.799-.5.948-.948l.395-1.183A.75.75 0 0116.5 15z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      <p class="text-center text-3xl p-2 text-white">Check lsit</p>
     </div>
-    <div class="flex w-full p-4 pl-8">
-      <p class="flex-none text-center justify-center">
-        Showing 1 to 1 of 10 results
-      </p>
-      <div class="flex-1 text-end ml-12">
-        <div class="flex justify-end items-center">
-          <button
-            @click="prevent_count()"
-            :class="this.count <= 10 ? 'opacity-25' : ''"
-            :disabled="this.count <= 10"
-            class="rounded-xl px-3 text-red-700"
+    <div class="container md:w-10/12 bg-white my-8 mx-auto rounded-xl">
+      <div class="overflow-x-auto rounded-xl">
+        <table class="table-auto w-full rounded-xl table-container">
+          <thead class="bg-gray-200 text-gray-600 rounded-xl">
+            <tr>
+              <th class="px-4 pl-2">ID</th>
+              <th class="px-4 pl-2">ROOM</th>
+              <th class="px-4 pl-2">NAME</th>
+              <th class="px-4 pl-2">TIME</th>
+              <th class="px-4 pl-2 py-3">STATUS</th>
+              <th class="px-4 pl-2" style="padding-left: 4%">ACTION</th>
+            </tr>
+          </thead>
+          <tbody
+            v-for="(items, index) in data"
+            :key="index"
+            class="text-center divide-y"
           >
-            <svg
-              width="8"
-              height="13"
-              viewBox="0 0 8 13"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+            <tr
+              v-if="index + 1 <= this.count && index + 1 >= this.number"
+              class="hover:bg-gray-50 border-b-2 ml-3 text-slate-800"
+              @click="setModalOpen"
             >
-              <path
-                d="M5.79294 0.792969L0.0859375 6.49997L5.79294 12.207L7.20694 10.793L2.91394 6.49997L7.20694 2.20697L5.79294 0.792969Z"
-                fill="#828282"
-              />
-            </svg>
-          </button>
-          {{ this.count / 10 }}
-          <button
-            @click="next_count()"
-            :class="this.count >= this.max_obj ? 'opacity-25' : ''"
-            :disabled="this.count >= this.max_obj"
-            class="rounded-xl px-3"
-          >
-            <svg
-              width="8"
-              height="12"
-              viewBox="0 0 8 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+              <td class="px-5 py-5">{{ index + 1 }}</td>
+              <td class="px-4">{{ items.room_refer }}</td>
+              <td class="px-4">{{ items.name }}</td>
+              <td class="px-4">{{ items.time }}<br />{{ items.start_date }}</td>
+              <td class="px-4">
+                <p
+                  v-if="items.status === 'Approved'"
+                  class="rounded-xl bg-emerald-400 text-white text-center p-1 md:w-3/5 mx-auto text-sm"
+                >
+                  {{ items.status }}
+                </p>
+                <p
+                  v-else-if="items.status === 'Waiting'"
+                  class="rounded-xl bg-amber-400 text-white text-center p-1 md:w-3/5 mx-auto text-sm"
+                >
+                  {{ items.status }}
+                </p>
+                <p
+                  v-else="items.status === 'Rejected'"
+                  class="rounded-xl bg-red-400 text-white text-center p-1 md:w-3/5 mx-auto text-sm"
+                >
+                  {{ items.status }}
+                </p>
+              </td>
+              <td>
+                <div
+                  class="flex justify-center items-center"
+                  v-if="items.status === 'Waiting'"
+                >
+                  <button
+                    class="flex rounded-md bg-emerald-400 p-1 px-3 text-white hover:bg-emerald-600"
+                    @click="Approve(items)"
+                  >
+                    <svg
+                      class="my-auto"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6.92661 9.92661L8.92661 11.9266L12.9266 7.92661M5.76161 2.62361C6.47892 2.56636 7.15989 2.28431 7.70761 1.81761C8.32652 1.28988 9.11325 1 9.92661 1C10.74 1 11.5267 1.28988 12.1456 1.81761C12.6933 2.28431 13.3743 2.56636 14.0916 2.62361C14.9024 2.68811 15.6636 3.03943 16.2387 3.61453C16.8138 4.18963 17.1651 4.95086 17.2296 5.76161C17.2869 6.47892 17.5689 7.15989 18.0356 7.70761C18.5633 8.32652 18.8532 9.11325 18.8532 9.92661C18.8532 10.74 18.5633 11.5267 18.0356 12.1456C17.5689 12.6933 17.2869 13.3743 17.2296 14.0916C17.1651 14.9024 16.8138 15.6636 16.2387 16.2387C15.6636 16.8138 14.9024 17.1651 14.0916 17.2296C13.3743 17.2869 12.6933 17.5689 12.1456 18.0356C11.5267 18.5633 10.74 18.8532 9.92661 18.8532C9.11325 18.8532 8.32652 18.5633 7.70761 18.0356C7.15989 17.5689 6.47892 17.2869 5.76161 17.2296C4.95086 17.1651 4.18963 16.8138 3.61453 16.2387C3.03943 15.6636 2.68811 14.9024 2.62361 14.0916C2.56636 13.3743 2.28431 12.6933 1.81761 12.1456C1.28988 11.5267 1 10.74 1 9.92661C1 9.11325 1.28988 8.32652 1.81761 7.70761C2.28431 7.15989 2.56636 6.47892 2.62361 5.76161C2.68811 4.95086 3.03943 4.18963 3.61453 3.61453C4.18963 3.03943 4.95086 2.68811 5.76161 2.62361Z"
+                        stroke="white"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    <p class="ml-2">Approve</p>
+                  </button>
+                  <button
+                    class="flex rounded-md bg-red-400 p-1 px-2 text-white ml-3 hover:bg-red-600"
+                    @click="Refuse(items)"
+                  >
+                    <svg
+                      class="my-auto"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8 12L10 10M10 10L12 8M10 10L8 8M10 10L12 12M19 10C19 11.1819 18.7672 12.3522 18.3149 13.4442C17.8626 14.5361 17.1997 15.5282 16.364 16.364C15.5282 17.1997 14.5361 17.8626 13.4442 18.3149C12.3522 18.7672 11.1819 19 10 19C8.8181 19 7.64778 18.7672 6.55585 18.3149C5.46392 17.8626 4.47177 17.1997 3.63604 16.364C2.80031 15.5282 2.13738 14.5361 1.68508 13.4442C1.23279 12.3522 1 11.1819 1 10C1 7.61305 1.94821 5.32387 3.63604 3.63604C5.32387 1.94821 7.61305 1 10 1C12.3869 1 14.6761 1.94821 16.364 3.63604C18.0518 5.32387 19 7.61305 19 10Z"
+                        stroke="white"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    <p class="ml-2">Refuse</p>
+                  </button>
+                </div>
+              </td>
+              <div class="relative">
+                <div class="absolute"></div>
+              </div>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="flex w-full p-4 pl-8">
+        <p class="flex-none text-center justify-center">
+          Showing 1 to 1 of 10 results
+        </p>
+        <div class="flex-1 text-end ml-12">
+          <div class="flex justify-end items-center">
+            <button
+              @click="prevent_count()"
+              :class="this.count <= 10 ? 'opacity-25' : ''"
+              :disabled="this.count <= 10"
+              class="rounded-xl px-3 text-red-700"
             >
-              <path
-                d="M1.414 11.414L7.121 5.707L1.414 0L0 1.414L4.293 5.707L0 10L1.414 11.414Z"
-                fill="#828282"
-              />
-            </svg>
-          </button>
+              <svg
+                width="8"
+                height="13"
+                viewBox="0 0 8 13"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.79294 0.792969L0.0859375 6.49997L5.79294 12.207L7.20694 10.793L2.91394 6.49997L7.20694 2.20697L5.79294 0.792969Z"
+                  fill="#828282"
+                />
+              </svg>
+            </button>
+            {{ this.count / 10 }}
+            <button
+              @click="next_count()"
+              :class="this.count >= this.max_obj ? 'opacity-25' : ''"
+              :disabled="this.count >= this.max_obj"
+              class="rounded-xl px-3"
+            >
+              <svg
+                width="8"
+                height="12"
+                viewBox="0 0 8 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1.414 11.414L7.121 5.707L1.414 0L0 1.414L4.293 5.707L0 10L1.414 11.414Z"
+                  fill="#828282"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-<style scoped>
+<style >
 body {
   color: black;
   background-color: black;
@@ -375,7 +377,10 @@ body {
 .table-container {
   white-space: nowrap;
 }
-/* .media {
+.media {
   height: 800px;
-} */
+}
+.bg-main {
+  background-color: transparent;
+}
 </style>
