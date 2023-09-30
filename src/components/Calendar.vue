@@ -125,7 +125,7 @@ export default defineComponent({
                     startTime: "12:30",
                     endTime: "14:30",
                   },
-                  classNames: ["custom-event-color"],
+                  classNames: ["custom-event-color ease-in"],
                 };
               }
             })
@@ -322,10 +322,9 @@ export default defineComponent({
     <template v-slot:eventContent="arg" class="h-16">
       <div class="w-full grid group cursor-pointer relative inline-block text-center">
         <div class="w-full flex p-" @click="openDetail(arg)">
-          <div class="w-100 mx-auto grid">
+          <div class="w-full mx-auto grid">
             <div class="flex">
               <b class="mx-auto flex font-semibold ">
-
                 <svg v-if="arg.event.extendedProps.type !== 'course' && arg.event.extendedProps.status == 'Approved'"
                   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                   stroke="currentColor" class="w-6 h-6 mr-1">
@@ -348,7 +347,7 @@ export default defineComponent({
             <div class="grid">
               <b class="mx-auto font-medium">{{ arg.event.extendedProps.new_detail }}</b>
             </div>
-            <div class="flex">
+            <div class="flex mx-auto">
               <b class="font-medium">{{ arg.event.extendedProps.time }}</b>
               <b class="ml-3 font-medium" v-if="arg.view.type !== 'Timeline'">{{
                 arg.event.title
@@ -391,12 +390,21 @@ b {
 .custom-event-color {
   background-color: #6366f1;
   border: none;
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  transition-duration: 120ms;
   border-radius: 7px;
 }
-
+/* #E5E5E5 */
+.custom-event-color:hover {
+  background-color: #E5E5E5;
+  border: none;
+  border-radius: 7px;
+}
 .custom-event-color-status-wait {
   color: rgb(30 41 59);
   background-color: #fbbf24;
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  transition-duration: 120ms;
   border: none;
   border-radius: 7px;
 }
@@ -405,6 +413,8 @@ b {
 .custom-event-color-status-approve {
   color: black;
   background-color: #6cb2eb;
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  transition-duration: 120ms;
   font-weight: 300 !important;
   border: none;
   border-radius: 7px;

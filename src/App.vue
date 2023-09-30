@@ -396,8 +396,8 @@ export default {
         decodedToken.value = jwt_decode(token);
         name.value = decodedToken.first_name
         email_user.value = decodedToken.value.email
-        if(decodedToken.role == 'admin') {
-          admin.value == true
+        if(decodedToken.value.role == 'admin') {
+          admin.value = true
         }
         console.log("email_user :::  ",typeof email_user );
         console.log("decodedToken : ", email_user.value);

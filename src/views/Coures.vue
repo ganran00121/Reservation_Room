@@ -264,7 +264,7 @@ export default {
               console.log("POST request successful:", response.data);
               setTimeout(() => {
                 window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-              }, 1000);
+              }, 1);
             })
             .catch((error) => {
               console.error("Error:", error);

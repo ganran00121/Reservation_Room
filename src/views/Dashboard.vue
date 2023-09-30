@@ -161,7 +161,11 @@ export default {
       let endDate = new Date(param.start_date);
       let startTime = param.start_time.split(":");
       let endTime = param.end_time.split(":");
-
+      let error_ = false;
+      if(param.description == '' || param.description == null || param.course_instructor == null || param.course_instructor == '') {
+        console.log("Error rrrrr");
+        error_ = true
+      }
       startDate.setHours(startTime[0], startTime[1]);
       endDate.setHours(endTime[0], endTime[1]);
       console.log("startDate : ", startDate);
@@ -187,7 +191,9 @@ export default {
             if (startDate > endDate) {
               return true;
             }
-
+            if (error_ == true){
+              return true;
+            }
             return (
               startDate < reservationEndDate &&
               endDate > reservationStartDate &&
