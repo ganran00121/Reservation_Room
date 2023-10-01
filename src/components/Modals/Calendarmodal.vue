@@ -39,7 +39,7 @@
                 <select
                   v-model="form.room_refer"
                   id="exampleFormControlInput1"
-                  class="mt-1 block form-select w-full py-3 px-3 border border-gray-200 bg-gray-100 rounded-2xl shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                  class="mt-1 block form-select w-full py-3 px-3 border border-gray-200  rounded-2xl shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 >
                   <option value="CSB100">CSB100</option>
                   <option value="CSB201">CSB201</option>
@@ -67,13 +67,13 @@
                 <div class="flex flex-col relative">
                   <div class="w-full">
                     <div
-                      class="my-2 p-1 py-1 flex border border-gray-200 bg-gray-100 rounded-2xl shadow-sm"
+                      class="my-2 p-1 py-1 flex border border-gray-200 rounded-2xl shadow-sm"
                     >
                       <div class="flex flex-auto flex-wrap"></div>
                       <input
                         v-model="form.course_instructor"
                         placeholder="Teacher's name ..."
-                        class="p-1 px-2 appearance-none outline-none w-full text-gray-800 bg-gray-100"
+                        class="p-1 px-2 appearance-none outline-none w-full text-gray-800 "
                       />
                     </div>
                   </div>
@@ -97,7 +97,7 @@
                 <input
                   v-model="form.description"
                   type="text"
-                  class="appearance-none border w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm py-3"
+                  class="appearance-none border w-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline  rounded-2xl shadow-sm py-3"
                   id="exampleFormControlInput1"
                   placeholder="Description ..."
                   autocomplete="off"
@@ -113,7 +113,7 @@
                   v-model="form.start_date"
                   disabled="true"
                   type="text"
-                  class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
+                  class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline  rounded-2xl shadow-sm"
                   id="exampleFormControlInput1"
                   placeholder="Enter pass"
                 />
@@ -128,7 +128,7 @@
                   <input
                     v-model="form.start_time"
                     type="time"
-                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
+                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline  rounded-2xl shadow-sm"
                     id="exampleFormControlInput2"
                   />
                   <!-- type="time" -->
@@ -143,7 +143,7 @@
                   <input
                     v-model="form.end_time"
                     type="time"
-                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
+                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline  rounded-2xl shadow-sm"
                     id="exampleFormControlInput2"
                   />
                 </div>

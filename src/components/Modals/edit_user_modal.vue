@@ -39,7 +39,7 @@
                 <select
                   v-model="form.room_refer"
                   id="exampleFormControlInput1"
-                  class=" text-slate-800 mt-1 block form-select w-full py-3 px-3 border border-gray-200 bg-gray-100 rounded-2xl shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                  class=" text-slate-800 mt-1 block form-select w-full py-3 px-3 border border-gray-200  rounded-2xl shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 >
                   <option value="CSB100">CSB100</option>
                   <option value="CSB201">CSB201</option>
@@ -111,7 +111,7 @@
                 >
                 <input
                   v-model="form.start_date"
-                  disabled="true"
+                  disabled
                   type="text"
                   class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
                   id="exampleFormControlInput1"
@@ -128,7 +128,7 @@
                   <input
                     v-model="form.start_time"
                     type="time"
-                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
+                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline  rounded-2xl shadow-sm"
                     id="exampleFormControlInput2"
                   />
                   <!-- type="time" -->
@@ -143,7 +143,7 @@
                   <input
                     v-model="form.end_time"
                     type="time"
-                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
+                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline  rounded-2xl shadow-sm"
                     id="exampleFormControlInput2"
                   />
                 </div>

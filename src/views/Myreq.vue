@@ -72,7 +72,36 @@ export default {
       console.log("edit new", this.edit_new);
     },
 
-    // EDIT reservations not yup
+    res_alert_false: function () {
+      Swal.fire({
+        title: "Reservation false!",
+        text: "Please double-check the time, as there may already be a booking during this period!.",
+        icon: "warning",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setTimeout(() => {
+            window.location.reload();
+          }, 10);
+        }
+      });
+    },
+    alert_time_false: function () {
+      Swal.fire({
+        title: "Reservation false!",
+        text: "he start time cannot be after the end time.",
+        icon: "warning",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setTimeout(() => {
+            window.location.reload();
+          }, 10);
+        }
+      });
+    },
     saveEdit: function (param) {
       Swal.fire({
         title: "Are you sure?",
@@ -84,20 +113,86 @@ export default {
         confirmButtonText: "Yes, save it!",
       }).then((result) => {
         if (result.isConfirmed) {
-      axios
-        .put(`http://localhost:3000/api/reservations/update/${param.id}`, param)
-        .then((response) => {
-          console.log('POST request successful:', response.data);
-          this.closeModal()
-          this.showAlert()
-          setTimeout(() => {
-            window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-          }, 1000);
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        })
-      }
+          const token = localStorage.getItem("jwtToken");
+          const headers = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
+          let setdate = new Date(param.start_date);
+          let day = setdate.getDate().toString().padStart(2, "0");
+          let month = (setdate.getMonth() + 1).toString().padStart(2, "0");
+          let year = setdate.getFullYear().toString();
+          let formattedDate = `${day}-${month}-${year}`;
+          param.start_date = formattedDate;
+          let startDate = new Date(param.start_date);
+          let endDate = new Date(param.start_date);
+          let startTime = param.start_time.split(":");
+          let endTime = param.end_time.split(":");
+          let error_ = false;
+          if (param.description == '' || param.description == null || param.course_instructor == null || param.course_instructor == '') {
+            error_ = true
+          }
+          startDate.setHours(startTime[0], startTime[1]);
+          endDate.setHours(endTime[0], endTime[1]);
+          console.log("param : ", param);
+          axios
+            .get("http://localhost:3000/api/reservations/list", headers)
+            .then((response) => {
+              const reservations = response.data;
+              const overlappingReservation = reservations.find((reservation) => {
+                const reservationStartDate = new Date(reservation.start_date);
+                const reservationEndDate = new Date(reservation.start_date);
+                const reservationStartTime = reservation.start_time.split(":");
+                const reservationEndTime = reservation.end_time.split(":");
+                reservationStartDate.setHours(
+                  reservationStartTime[0],
+                  reservationStartTime[1]
+                );
+                reservationEndDate.setHours(
+                  reservationEndTime[0],
+                  reservationEndTime[1]
+                );
+
+                // เพิ่มเงื่อนไขที่ตรวจสอบว่า param.start_time มากกว่า param.end_time
+                if (startDate > endDate) {
+                  return true;
+                }
+                if (error_ == true) {
+                  return true;
+                }
+                return (
+                  startDate.setHours(startTime[0], startTime[1]) < reservationEndDate.setHours(reservationEndTime[0], reservationEndTime[1])
+                  && endDate.setHours(endTime[0], endTime[1]) > reservationStartDate.setHours(reservationStartTime[0], reservationStartTime[1]) &&
+                  reservation.room_refer == param.room_refer &&
+                  reservation.status != "Rejected"
+                );
+              });
+
+              if (overlappingReservation || startTime[0] > endTime[0]) {
+                if (startTime[0] > endTime[0]) {
+                  this.alert_time_false();
+                } else {
+                  this.res_alert_false();
+                }
+              } else {
+                axios
+                  .put(`http://localhost:3000/api/reservations/update/${param.id}`, param)
+                  .then((response) => {
+                    console.log('POST request successful:', response.data);
+                    this.closeModal()
+                    this.showAlert()
+                  })
+                  .catch((error) => {
+                    console.error('Error:', error);
+                  })
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+
+        }
       });
     },
     // delete
@@ -131,11 +226,19 @@ export default {
     },
     // showAlert
     showAlert: function () {
-      Swal.fire(
-        'Good job!',
-        'Edit!',
-        'success'
-      )
+      Swal.fire({
+        title: "Good job!",
+        text: "Edit!",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setTimeout(() => {
+            window.location.reload();
+          }, 10);
+        }
+      });
     },
   },
   async created() {
@@ -213,8 +316,8 @@ export default {
               <th class="px-4 pl-2">ID</th>
               <th class="px-4 pl-2">ROOM</th>
               <th class="px-4 pl-2">NAME</th>
-              <th class="py-3 px-4 pl-2" style="max-width: 150px;" >DETAILS</th>
-              <th class="px-4 pl-2" >TIME</th>
+              <th class="py-3 px-4 pl-2" style="max-width: 150px;">DETAILS</th>
+              <th class="px-4 pl-2">TIME</th>
               <th class="py-3 px-4 pl-2">STATUS</th>
               <th class="px-4 pl-2" style="padding-left: 4%;">ACTION</th>
             </tr>
@@ -226,7 +329,9 @@ export default {
               <td class="px-4 py-5">{{ index + 1 }}</td>
               <td class="px-4">{{ items.room_refer }}</td>
               <td class="px-4">{{ items.name }}</td>
-              <td class="px-4 overflow-hidden whitespace-nowrap" style="max-width: 150px;"><p class="truncate">{{ items.description }}</p></td>
+              <td class="px-4 overflow-hidden whitespace-nowrap" style="max-width: 150px;">
+                <p class="truncate">{{ items.description }}</p>
+              </td>
               <td class="px-4 whitespace-nowrap">{{ items.start_date }}<br> {{ items.time }} </td>
               <td class="px-4 cursor-default whitespace-nowrap">
                 <p v-if="items.status === 'Approved'"

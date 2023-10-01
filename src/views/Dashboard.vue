@@ -175,7 +175,8 @@ export default {
       }
       startDate.setHours(startTime[0], startTime[1]);
       endDate.setHours(endTime[0], endTime[1]);
-      console.log("startDate : ", startDate);
+      console.log("startDate : ", startDate.setHours(startTime[0], startTime[1]));
+      console.log("endDate : ", endDate.setHours(endTime[0], endTime[1]));
       axios
         .get("http://localhost:3000/api/reservations/list", headers)
         .then((response) => {
@@ -185,6 +186,9 @@ export default {
             const reservationEndDate = new Date(reservation.start_date);
             const reservationStartTime = reservation.start_time.split(":");
             const reservationEndTime = reservation.end_time.split(":");
+            console.log("startDate : ", startDate);
+            console.log("endDate : ", endDate);
+            
             reservationStartDate.setHours(
               reservationStartTime[0],
               reservationStartTime[1]
@@ -193,7 +197,11 @@ export default {
               reservationEndTime[0],
               reservationEndTime[1]
             );
-
+            console.log("reservationStartTime : ",reservationStartTime);
+            console.log("reservationEndTime : ",reservationEndDate.setHours(
+              reservationEndTime[0],
+              reservationEndTime[1]
+            ));
             // เพิ่มเงื่อนไขที่ตรวจสอบว่า param.start_time มากกว่า param.end_time
             if (startDate > endDate) {
               return true;
@@ -202,8 +210,8 @@ export default {
               return true;
             }
             return (
-              startDate < reservationEndDate &&
-              endDate > reservationStartDate &&
+              startDate.setHours(startTime[0], startTime[1]) <  reservationEndDate.setHours(reservationEndTime[0],reservationEndTime[1]) 
+              && endDate.setHours(endTime[0], endTime[1]) > reservationStartDate.setHours(reservationStartTime[0],reservationStartTime[1]) &&
               reservation.room_refer == param.room_refer &&
               reservation.status != "Rejected"
             );

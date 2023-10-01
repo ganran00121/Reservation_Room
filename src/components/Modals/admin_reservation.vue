@@ -42,7 +42,7 @@
                   >
                   <select
                     v-model="form.room_refer"
-                    class="bg-gray-100 rounded-2xl shadow-sm py-3 mt-1 block form-select w-full px-3 border border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                    class=" rounded-2xl shadow-sm py-3 mt-1 block form-select w-full px-3 border border-gray-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                   >
                     <option value="CSB100">CSB100</option>
                     <option value="CSB201">CSB201</option>
@@ -99,14 +99,14 @@
                   <div class="flex flex-col relative">
                     <div class="w-full">
                       <div
-                        class="my-2 p-1 bg-gray-100 flex border border-gray-200 rounded-2xl"
+                        class="my-2 p-1 flex border border-gray-200 rounded-2xl"
                       >
                         <div class="flex flex-auto flex-wrap"></div>
                         <input
                           v-model="form.course_id"
                           type="number"
                           placeholder="204..."
-                          class="px-2 appearance-none outline-none w-full text-gray-800 bg-gray-100 py-2"
+                          class="px-2 appearance-none outline-none w-full text-gray-800  py-2"
                         />
                       </div>
                     </div>
@@ -122,14 +122,14 @@
                   <div class="flex flex-col relative">
                     <div class="w-full">
                       <div
-                        class="my-2 p-1 bg-gray-100 flex border border-gray-200 rounded-2xl"
+                        class="my-2 p-1  flex border border-gray-200 rounded-2xl"
                       >
                         <div class="flex flex-auto flex-wrap"></div>
                         <input
                           v-model="form.course_name"
                           type="text"
                           placeholder="Course "
-                          class="p-1 px-2 appearance-none outline-none w-full text-gray-800 bg-gray-100 py-2"
+                          class="p-1 px-2 appearance-none outline-none w-full text-gray-800  py-2"
                         />
                       </div>
                     </div>
@@ -147,14 +147,14 @@
                   <div class="flex flex-col relative">
                     <div class="w-full">
                       <div
-                        class="my-2 p-1 bg-gray-100 flex border border-gray-200 rounded-2xl"
+                        class="my-2 p-1  flex border border-gray-200 rounded-2xl"
                       >
                         <div class="flex flex-auto flex-wrap"></div>
                         <input
                           v-model="form.course_section"
                           type="number"
                           placeholder="1, 2, ..."
-                          class="p-1 px-2 appearance-none outline-none w-full text-gray-800 bg-gray-100 py-2"
+                          class="p-1 px-2 appearance-none outline-none w-full text-gray-800  py-2"
                         />
                       </div>
                     </div>
@@ -169,7 +169,7 @@
                   >
                   <select
                     v-model="form.day_of_week"
-                    class="bg-gray-100 rounded-2xl shadow-sm py-3 mt-1 block form-select w-full px-3 border border-gray-200 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                    class=" rounded-2xl shadow-sm py-3 mt-1 block form-select w-full px-3 border border-gray-200 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                   >
                     <option value="1">Mon</option>
                     <option value="2">Tue</option>
@@ -189,14 +189,14 @@
                   <div class="flex flex-col relative">
                     <div class="w-full">
                       <div
-                        class="my-2 p-1 bg-gray-100 flex border border-gray-200 rounded-2xl shadow-sm py-2"
+                        class="my-2 p-1  flex border border-gray-200 rounded-2xl shadow-sm py-2"
                       >
                         <div class="flex flex-auto flex-wrap"></div>
                         <input
                           v-model="form.course_instructor"
                           type="text"
                           placeholder="Name"
-                          class="p-1 px-2 appearance-none outline-none w-full text-gray-800 bg-gray-100"
+                          class="p-1 px-2 appearance-none outline-none w-full text-gray-800 "
                         />
                       </div>
                     </div>
@@ -212,14 +212,14 @@
                   <div class="flex flex-col relative">
                     <div class="w-full">
                       <div
-                        class="my-2 p-1 bg-gray-100 flex border border-gray-200 rounded-2xl shadow-sm py-2"
+                        class="my-2 p-1  flex border border-gray-200 rounded-2xl shadow-sm py-2"
                       >
                         <div class="flex flex-auto flex-wrap"></div>
                         <input
                           v-model="form.course_instructor_email"
                           type="email"
                           placeholder="Email"
-                          class="p-1 px-2 appearance-none outline-none w-full text-gray-800 bg-gray-100"
+                          class="p-1 px-2 appearance-none outline-none w-full text-gray-800 "
                         />
                       </div>
                     </div>
@@ -237,7 +237,7 @@
                   <input
                     v-model="form.start_date"
                     type="date"
-                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
+                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline  rounded-2xl shadow-sm"
                   />
                 </div>
                 <div class="mb-4 w-full md:w-5/12">
@@ -247,7 +247,7 @@
                   <input
                     v-model="form.end_date"
                     type="date"
-                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
+                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline  rounded-2xl shadow-sm"
                   />
                 </div>
               </div>
@@ -259,7 +259,7 @@
                   <input
                     v-model="form.start_time"
                     type="time"
-                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
+                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline  rounded-2xl shadow-sm"
                   />
                 </div>
 
@@ -270,7 +270,7 @@
                   <input
                     v-model="form.end_time"
                     type="time"
-                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
+                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline  rounded-2xl shadow-sm"
                   />
                 </div>
               </div>
