@@ -234,6 +234,7 @@
                   >
                   <input
                     v-model="form.start_date"
+                    disabled
                     type="date"
                     class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
                   />
@@ -244,6 +245,7 @@
                   >
                   <input
                     v-model="form.end_date"
+                    disabled
                     type="date"
                     class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
                   />
