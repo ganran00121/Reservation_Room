@@ -73,15 +73,15 @@ export default {
     },
     res_alert_false: function () {
       Swal.fire(
-        "Reservation false",
-        "Please double-check the time, as there may already be a booking during this period!",
+        "Create failed.",
+        "This period is already in used. Please select again.",
         "warning"
       );
     },
     alert_time_false: function () {
       Swal.fire(
-        "Reservation false",
-        "The start time cannot be after the end time.",
+        "Create failed.",
+        "Invalid time period. Please select again.",
         "warning"
       );
     },

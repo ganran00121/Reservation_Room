@@ -5,7 +5,7 @@
   >
     <div class="form-container sign-up-container">
       <form>
-        <h1>Create Account</h1>
+        <h1>Create an account</h1>
         <input
           v-if="form_regis.role === 'Student'"
           v-model="form_regis.college_id"
@@ -18,14 +18,14 @@
             v-model="form_regis.first_name"
             type="text"
             name="name"
-            placeholder="Name"
+            placeholder="Firstname"
             required
           />
           <input
             v-model="form_regis.last_name"
             type="text"
             name="lastname"
-            placeholder="LastName"
+            placeholder="Lastname"
             required
           />
         </div>
@@ -98,7 +98,7 @@
             @click="signup(form_regis)"
             type="button"
           >
-            SignUp
+            Sign Up
           </button>
         </div>
       </form>
@@ -124,10 +124,10 @@
           v-model="form_in.pass"
           placeholder="Password"
         />
-        <a href="#">Forgot Your Password</a>
+        <a href="#">Forgot your password?</a>
         <p v-if="login_false" class="text-red-500 py-3 sm:m-0">
-          incorrect username or password.<br />
-          please try again
+          Incorrect username or password.<br />
+          Please try again.
         </p>
         <button
           class="hover:border-blue-500 hover:text-blue-500 hover:bg-transparent"
@@ -149,8 +149,9 @@
     <div class="overlay-container">
       <div class="overlay">
         <div class="overlay-panel overlay-left">
-          <h1>Welcome Back!</h1>
-          <p>To keep connected with us please login with your personal info</p>
+          <h1>Welcome!</h1>
+          <p>Start making room reservation with us today. Easy and Fast</p>
+          <p>Got an account? <br/> Sign in right here!</p>
           <button
             class="ghost hover:text-blue-500"
             @click="toggleForm('signin')"
@@ -159,8 +160,9 @@
           </button>
         </div>
         <div class="overlay-panel overlay-right">
-          <h1>Hello, Friend!</h1>
-          <p>Enter your details and start the journey with us</p>
+          <h1>Welcome back!</h1>
+          <p>Enter your details and start reserve a room right away!</p>
+          <p>Doesn't have an account? <br/> Sign up right here!</p>
           <button
             class="ghost-up hover:text-indigo-500"
             @click="toggleForm('signup')"
@@ -226,8 +228,8 @@ export default {
           const name = decodedToken.name;
           const admin = decodedToken.admin;
           Swal.fire({
-            title: "Sign In",
-            text: "Sign In success.",
+            title: "You are signed in",
+            text: "Return to dashboard.",
             icon: "success",
             confirmButtonColor: "#3085d6",
             confirmButtonText: "OK",
@@ -240,8 +242,8 @@ export default {
         .catch((error) => {
           Swal.fire({
             icon: "error",
-            title: "Sign in false !",
-            text: "incorrect username or password. please try again",
+            title: "Sign in failed!",
+            text: "Incorrect username or password. Please try again.",
             footer: " ",
           });
           this.login_false = true;

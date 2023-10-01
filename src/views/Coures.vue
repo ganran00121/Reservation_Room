@@ -100,7 +100,7 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#6b7280",
-        confirmButtonText: "Yes, save it!",
+        confirmButtonText: "Confirm",
       }).then((result) => {
         if (result.isConfirmed) {
           const token = localStorage.getItem("jwtToken");
@@ -222,7 +222,7 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, save it!",
+        confirmButtonText: "Confirm",
       }).then((result) => {
         if (result.isConfirmed) {
           axios
@@ -251,8 +251,8 @@ export default {
         icon: "question",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Delete it!",
+        cancelButtonColor: "#6b7280",
+        confirmButtonText: "Confirm",
       }).then((result) => {
         if (result.isConfirmed) {
           axios

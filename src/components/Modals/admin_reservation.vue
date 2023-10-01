@@ -18,7 +18,7 @@
             <div>
               <i class="fas fa-exclamation-circle text-blue-500"></i>
               <span class="font-bold text-gray-700 text-lg"
-                >Reservas _ Cours</span
+                >Create course</span
               >
             </div>
             <div>
@@ -31,14 +31,14 @@
           </div>
           <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <p class="text-red-700 text-center">
-              If studying the same subject in different classes, <br />
-              apply twice.
+              For class with multiple rooms, create course <br/>
+              for each room separately.
             </p>
             <div class>
               <div class="flex flex-wrap gap-x-4 justify-center">
                 <div class="col-span-6 sm:col-span-3 mb-4 w-full md:w-5/12">
                   <label class="block text-gray-700 text-sm font-bold mb-2"
-                    >Room</label
+                    >Room :</label
                   >
                   <select
                     v-model="form.room_refer"
@@ -94,7 +94,7 @@
               <div class="flex flex-wrap gap-4 justify-center">
                 <div class="mb-4 w-full md:w-5/12">
                   <label class="block text-gray-700 text-sm font-bold mb-2">
-                    Course Code</label
+                    Course ID :</label
                   >
                   <div class="flex flex-col relative">
                     <div class="w-full">
@@ -117,7 +117,7 @@
                 </div>
                 <div class="mb-4 w-full md:w-5/12">
                   <label class="block text-gray-700 text-sm font-bold mb-2">
-                    Course Name</label
+                    Course Name :</label
                   >
                   <div class="flex flex-col relative">
                     <div class="w-full">
@@ -142,7 +142,7 @@
               <div class="flex flex-wrap gap-x-4 justify-center">
                 <div class="mb-4 w-full md:w-5/12">
                   <label class="block text-gray-700 text-sm font-bold">
-                    Sections</label
+                    Section :</label
                   >
                   <div class="flex flex-col relative">
                     <div class="w-full">
@@ -165,7 +165,7 @@
                 </div>
                 <div class="w-full md:w-5/12 mb-4">
                   <label class="block text-gray-700 text-sm font-bold mb-2"
-                    >Days Of Week</label
+                    >Days Of Week :</label
                   >
                   <select
                     v-model="form.day_of_week"
@@ -184,7 +184,7 @@
               <div class="flex flex-wrap gap-x-4 justify-center">
                 <div class="mb-4 w-full md:w-5/12">
                   <label class="block text-gray-700 text-sm font-bold mb-2">
-                    Instructor</label
+                    Instructor :</label
                   >
                   <div class="flex flex-col relative">
                     <div class="w-full">
@@ -207,7 +207,7 @@
                 </div>
                 <div class="mb-4 w-full md:w-5/12">
                   <label class="block text-gray-700 text-sm font-bold mb-2">
-                    Instructor Email :</label
+                    Instructor's Email :</label
                   >
                   <div class="flex flex-col relative">
                     <div class="w-full">
@@ -232,7 +232,7 @@
               <div class="flex flex-wrap gap-4 justify-center">
                 <div class="mb-4 w-full md:w-5/12">
                   <label class="block text-gray-700 text-sm font-bold mb-2"
-                    >Date-start :</label
+                    >Start date :</label
                   >
                   <input
                     v-model="form.start_date"
@@ -242,7 +242,7 @@
                 </div>
                 <div class="mb-4 w-full md:w-5/12">
                   <label class="block text-gray-700 text-sm font-bold mb-2"
-                    >Date-end :</label
+                    >End date :</label
                   >
                   <input
                     v-model="form.end_date"
@@ -254,7 +254,7 @@
               <div class="flex flex-wrap gap-x-4 justify-center">
                 <div class="mb-4 w-full md:w-5/12">
                   <label class="block text-gray-700 text-sm font-bold mb-2"
-                    >Time-start :</label
+                    >Class start at :</label
                   >
                   <input
                     v-model="form.start_time"
@@ -265,7 +265,7 @@
 
                 <div class="mb-4 w-full md:w-5/12">
                   <label class="block text-gray-700 text-sm font-bold mb-2"
-                    >Time-end :</label
+                    >Class end at :</label
                   >
                   <input
                     v-model="form.end_time"

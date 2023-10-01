@@ -18,7 +18,7 @@
           <div class="flex justify-between border-b border-gray-100 px-5 py-4">
             <div>
               <i class="fas fa-exclamation-circle text-blue-500"></i>
-              <span class="font-bold text-gray-700 text-lg">Reservas</span>
+              <span class="font-bold text-gray-700 text-lg">Create reservation request</span>
             </div>
             <div>
               <button>
@@ -34,7 +34,7 @@
                 <label
                   for="exampleFormControlInput1"
                   class="block text-gray-700 text-sm font-bold mb-2"
-                  >Room</label
+                  >Room :</label
                 >
                 <select
                   v-model="form.room_refer"
@@ -61,7 +61,7 @@
                 <label
                   for="exampleFormControlInput1"
                   class="block text-gray-700 text-sm font-bold"
-                  >Instructor</label
+                  >Instructor :</label
                 >
                 <!-- Buscador way -->
                 <div class="flex flex-col relative">
@@ -72,7 +72,7 @@
                       <div class="flex flex-auto flex-wrap"></div>
                       <input
                         v-model="form.course_instructor"
-                        placeholder="Teacher's name ..."
+                        placeholder="Instructor's name ..."
                         class="p-1 px-2 appearance-none outline-none w-full text-gray-800 "
                       />
                     </div>
@@ -92,7 +92,7 @@
                 <label
                   for="exampleFormControlInput1"
                   class="block text-gray-700 text-sm font-bold mb-2"
-                  >Description</label
+                  >Description :</label
                 >
                 <input
                   v-model="form.description"
@@ -107,7 +107,7 @@
                 <label
                   for="exampleFormControlInput1"
                   class="block text-gray-700 text-sm font-bold mb-2"
-                  >Date</label
+                  >Date :</label
                 >
                 <input
                   v-model="form.start_date"
@@ -123,7 +123,7 @@
                   <label
                     for="exampleFormControlInput2"
                     class="block text-gray-700 text-sm font-bold mb-2"
-                    >Time Start :</label
+                    >Start at :</label
                   >
                   <input
                     v-model="form.start_time"
@@ -138,7 +138,7 @@
                   <label
                     for="exampleFormControlInput2"
                     class="block text-gray-700 text-sm font-bold mb-2"
-                    >Time End</label
+                    >End at :</label
                   >
                   <input
                     v-model="form.end_time"

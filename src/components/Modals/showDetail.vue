@@ -19,7 +19,7 @@
           >
             <div>
               <i class="fas fa-exclamation-circle text-blue-500"></i>
-              <span class="font-bold text-white text-lg">showDetail</span>
+              <span class="font-bold text-white text-lg">Details</span>
             </div>
             <div>
               <button>
@@ -84,7 +84,7 @@
                 <label
                   for="exampleFormControlInput1"
                   class="block text-gray-700 text-sm font-bold mb-2"
-                  >Name :</label
+                  >Reserved by :</label
                 >
                 <input
                   v-model="setdetail.name"
@@ -100,7 +100,7 @@
                 <label
                   for="exampleFormControlInput1"
                   class="block text-gray-700 text-sm font-bold mb-2"
-                  >Email :</label
+                  >User Email :</label
                 >
                 <input
                   v-model="setdetail.email"
@@ -147,7 +147,7 @@
                 <label
                   for="exampleFormControlInput2"
                   class="block text-gray-700 text-sm font-bold mb-2"
-                  >Time :</label
+                  >Peroid :</label
                 >
                 <input
                   v-model="setdetail.time_start"
@@ -178,7 +178,7 @@
                   d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <p class="px-1">Cancel</p>
+              <p class="px-1">Close</p>
             </button>
           </div>
         </form>

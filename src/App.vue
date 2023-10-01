@@ -81,7 +81,7 @@
                   clip-rule="evenodd" />
               </svg>
 
-              <span v-if="isOpen" class="mx-4 tracking-wide font-medium">Nofitication U</span>
+              <span v-if="isOpen" class="mx-4 tracking-wide font-medium">My reservations</span>
             </router-link>
             <router-link v-if="email_user == '' || email_user == null"
               class="px-4 flex items-center cursor-pointer py-3 mt-2 duration-200 rounded text-sm font-medium border-gray-900  hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100"
