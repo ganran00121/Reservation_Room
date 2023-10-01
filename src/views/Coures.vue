@@ -29,7 +29,7 @@ export default {
       course_id: null, //null เพราะใช้กับ course
       course_section: null, //null เพราะใช้กับ course
       course_name: null, //null เพราะใช้กับ course
-      course_type: null, //null เพราะใช้กับ course
+      course_type: "Lecture", //null เพราะใช้กับ course
       course_instructor: null, //null เพราะใช้กับ course
       course_instructor_email: null, //null เพราะใช้กับ course
       day_of_week: null, //null เพราะใช้กับ courseฃ
@@ -88,7 +88,7 @@ export default {
     const closeModal_edit = () => {
       setTimeout(() => {
         window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-      }, 1000);
+      },);
       show_edit.value = false;
     };
 
@@ -99,8 +99,8 @@ export default {
         icon: "question",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Refuse it!",
+        cancelButtonColor: "#6b7280",
+        confirmButtonText: "Yes, save it!",
       }).then((result) => {
         if (result.isConfirmed) {
           const token = localStorage.getItem("jwtToken");
@@ -134,7 +134,7 @@ export default {
               closeModal_add();
               setTimeout(() => {
                 window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-              }, 10);
+              },);
             })
             .catch((error) => {
               console.error("Error:", error);
@@ -177,7 +177,7 @@ export default {
           closeModal_add();
           setTimeout(() => {
             window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-          }, 1000);
+          },);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -252,7 +252,7 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Delete course it!",
+        confirmButtonText: "Yes, Delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
           axios

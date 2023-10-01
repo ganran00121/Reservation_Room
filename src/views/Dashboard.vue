@@ -64,11 +64,11 @@ export default {
         confirmButtonColor: "#3085d6",
         confirmButtonText: "OK",
       }).then((result) => {
-        // if (result.isConfirmed) {
-        //   setTimeout(() => {
-        //     window.location.reload();
-        //   }, 1000);
-        // }
+        if (result.isConfirmed) {
+          setTimeout(() => {
+            window.location.reload();
+          }, 10);
+        }
       });
     },
     res_alert_false: function () {
@@ -125,6 +125,7 @@ export default {
     // closeModal
     closeModal: function () {
       this.showModal = false;
+      this.set_form();
     },
     // OpenModal
     setModalOpen: function (obj) {
@@ -146,11 +147,17 @@ export default {
     // POST FORM
     saveAppt: function (param) {
       const token = localStorage.getItem("jwtToken");
+      let token_decoded = ref({})
+      token_decoded.value = jwt_decode(token);
+      console.log();
       const headers = {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       };
+      if(token_decoded.value.role == 'admin') {
+         param.status = "Approved"
+      }
       let setdate = new Date(param.start_date);
       let day = setdate.getDate().toString().padStart(2, "0");
       let month = (setdate.getMonth() + 1).toString().padStart(2, "0");

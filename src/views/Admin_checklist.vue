@@ -3,25 +3,14 @@ import { watchEffect, ref, defineComponent } from "vue";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
+import compoDetail from "../components/Modals/showDetail.vue";
 
 export default {
+  components: {
+    compoDetail
+  },
   setup() {
-    const data = ref([]);
-    const max_obj = ref(0);
-    const user_name = ref([]);
-    const Open_detail = ref(false);
-    const fitter = ref('Oldest')
-    const number_test = ref(0)
-    const dropdownOpen = ref(false);
-    return {
-      Open_detail,
-      fitter,
-      number_test,
-      count: ref(10),
-      number: ref(1),
-      dropdownOpen,
-      data: ref({
-        id: null,
+    const data = ref({id: null,
         user_refer: null,
         admin_refer: null,
         room_refer: null,
@@ -38,8 +27,44 @@ export default {
         date: null,
         end_date: null,
         type: null,
-        status: null,
-      }),
+        status: null,});
+    const max_obj = ref(0);
+    const user_name = ref([]);
+    const Open_detail = ref(false);
+    const fitter = ref('Oldest')
+    const number_test = ref(0)
+    const dropdownOpen = ref(false);
+    const showDetail = ref(false);
+    const openDetail = (info) => {
+      setnewEvent(info);
+      showDetail.value = true;
+    };
+    const closeDetail = () => {
+      showDetail.value = false;
+    };
+    const setnewEvent = (info) => {
+      console.log("Data detail info : ", info);
+      data.value.room_id = info.room_refer;
+      data.value.email = info.email;
+      data.value.name = info.name;
+      data.value.date = info.start_date;
+      data.value.instructor = info.course_instructor;
+      data.value.description = info.description;
+      data.value.time_start = info.start_time + " - " +info.end_time;
+      data.value.status = info.status;
+    };
+    return {
+      showDetail,
+      openDetail,
+      closeDetail,
+      setnewEvent,
+      Open_detail,
+      fitter,
+      number_test,
+      count: ref(10),
+      number: ref(1),
+      dropdownOpen,
+      data,
       set_detil: {},
     };
   },
@@ -92,7 +117,7 @@ export default {
         icon: "question",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
+        cancelButtonColor: "#6b7280",
         confirmButtonText: "Yes, Refuse it!",
       }).then((result) => {
         if (result.isConfirmed) {
@@ -188,7 +213,7 @@ export default {
       let users = {};
       for (var i = 0; i < test.data.length; i++) {
         user = test.data[i];
-        users[user.college_id] = user;
+        users[user.id] = user;
       }
       const response = await axios.get(
         `http://localhost:3000/api/reservations/list/request`
@@ -209,12 +234,12 @@ export default {
         user_refer: eventnew.user_refer,
         room_refer: eventnew.room_refer,
         name:
-          users[user.college_id].first_name +
+          users[eventnew.user_refer].first_name +
           "  " +
-          users[user.college_id].last_name,
+          users[eventnew.user_refer].last_name,
         time: eventnew.start_time + "-" + eventnew.end_time,
-        phone: users[user.college_id].phone,
-        email: users[user.college_id].email,
+        phone: users[eventnew.user_refer].phone,
+        email: users[eventnew.user_refer].email,
         description: eventnew.description,
         course_instructor: eventnew.course_instructor,
         start_time: eventnew.start_time,
@@ -234,6 +259,7 @@ export default {
 </script>
 
 <template>
+  <compoDetail v-if="showDetail" :setdetail="data" @closeDetail="closeDetail" />
   <div class="bg-transparent">
     <div class="flex items-center max-w-xl justify-center">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-yellow-300">
@@ -291,7 +317,7 @@ export default {
           </thead>
           <tbody v-for="(items, index) in data" :key="index" class="text-center divide-y">
             <tr v-if="index + 1 <= this.count && index + 1 >= this.number"
-              class="hover:bg-gray-50 border-b-2 ml-3 text-slate-800" @click="setModalOpen">
+              class="hover:bg-gray-50 border-b-2 ml-3 text-slate-800" @click="openDetail(items)">
               <td class="px-5 py-5">{{ index + 1 }}</td>
               <td class="px-4">{{ items.room_refer }}</td>
               <td class="px-4">{{ items.name }}</td>
@@ -314,7 +340,7 @@ export default {
               <td class="">
                 <div class="flex justify-center items-center" v-if="items.status === 'Waiting'">
                   <button class="flex rounded-md bg-emerald-400 p-1 px-3 text-white hover:bg-emerald-600"
-                    @click="Approve(items)">
+                    @click.stop="Approve(items)">
                     <svg class="my-auto" width="20" height="20" viewBox="0 0 20 20" fill="none"
                       xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -324,7 +350,7 @@ export default {
                     <p class="ml-2 ">Approve</p>
                   </button>
                   <button class="flex rounded-md bg-red-400 p-1 px-2 text-white ml-3 hover:bg-red-600"
-                    @click="Refuse(items)">
+                    @click.stop="Refuse(items)">
                     <svg class="my-auto" width="20" height="20" viewBox="0 0 20 20" fill="none"
                       xmlns="http://www.w3.org/2000/svg">
                       <path
@@ -333,6 +359,7 @@ export default {
                     </svg>
                     <p class="ml-2">Refuse</p>
                   </button>
+                                    <!-- //@click="openDetail(items)" -->
                 </div>
               </td>
               <div class="relative">

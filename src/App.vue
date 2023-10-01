@@ -70,7 +70,7 @@
 
               <span v-if="isOpen" class="mx-4 tracking-wide font-medium">Nofitication A</span>
             </router-link>
-            <router-link v-if="admin == false"
+            <router-link 
               class="px-4 flex items-center cursor-pointer py-3 mt-2 duration-200 rounded text-sm font-medium border-gray-900  hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100"
               :class="isActive_My_reservations ? 'text-sky-400 ' : 'text-gray-500'" to="/My_reservations"
               @click="Active_funtions('My_reservations')">

@@ -31,7 +31,7 @@ export default defineComponent({
         let users = {};
         for (var i = 0; i < test.data.length; i++) {
           user = test.data[i];
-          users[user.college_id] = user;
+          users[user.id] = user;
         }
         const response = await axios.get(
           "http://localhost:3000/api/reservations/list"
@@ -42,12 +42,11 @@ export default defineComponent({
             .map((reservation) => {
               var show_time = reservation.start_date;
               var start_date = reservation.start_date.split("-"); // แยกวันที่ออกจากกัน
-              reservation.start_date =
-                start_date[2] + "-" + start_date[1] + "-" + start_date[0];
+              reservation.start_date = start_date[2] + "-" + start_date[1] + "-" + start_date[0];
               if (response.end_time != null) {
                 var end_time = reservation.start_date.split("-"); // แยกวันที่ออกจากกัน
-                reservation.end_time =
-                  end_time[2] + "-" + end_time[1] + "-" + end_time[0];
+                reservation.end_time = end_time[2] + "-" + end_time[1] + "-" + end_time[0];
+                reservation.end_time = reservation.end_time.toString()
               }
               let status = reservation.status;
               if (status == "Approved") {
@@ -58,13 +57,14 @@ export default defineComponent({
                 status = "test";
                 return null;
               }
+              reservation.start_date = reservation.start_date.toString()
               if (reservation.type == "request") {
                 return {
                   title: reservation.room_refer,
                   name:
-                    users[user.college_id].first_name +
+                    users[reservation.user_refer].first_name +
                     "  " +
-                    users[user.college_id].last_name,
+                    users[reservation.user_refer].last_name,
                   resourceIds: [reservation.room_refer],
                   description: reservation.description,
                   show_date: show_time,
@@ -76,9 +76,9 @@ export default defineComponent({
                   end: reservation.start_date + "T" + reservation.end_time,
                   time: reservation.start_time + "-" + reservation.end_time,
                   type: reservation.type,
-                  email: users[user.college_id].email,
-                  phone: users[user.college_id].phone,
-                  role: users[user.college_id].role,
+                  email: users[reservation.user_refer].email,
+                  phone: users[reservation.user_refer].phone,
+                  role: users[reservation.user_refer].role,
                   classNames: [status],
                 };
               } else if (reservation.type == "course") {
@@ -101,7 +101,6 @@ export default defineComponent({
                 //               endTime: '14:30',
                 //             },
                 //             classNames: ['custom-event-color'],
-
                 return {
                   eventBackgroundColor: "#FF5733",
                   name: reservation.course_instructor,
@@ -112,26 +111,27 @@ export default defineComponent({
                   email: reservation.course_instructor_email,
                   groupId: "redEvents",
                   show_date: show_time,
-                  start: reservation.start_date,
-                  end: reservation.start_date,
+                  start: reservation.start_date + "T" + reservation.start_time,
+                  end: reservation.start_date + "T" + reservation.end_time,
                   show_instructor: reservation.course_instructor,
                   status: reservation.status,
-                  description: reservation.description,
+                  description: "",
                   type: reservation.type,
                   time: reservation.start_time + "-" + reservation.end_time,
                   repeat: {
                     frequency: "weekly",
-                    daysOfWeek: [1, 4],
-                    startTime: "12:30",
-                    endTime: "14:30",
+                    daysOfWeek: [reservation.day_of_week],
+                    startTime: reservation.start_time,
+                    endTime: reservation.end_time,
                   },
                   classNames: ["custom-event-color ease-in"],
                 };
               }
             })
             .filter((event) => event !== null);
-
+          // generateEvents();
           calendarOptions.value.events = events_data.value;
+
           console.log(
             "calendarOptions.value.events : ",
             calendarOptions.value.events
@@ -184,7 +184,7 @@ export default defineComponent({
     const today = new Date();
     const year = today.getFullYear();
     const startMonth = 6;
-    const endMonth = 9;
+    const endMonth = 11;
     const start_day_cours = 20;
     const end_day_cours = 18;
     const events_data = ref([]); // keep event course
@@ -202,18 +202,18 @@ export default defineComponent({
     //         if ((month == startMonth && day < start_day_cours) || (month == endMonth && day > end_day_cours)) {
     //           day += 7;
     //         } else {
-    //           console.log("eventStartDate : ",eventStartDate);
+    //           console.log("eventStartDateAAAAA : ",eventStartDate);
     //           console.log("eventEndDate : ",eventEndDate);
     //           events_data.value.push({
     //             eventBackgroundColor: '#FF5733',
-    //             name: "Waraporn Insom",
+    //             name: "WAAAAAAAAm",
     //             title: "CSB100",
     //             resourceIds: ['CSB100'],
     //             groupId: 'redEvents',
     //             show_date: eventStartDate,
     //             start: eventStartDate,
     //             end: eventEndDate,
-    //             show_instructor: "Waraporn Insom",
+    //             show_instructor: "AAAAAAAAAAAAAAA",
     //             status: "Approved",
     //             description: "description...",
     //             time: '12:30 - 14:30',
@@ -276,7 +276,7 @@ export default defineComponent({
           dateClick: handleDateClick,
           type: "resourceTimeline",
           duration: { days: 1 },
-          slotDuration: "00:30",
+          slotDuration: "00:15",
           slotLabelInterval: { hours: 1 },
         },
       },
@@ -321,7 +321,7 @@ export default defineComponent({
   <FullCalendar :options="calendarOptions">
     <template v-slot:eventContent="arg" class="h-16">
       <div class="w-full grid group cursor-pointer relative inline-block text-center">
-        <div class="w-full flex p-" @click="openDetail(arg)">
+        <div class="w-full flex overflow-hidden" @click="openDetail(arg)">
           <div class="w-full mx-auto grid">
             <div class="flex">
               <b class="mx-auto flex font-semibold ">
@@ -332,17 +332,21 @@ export default defineComponent({
                     d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
 
-                <svg v-if="arg.event.extendedProps.type !== 'course' && arg.event.extendedProps.status == 'Waiting'" xmlns="http://www.w3.org/2000/svg" fill="none"
-                  viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-1">
+                <svg v-if="arg.event.extendedProps.type !== 'course' && arg.event.extendedProps.status == 'Waiting'"
+                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="w-6 h-6 mr-1">
                   <path stroke-linecap="round" stroke-linejoin="round"
                     d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
 
-                <b v-if="arg.event.extendedProps.type !== 'course'"  class="font-semibold my-auto">{{ arg.event.extendedProps.status }}</b></b>
+                <b v-if="arg.event.extendedProps.type !== 'course'" class="font-semibold my-auto">{{
+                  arg.event.extendedProps.status }}</b></b>
             </div>
             <div class="grid">
-              <b v-if="arg.event.extendedProps.type == 'course' " class="mx-auto font-semibold p-1">{{ arg.event.extendedProps.new_title }}</b>
-              <b v-if="arg.event.extendedProps.type !== 'course'" class="mx-auto font-medium">{{ arg.event.extendedProps.new_title }}</b>
+              <b v-if="arg.event.extendedProps.type == 'course'" class="mx-auto font-semibold p-1">{{
+                arg.event.extendedProps.new_title }}</b>
+              <b v-if="arg.event.extendedProps.type !== 'course'" class="mx-auto font-medium">{{
+                arg.event.extendedProps.new_title }}</b>
             </div>
             <div class="grid">
               <b class="mx-auto font-medium">{{ arg.event.extendedProps.new_detail }}</b>
@@ -388,18 +392,21 @@ b {
 }
 
 .custom-event-color {
+  color: wheat;
   background-color: #6366f1;
   border: none;
   transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
   transition-duration: 120ms;
   border-radius: 7px;
 }
+
 /* #E5E5E5 */
 .custom-event-color:hover {
   background-color: #E5E5E5;
   border: none;
   border-radius: 7px;
 }
+
 .custom-event-color-status-wait {
   color: rgb(30 41 59);
   background-color: #fbbf24;
@@ -412,12 +419,23 @@ b {
 /* #f97316  #3b82f6 */
 .custom-event-color-status-approve {
   color: black;
-  background-color: #6cb2eb;
+  background-color: #16a34a;
   transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
   transition-duration: 120ms;
   font-weight: 300 !important;
   border: none;
   border-radius: 7px;
+}
+
+.fc-slats td,
+.fc-slats th {
+  height: 20em !important;
+  /* ปรับขนาดตามที่ต้องการ */
+}
+
+.fc-resource-cell {
+  width: 50px;
+  /* ปรับความกว้างตามที่ต้องการ */
 }
 
 .test {
