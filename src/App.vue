@@ -68,7 +68,7 @@
                   clip-rule="evenodd" />
               </svg>
 
-              <span v-if="isOpen" class="mx-4 tracking-wide font-medium">Nofitication A</span>
+              <span v-if="isOpen" class="mx-4 tracking-wide font-medium">Pending Requests</span>
             </router-link>
             <router-link 
               class="px-4 flex items-center cursor-pointer py-3 mt-2 duration-200 rounded text-sm font-medium border-gray-900  hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100"
@@ -165,11 +165,11 @@
                 " to="/login">
                   SIGN IN
                 </router-link>
-                <router-link
+                <!-- <router-link
                   class=" ml-2 text-white p-2 px-6 cursor-pointer rounded-xl border text-xs font-bold transition ease-in-out duration-200  hover:border-[#3B82F6] hover:bg-[#3B82F6] "
                   to="/login">
                   SIGN UP
-                </router-link>
+                </router-link> -->
               </div>
               <p v-if="token_user" class="text-white p-1 px-2 cursor-pointer rounded-xl hover:bg-white text-xs hover:text-black transition 
                  ease-in-out duration-100 ">

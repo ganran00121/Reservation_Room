@@ -110,7 +110,7 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#6b7280",
-        confirmButtonText: "Yes, save it!",
+        confirmButtonText: "confirm",
       }).then((result) => {
         if (result.isConfirmed) {
           const token = localStorage.getItem("jwtToken");
@@ -203,8 +203,8 @@ export default {
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'confirm'
       }).then((result) => {
         if (result.isConfirmed) {
           axios
@@ -214,7 +214,7 @@ export default {
               this.closeModal()
               setTimeout(() => {
                 window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-              }, 1000);
+              },);
 
             })
             .catch((error) => {
@@ -236,7 +236,7 @@ export default {
         if (result.isConfirmed) {
           setTimeout(() => {
             window.location.reload();
-          }, 10);
+          },);
         }
       });
     },

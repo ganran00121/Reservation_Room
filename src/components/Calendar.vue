@@ -341,7 +341,7 @@ export default defineComponent({
                   arg.event.extendedProps.status }}</b></b>
             </div>
             <div class="grid">
-              <b v-if="arg.event.extendedProps.type == 'course'" class="mx-auto font-semibold p-1">{{
+              <b v-if="arg.event.extendedProps.type == 'course'" class="mx-auto font-semibold p-1 uppercase">{{
                 arg.event.extendedProps.new_title }}</b>
               <b v-if="arg.event.extendedProps.type !== 'course'" class="mx-auto font-medium">{{
                 arg.event.extendedProps.new_title }}</b>

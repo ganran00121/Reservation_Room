@@ -134,9 +134,14 @@ export default {
         // 2023-08-30T12:30:00+07:00
         let date_at = obj.dateStr.substr(0, 10);
         let time = obj.dateStr.substr(11, 8);
+        let setdate = new Date(date_at);
+        let day = setdate.getDate().toString().padStart(2, "0");
+        let month = (setdate.getMonth() + 1).toString().padStart(2, "0");
+        let year = setdate.getFullYear().toString();
+        let formattedDate = `${day}-${month}-${year}`;
         this.newEvent.user_refer = this.decodedToken.id;
         this.newEvent.room_refer = obj.resource._resource.id;
-        this.newEvent.start_date = date_at;
+        this.newEvent.start_date = formattedDate;
         this.newEvent.start_time = time.substr(0, 5);
       } else {
         this.newEvent.start_date = obj.dateStr.substr(0, 10);
@@ -155,21 +160,15 @@ export default {
           Authorization: `Bearer ${token}`,
         },
       };
-      if(token_decoded.value.role == 'admin') {
-         param.status = "Approved"
+      if (token_decoded.value.role == 'admin') {
+        param.status = "Approved"
       }
-      let setdate = new Date(param.start_date);
-      let day = setdate.getDate().toString().padStart(2, "0");
-      let month = (setdate.getMonth() + 1).toString().padStart(2, "0");
-      let year = setdate.getFullYear().toString();
-      let formattedDate = `${day}-${month}-${year}`;
-      param.start_date = formattedDate;
       let startDate = new Date(param.start_date);
       let endDate = new Date(param.start_date);
       let startTime = param.start_time.split(":");
       let endTime = param.end_time.split(":");
       let error_ = false;
-      if(param.description == '' || param.description == null || param.course_instructor == null || param.course_instructor == '') {
+      if (param.description == '' || param.description == null || param.course_instructor == null || param.course_instructor == '') {
         console.log("Error rrrrr");
         error_ = true
       }
@@ -188,7 +187,7 @@ export default {
             const reservationEndTime = reservation.end_time.split(":");
             console.log("startDate : ", startDate);
             console.log("endDate : ", endDate);
-            
+
             reservationStartDate.setHours(
               reservationStartTime[0],
               reservationStartTime[1]
@@ -197,8 +196,8 @@ export default {
               reservationEndTime[0],
               reservationEndTime[1]
             );
-            console.log("reservationStartTime : ",reservationStartTime);
-            console.log("reservationEndTime : ",reservationEndDate.setHours(
+            console.log("reservationStartTime : ", reservationStartTime);
+            console.log("reservationEndTime : ", reservationEndDate.setHours(
               reservationEndTime[0],
               reservationEndTime[1]
             ));
@@ -206,12 +205,12 @@ export default {
             if (startDate > endDate) {
               return true;
             }
-            if (error_ == true){
+            if (error_ == true) {
               return true;
             }
             return (
-              startDate.setHours(startTime[0], startTime[1]) <  reservationEndDate.setHours(reservationEndTime[0],reservationEndTime[1]) 
-              && endDate.setHours(endTime[0], endTime[1]) > reservationStartDate.setHours(reservationStartTime[0],reservationStartTime[1]) &&
+              startDate.setHours(startTime[0], startTime[1]) < reservationEndDate.setHours(reservationEndTime[0], reservationEndTime[1])
+              && endDate.setHours(endTime[0], endTime[1]) > reservationStartDate.setHours(reservationStartTime[0], reservationStartTime[1]) &&
               reservation.room_refer == param.room_refer &&
               reservation.status != "Rejected"
             );
@@ -282,17 +281,10 @@ export default {
 </script>
 
 <template>
-    <div
-      class="container rounded-xl mx-auto p-0 md:p-8 lg:p-10 bg-white overflow-hidden my-8"
-    >
-      <calendar @dateClick="opendateClick" class=""> </calendar>
-    </div>
-    <modalCalendar
-      v-if="showModal"
-      :form="newEvent"
-      @closeModal="closeModal"
-      @saveAppt="saveAppt"
-    />
+  <div class="container rounded-xl mx-auto p-0 md:p-8 lg:p-10 bg-white overflow-hidden my-8">
+    <calendar @dateClick="opendateClick" class=""> </calendar>
+  </div>
+  <modalCalendar v-if="showModal" :form="newEvent" @closeModal="closeModal" @saveAppt="saveAppt" />
 </template>
 
 <style>
@@ -300,9 +292,9 @@ export default {
   display: none;
   z-index: 0;
 }
+
 body {
   color: rgb(30 41 59);
   background-color: black;
 }
-
 </style>

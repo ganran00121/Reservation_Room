@@ -127,8 +127,9 @@
                   >
                   <input
                     v-model="form.start_time"
+                    disabled
                     type="time"
-                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline  rounded-2xl shadow-sm"
+                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100  rounded-2xl shadow-sm"
                     id="exampleFormControlInput2"
                   />
                   <!-- type="time" -->
@@ -142,8 +143,9 @@
                   >
                   <input
                     v-model="form.end_time"
+                    disabled
                     type="time"
-                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline  rounded-2xl shadow-sm"
+                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
                     id="exampleFormControlInput2"
                   />
                 </div>

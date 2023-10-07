@@ -290,7 +290,7 @@ export default {
       if (Array.isArray(response.data)) {
         this.data = response.data
           .map((eventnew) => {
-            const courseKey = `${eventnew.course_type}-${eventnew.course_id}`;
+            const courseKey = `${eventnew.course_type}-${eventnew.course_id}-${eventnew.course_section}`;
             if (!uniqueCourses.has(courseKey)) {
               uniqueCourses.add(courseKey);
               let dayofweek = eventnew.day_of_week;
