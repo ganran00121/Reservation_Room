@@ -391,7 +391,7 @@ b {
 
 .custom-event-color {
   color: wheat;
-  background-color: #6366f1;
+  background-color: #06b6d4;
   border: none;
   transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
   transition-duration: 120ms;
