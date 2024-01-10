@@ -90,13 +90,16 @@ export default {
             this.token_id = decodedToken.id;
             console.log(token_id.value);
           }
+          const headers = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+          }
+          }
           data.admin_refer = token_id.value;
           data.status = "Approved";
           axios
             .put(
-              `http://localhost:3000/api/reservations/update/${data.id}`,
-              data
-            )
+              `http://localhost:3000/api/reservations/update/${data.id}`,data ,headers)
             .then((response) => {
               Swal.fire("Approved!", "Approved success.", "success");
               // setTimeout(() => {
@@ -122,20 +125,20 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           const token = localStorage.getItem("jwtToken");
+          const headers = {
+              Authorization: `Bearer ${token}`,
+          }
           const token_id = ref(null);
           if (token) {
             const decodedToken = jwt_decode(token);
             token_id.value = decodedToken.id;
             this.token_id = decodedToken.id;
-            console.log(token_id.value);
           }
           data.admin_refer = token_id.value;
           data.status = "Rejected";
+          console.log("data : :::",data);
           axios
-            .put(
-              `http://localhost:3000/api/reservations/update/${data.id}`,
-              data
-            )
+            .put(`http://localhost:3000/api/reservations/update/${data.id}`,data, {headers})
             .then((response) => {
               Swal.fire("Refuse!", "req Refuse.", "success");
               // setTimeout(() => {
