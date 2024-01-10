@@ -6,7 +6,12 @@ import userchecklist from "../views/Myreq.vue";
 import Course from "../views/Coures.vue";
 import AAAA from "../views/testtype.vue";
 import Getstart from "../views/Getstart.vue";
+import index_test from "../views/testing/index.vue";
+import review from "../views/testing/Review.vue";
+import map from "../views/testing/Map.vue";
+import home from "../views/testing/home.vue";
 import App from "../App.vue";
+
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
@@ -42,6 +47,26 @@ const routes: RouteRecordRaw[] = [
     path: "/My_reservations",
     name: "userchecklist",
     component: userchecklist,
+  },
+  {
+    path: "/index",
+    name: "index_test",
+    component: index_test,
+  },
+  {
+    path: "/map",
+    name: "map",
+    component: map,
+  },
+  {
+    path: "/review",
+    name: "review",
+    component: review,
+  },
+  {
+    path: "/home",
+    name: "home",
+    component: home,
   },
 ];
 const router = createRouter({

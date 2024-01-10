@@ -180,6 +180,7 @@ export default {
         .get("http://localhost:3000/api/reservations/list", headers)
         .then((response) => {
           const reservations = response.data;
+          console.log(response.data);
           const overlappingReservation = reservations.find((reservation) => {
             const reservationStartDate = new Date(reservation.start_date);
             const reservationEndDate = new Date(reservation.start_date);
@@ -215,13 +216,25 @@ export default {
               reservation.status != "Rejected"
             );
           });
-
-          if (overlappingReservation || startTime[0] > endTime[0]) {
-            if (startTime[0] > endTime[0]) {
-              this.alert_time_false();
-            } else {
-              this.res_alert_false();
-            }
+          // if ((overlappingReservation || startTime[0] > endTime[0] ) && reservations = []) {
+          //   if (startTime[0] > endTime[0]) {
+          //     console.log("startTime > endTime");
+          //     this.alert_time_false();
+          //   } else {
+          //     console.log("! !!!!! startTime > endTime");
+          //     this.res_alert_false();
+          //   }
+          // if (startTime[0] > endTime[0] ){
+          //   if (startTime[0] > endTime[0]) {
+          //     console.log("startTime > endTime");
+          //     this.alert_time_false();
+          //   } else {
+          //     console.log("! !!!!! startTime > endTime");
+          //     this.res_alert_false();
+          //   }
+          if ((overlappingReservation )) {
+            console.log("overlappingReservation : ",overlappingReservation);
+            this.res_alert_false();
           } else {
             axios
               .post(

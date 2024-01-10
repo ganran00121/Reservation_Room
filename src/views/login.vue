@@ -217,6 +217,7 @@ export default {
       this.isSignup = formType === "signup";
     },
     login_acc(info) {
+      console.log(info);
       axios
         .post("http://localhost:3000/api/login", info, {
           headers: { "Content-Type": "multipart/form-data" },
@@ -254,13 +255,15 @@ export default {
       if (info.role === "Staff") {
         info.college_id = null;
       }
+      console.log("info : ",info);
+      this.form_in.pass = info.password
       axios
         .post("http://localhost:3000/api/users/add", info)
         .then((response) => {
-          (this.form_in.user = response.data.email),
-            (this.form_in.pass = response.data.password),
+            (this.form_in.user = response.data.email),
+
             console.log("AAAAA");
-          this.login_acc(this.form_in);
+            this.login_acc(this.form_in);
         })
         .catch((error) => {
           Swal.fire({

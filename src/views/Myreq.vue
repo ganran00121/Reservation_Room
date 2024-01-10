@@ -177,7 +177,7 @@ export default {
                 }
               } else {
                 axios
-                  .put(`http://localhost:3000/api/reservations/update/${param.id}`, param)
+                  .put(`http://localhost:3000/api/reservations/update/${param.id}`,param)
                   .then((response) => {
                     console.log('POST request successful:', response.data);
                     this.closeModal()
@@ -207,8 +207,14 @@ export default {
         confirmButtonText: 'confirm'
       }).then((result) => {
         if (result.isConfirmed) {
+          const token = localStorage.getItem("jwtToken");
+          const headers = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+          }
+          }
           axios
-            .delete(`http://localhost:3000/api/reservations/delete/${param.id}`, param)
+            .delete(`http://localhost:3000/api/reservations/delete/${param.id}`,headers, param)
             .then((response) => {
               console.log('POST request successful:', response.data);
               this.closeModal()

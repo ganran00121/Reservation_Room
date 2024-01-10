@@ -449,14 +449,6 @@ export default {
   @apply font-medium;
 }
 
-.bg-main {
-  /* background-color: #f9fcurrentColor/
-  /* background: linear-gradient(rgb(47, 150, 163), rgb(48,62,143)); */
-
-  /* background-color: rgb(241, 245, 251);  */
-  background-color: #f1f5f9 !important;
-  /* e7e9f0 */
-}
 
 .bg-sec {
   background-color: #fff !important;

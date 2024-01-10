@@ -62,9 +62,9 @@ export default defineComponent({
                 return {
                   title: reservation.room_refer,
                   name:
-                    users[reservation.user_refer].first_name +
+                  users[reservation.user_refer].first_name +
                     "  " +
-                    users[reservation.user_refer].last_name,
+                  users[reservation.user_refer].last_name,
                   resourceIds: [reservation.room_refer],
                   description: reservation.description,
                   show_date: show_time,
@@ -82,25 +82,6 @@ export default defineComponent({
                   classNames: [status],
                 };
               } else if (reservation.type == "course") {
-                //             eventBackgroundColor: '#FF5733',
-                //             name: "Waraporn Insom",
-                //             title: "CSB100",
-                //             resourceIds: ['CSB100'],
-                //             groupId: 'redEvents',
-                //             show_date: eventStartDate,
-                //             start: eventStartDate,
-                //             end: eventEndDate,
-                //             show_instructor: "Waraporn Insom",
-                //             status: "Approved",
-                //             description: "description...",
-                //             time: '12:30 - 14:30',
-                //             repeat: {
-                //               frequency: 'weekly',
-                //               daysOfWeek: [1, 4],
-                //               startTime: '12:30',
-                //               endTime: '14:30',
-                //             },
-                //             classNames: ['custom-event-color'],
                 return {
                   eventBackgroundColor: "#FF5733",
                   name: reservation.course_instructor,
