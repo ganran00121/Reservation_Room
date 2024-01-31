@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { ref } from "vue";
+import jwt_decode from "jwt-decode";
 import dashboard from "../views/Dashboard.vue";
 import adminchecklist from "../views/Admin_checklist.vue";
 import login from "../views/login.vue";
@@ -11,6 +13,25 @@ import review from "../views/testing/Review.vue";
 import map from "../views/testing/Map.vue";
 import home from "../views/testing/home.vue";
 import App from "../App.vue";
+
+const token_user = ref(false);
+const decodedToken = ref(null);
+const name = ref('');
+const admin = ref(false);
+
+// ดึง Token จาก localStorage
+const token = localStorage.getItem("jwtToken");
+
+if (token) {
+  // ถ้ามี Token
+  token_user.value = true;
+  decodedToken.value = jwt_decode(token);
+  name.value = decodedToken.value.first_name;
+
+  if (decodedToken.value.role === 'admin') {
+    admin.value = true;
+  }
+}
 
 const routes: RouteRecordRaw[] = [
   {
@@ -37,11 +58,13 @@ const routes: RouteRecordRaw[] = [
     path: "/admin",
     name: "adminchecklist",
     component: adminchecklist,
+    meta: { requiresAuth: true, requiresAdmin: true },
   },
   {
     path: "/course",
     name: "Course",
     component: Course,
+    meta: { requiresAuth: true, requiresAdmin: true },
   },
   {
     path: "/My_reservations",
@@ -73,4 +96,15 @@ const router = createRouter({
   history: createWebHistory(),
   routes: routes,
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth && !token_user.value) {
+    next({ name: 'login' });
+  } else if (to.meta.requiresAdmin && !admin.value) {
+    next({ name: 'dashboard' }); 
+  } else {
+    next(); 
+  }
+});
+
 export default router;
