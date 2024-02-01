@@ -166,8 +166,9 @@
                     >Days Of Week :</label
                   >
                   <select
+                    disabled
                     v-model="form.day_of_week"
-                    class=" rounded-2xl shadow-sm py-3 mt-1 block form-select w-full px-3 border border-gray-200 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                    class="appearance-none border w-full py-3 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm sm:text-sm sm:leading-5"
                   >
                     <option value="1">Mon</option>
                     <option value="2">Tue</option>

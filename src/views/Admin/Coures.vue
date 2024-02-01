@@ -1,362 +1,12 @@
-<script>
-import { watchEffect, ref, defineComponent } from "vue";
-import Swal from "sweetalert2/dist/sweetalert2.js";
-import admin_reser from "../components/Modals/admin_reservation.vue";
-import EditCourse from "../components/Modals/edit_course_modal.vue";
-import jwt_decode from "jwt-decode";
-import axios from "axios";
-
-export default {
-  components: {
-    admin_reser,
-    EditCourse,
-  },
-
-  setup() {
-    const decodedToken = ref({});
-    onMounted(() => {
-      const token = localStorage.getItem("jwtToken");
-      if (token) {
-        decodedToken.value = jwt_decode(token);
-        console.log(decodedToken.value);
-      }
-    });
-    const newEvent = ref({
-      user_refer: null, // int  user_id
-      admin_refer: null, // int  admin คนไหนกด
-      room_refer: null, // string room_id
-      // course
-      course_id: null, //null เพราะใช้กับ course
-      course_section: null, //null เพราะใช้กับ course
-      course_name: null, //null เพราะใช้กับ course
-      course_type: "Lecture", //null เพราะใช้กับ course
-      course_instructor: null, //null เพราะใช้กับ course
-      course_instructor_email: null, //null เพราะใช้กับ course
-      day_of_week: null, //null เพราะใช้กับ courseฃ
-      end_date: null, // ให้มันเป็น null ถ้าจะ add ธรรมดา string
-      // end course
-      description: "", // string
-      start_time: "", //16:30 string
-      end_time: "", //16:30 string
-      start_date: "", // ต้องใช้ dd-mm-yyyy string
-      type: "course", // string
-      status: "Approved", // string
-    });
-    const day_week = ref("");
-    const showModal = ref(false);
-    const show_edit = ref(false);
-    const data = ref([]);
-    const max_obj = ref(0);
-    const user_name = ref([]);
-    const Open_detail = ref(false);
-    // for Edit
-    const newEvent_edit = ref({});
-    const openEdit_modal = (info) => {
-      show_edit.value = true;
-      console.log("info :", info);
-      let dayofweek = info.day_of_week;
-      let get_dayofweek = ref("");
-      if (dayofweek === "Mon") {
-        get_dayofweek.value = "1";
-      } else if (dayofweek === "Tue") {
-        get_dayofweek.value = "2";
-      } else if (dayofweek === "Wed") {
-        get_dayofweek.value = "3";
-      } else if (dayofweek === "Thu") {
-        get_dayofweek.value = "4";
-      } else if (dayofweek === "Fri") {
-        get_dayofweek.value = "5";
-      } else if (dayofweek === "Mon-Thu") {
-        get_dayofweek.value = "1,4";
-      } else if (dayofweek === "Tue-Fri") {
-        get_dayofweek.value = "2,5";
-      }
-      newEvent_edit.value = info;
-      function convertDate(dateString) {
-        const [day, month, year] = dateString.split("-");
-        const formattedDate = `${year}-${month}-${day}`;
-        return formattedDate;
-      }
-
-      newEvent_edit.value.start_date = convertDate(
-        newEvent_edit.value.start_date
-      );
-      newEvent_edit.value.end_date = convertDate(newEvent_edit.value.end_date);
-      newEvent_edit.value.day_of_week = get_dayofweek.value;
-      console.log("newEvent : ", newEvent_edit.value);
-    };
-    const closeModal_edit = () => {
-      setTimeout(() => {
-        window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-      },);
-      show_edit.value = false;
-    };
-
-    const saveAppt_edit = (param) => {
-      Swal.fire({
-        title: "Are you sure?",
-        // text: "Do you want to reject this?",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#6b7280",
-        confirmButtonText: "Confirm",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          const token = localStorage.getItem("jwtToken");
-          const headers = {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          };
-          console.log("param : ", param);
-          param.user_refer = decodedToken.value.id;
-          param.admin_refer = decodedToken.value.id;
-          var startDate = new Date(param.end_date);
-          var day = startDate.getDate().toString().padStart(2, "0");
-          var month = (startDate.getMonth() + 1).toString().padStart(2, "0");
-          var year = startDate.getFullYear().toString();
-          param.end_date = `${day}-${month}-${year}`;
-
-          var startDate = new Date(param.start_date);
-          var day = startDate.getDate().toString().padStart(2, "0");
-          var month = (startDate.getMonth() + 1).toString().padStart(2, "0");
-          var year = startDate.getFullYear().toString();
-          param.start_date = `${day}-${month}-${year}`;
-          axios // add courses
-            .put(
-              `http://localhost:3000/api/reservations/update/${param.id}`,
-              param,
-              headers
-            )
-            .then((response) => {
-              console.log("POST courses successful : ", response.data);
-              closeModal_add();
-              setTimeout(() => {
-                window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-              },);
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-            });
-        }
-      });
-    };
-
-    const opendateClick = () => {
-      showModal.value = true;
-    };
-
-    const closeModal_add = () => {
-      showModal.value = false;
-    };
-    const saveAppt_add = (param) => {
-      const token = localStorage.getItem("jwtToken");
-      const headers = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      param.user_refer = decodedToken.value.id;
-      param.admin_refer = decodedToken.value.id;
-      var startDate = new Date(param.end_date);
-      var day = startDate.getDate().toString().padStart(2, "0");
-      var month = (startDate.getMonth() + 1).toString().padStart(2, "0");
-      var year = startDate.getFullYear().toString();
-      param.end_date = `${day}-${month}-${year}`;
-
-      var startDate = new Date(param.start_date);
-      var day = startDate.getDate().toString().padStart(2, "0");
-      var month = (startDate.getMonth() + 1).toString().padStart(2, "0");
-      var year = startDate.getFullYear().toString();
-      param.start_date = `${day}-${month}-${year}`;
-      axios // add courses
-        .post("http://localhost:3000/api/reservations/add", param, headers)
-        .then((response) => {
-          console.log("POST courses successful : ", response.data);
-          closeModal_add();
-          setTimeout(() => {
-            window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-          },);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    };
-    return {
-      showModal,
-      show_edit,
-      openEdit_modal,
-      closeModal_edit,
-      closeModal_add,
-      opendateClick,
-      decodedToken,
-      saveAppt_add,
-      saveAppt_edit,
-      Open_detail,
-      newEvent,
-      newEvent_edit,
-      count: ref(10),
-      number: ref(1),
-      data,
-      set_detil: {},
-    };
-  },
-
-  methods: {
-    next_count: function () {
-      this.count += 10;
-      this.number += 10;
-    },
-    prevent_count: function () {
-      this.count -= 10;
-      this.number -= 10;
-    },
-
-    saveEdit: function (param) {
-      console.log(param);
-      Swal.fire({
-        title: "Are you sure?",
-        // text: "Do you want to reject this?",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Confirm",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axios
-            .put(
-              `http://localhost:3000/api/reservations/update/${param.id}`,
-              param
-            )
-            .then((response) => {
-              console.log("POST request successful:", response.data);
-              this.closeModal_add();
-              setTimeout(() => {
-                window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-              }, 1000);
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-            });
-        }
-      });
-    },
-    //http://localhost:3000/api/reservations/delete_course/${param.id}/${param.course_section}/${param.course_type}
-    Delete_course: function (param) {
-      console.log(param);
-      Swal.fire({
-        title: "Are you sure?",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#6b7280",
-        confirmButtonText: "Confirm",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axios
-            .delete(
-              `http://localhost:3000/api/reservations/delete_course/${param.course_id}/${param.course_section}/${param.course_type}`,
-              param
-            )
-            .then((response) => {
-              console.log("POST request successful:", response.data);
-              setTimeout(() => {
-                window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-              }, 1);
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-            });
-        }
-      });
-    },
-  },
-  // GET API users , reservations
-  async created() {
-    try {
-      const token = localStorage.getItem("jwtToken");
-      const headers = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const uniqueCourses = new Set();
-      const response = await axios.get(
-        "http://localhost:3000/api/reservations/list/course",
-        headers
-      );
-      if (Array.isArray(response.data)) {
-        this.data = response.data
-          .map((eventnew) => {
-            const courseKey = `${eventnew.course_type}-${eventnew.course_id}-${eventnew.course_section}`;
-            if (!uniqueCourses.has(courseKey)) {
-              uniqueCourses.add(courseKey);
-              let dayofweek = eventnew.day_of_week;
-              let get_dayofweek = ref("");
-              if (dayofweek === "1") {
-                get_dayofweek.value = "Mon";
-              } else if (dayofweek === "2") {
-                get_dayofweek.value = "Tue";
-              } else if (dayofweek === "3") {
-                get_dayofweek.value = "Wed";
-              } else if (dayofweek === "4") {
-                console.log("loglog  : ");
-                get_dayofweek.value = "Thu";
-              } else if (dayofweek === "5") {
-                get_dayofweek.value = "Fri";
-              } else if (dayofweek === "1,4") {
-                get_dayofweek.value = "Mon-Thu";
-              } else if (dayofweek === "2,5") {
-                get_dayofweek.value = "Tue-Fri";
-              }
-              console.log("info : ", eventnew);
-              return {
-                id: eventnew.id,
-                user_refer: eventnew.user_refer,
-                admin_refer: eventnew.admin_refer,
-                room_refer: eventnew.room_refer,
-                course_id: eventnew.course_id,
-                course_section: eventnew.course_section,
-                course_name: eventnew.course_name,
-                course_type: eventnew.course_type,
-                course_instructor: eventnew.course_instructor,
-                course_instructor_email: eventnew.course_instructor_email,
-                day_of_week: get_dayofweek.value,
-                end_date: eventnew.end_date,
-                description: eventnew.course_description, // string
-                start_time: eventnew.start_time, //16:30 string
-                end_time: eventnew.end_time,
-                start_date: eventnew.start_date,
-                time: eventnew.start_time + " - " + eventnew.end_time,
-                type: eventnew.type, // string
-                status: eventnew.status, // string
-              };
-            }
-            return null;
-          })
-          .filter((event) => event !== null);
-        this.data.sort((a, b) => a.id - b.id);
-        console.log("this.data  : ", this.data);
-        this.max_obj = this.data.length;
-      } else {
-        console.error("Invalid response data:", eventnew.data);
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
-  },
-};
-</script>
-
 <template>
+  <!-- add course -->
   <admin_reser
     v-if="showModal"
     :form="newEvent"
     @closeModal="closeModal_add"
     @saveAppt="saveAppt_add"
   />
+  <!-- Edit -->
   <EditCourse
     v-if="show_edit"
     :form="newEvent_edit"
@@ -534,6 +184,371 @@ export default {
     </div>
   </div>
 </template>
+
+<script>
+import { watchEffect, ref, defineComponent } from "vue";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import admin_reser from "../../components/Modals/Course/Course_modal.vue";
+import EditCourse from "../../components/Modals/Edit_Reservation/course.vue";
+import jwt_decode from "jwt-decode";
+import axios from "axios";
+
+export default {
+  components: {
+    admin_reser,
+    EditCourse,
+  },
+
+  setup() {
+    const decodedToken = ref({});
+    onMounted(() => {
+      const token = localStorage.getItem("jwtToken");
+      if (token) {
+        decodedToken.value = jwt_decode(token);
+        console.log(decodedToken.value);
+      }
+    });
+    const newEvent = ref({
+      user_refer: null, // int  user_id
+      admin_refer: null, // int  admin คนไหนกด
+      room_refer: null, // string room_id
+      // course
+      course_id: null, //null เพราะใช้กับ course
+      course_section: null, //null เพราะใช้กับ course
+      course_name: null, //null เพราะใช้กับ course
+      course_type: "Lecture", //null เพราะใช้กับ course
+      course_instructor: null, //null เพราะใช้กับ course
+      course_instructor_email: null, //null เพราะใช้กับ course
+      day_of_week: null, //null เพราะใช้กับ courseฃ
+      end_date: null, // ให้มันเป็น null ถ้าจะ add ธรรมดา string
+      // end course
+      description: "", // string
+      start_time: "", //16:30 string
+      end_time: "", //16:30 string
+      start_date: "", // ต้องใช้ dd-mm-yyyy string
+      type: "course", // string
+      status: "Approved", // string
+    });
+    const day_week = ref("");
+    const showModal = ref(false);
+    const show_edit = ref(false);
+    const data = ref([]);
+    const max_obj = ref(0);
+    const user_name = ref([]);
+    const Open_detail = ref(false);
+    // for Edit
+    const newEvent_edit = ref({});
+    const openEdit_modal = (info) => {
+      show_edit.value = true;
+      console.log("info :", info);
+      let dayofweek = info.day_of_week;
+      let get_dayofweek = ref("");
+      if (dayofweek === "Mon") {
+        get_dayofweek.value = "1";
+      } else if (dayofweek === "Tue") {
+        get_dayofweek.value = "2";
+      } else if (dayofweek === "Wed") {
+        get_dayofweek.value = "3";
+      } else if (dayofweek === "Thu") {
+        get_dayofweek.value = "4";
+      } else if (dayofweek === "Fri") {
+        get_dayofweek.value = "5";
+      } else if (dayofweek === "Mon-Thu") {
+        get_dayofweek.value = "1,4";
+      } else if (dayofweek === "Tue-Fri") {
+        get_dayofweek.value = "2,5";
+      }
+      newEvent_edit.value = info;
+      function convertDate(dateString) {
+        const [day, month, year] = dateString.split("-");
+        const formattedDate = `${year}-${month}-${day}`;
+        return formattedDate;
+      }
+
+      newEvent_edit.value.start_date = convertDate(
+        newEvent_edit.value.start_date
+      );
+      newEvent_edit.value.end_date = convertDate(newEvent_edit.value.end_date);
+      newEvent_edit.value.day_of_week = get_dayofweek.value;
+      console.log("newEvent : ", newEvent_edit.value);
+    };
+    const closeModal_edit = () => {
+      setTimeout(() => {
+        window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+      },);
+      show_edit.value = false;
+    };
+
+    const saveAppt_edit = (param) => {
+      Swal.fire({
+        title: "Are you sure?",
+        // text: "Do you want to reject this?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#6b7280",
+        confirmButtonText: "Confirm",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const token = localStorage.getItem("jwtToken");
+          const headers = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
+          console.log("param : ", param);
+          console.log("param.weekday : ",param.day_of_week);
+          param.user_refer = decodedToken.value.id;
+          param.admin_refer = decodedToken.value.id;
+          var startDate = new Date(param.end_date);
+          var day = startDate.getDate().toString().padStart(2, "0");
+          var month = (startDate.getMonth() + 1).toString().padStart(2, "0");
+          var year = startDate.getFullYear().toString();
+          param.end_date = `${day}-${month}-${year}`;
+
+          var startDate = new Date(param.start_date);
+          var day = startDate.getDate().toString().padStart(2, "0");
+          var month = (startDate.getMonth() + 1).toString().padStart(2, "0");
+          var year = startDate.getFullYear().toString();
+          param.start_date = `${day}-${month}-${year}`;
+          axios // add courses
+            .put(`http://localhost:3000/api/reservations/update/${param.id}`,param,headers)
+            .then((response) => {
+              console.log("POST courses successful : ", response.data);
+              closeModal_add();
+              setTimeout(() => {
+                window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+              },);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        }
+      });
+    };
+
+    const opendateClick = () => {
+      showModal.value = true;
+    };
+
+    const closeModal_add = () => {
+      showModal.value = false;
+    };
+    const saveAppt_add = (param) => {
+      console.log("saveAppt_add saveAppt_add saveAppt_add saveAppt_add saveAppt_add");
+      const token = localStorage.getItem("jwtToken");
+      const headers = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      param.user_refer = decodedToken.value.id;
+      param.admin_refer = decodedToken.value.id;
+      var startDate = new Date(param.end_date);
+      var day = startDate.getDate().toString().padStart(2, "0");
+      var month = (startDate.getMonth() + 1).toString().padStart(2, "0");
+      var year = startDate.getFullYear().toString();
+      param.end_date = `${day}-${month}-${year}`;
+
+      var startDate = new Date(param.start_date);
+      var day = startDate.getDate().toString().padStart(2, "0");
+      var month = (startDate.getMonth() + 1).toString().padStart(2, "0");
+      var year = startDate.getFullYear().toString();
+      param.start_date = `${day}-${month}-${year}`;
+      axios // add courses
+        .post("http://localhost:3000/api/reservations/add", param, headers)
+        .then((response) => {
+          console.log("POST courses successful : ", response.data);
+          closeModal_add();
+          setTimeout(() => {
+            window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+          },);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    };
+    return {
+      showModal,
+      show_edit,
+      openEdit_modal,
+      closeModal_edit,
+      closeModal_add,
+      opendateClick,
+      decodedToken,
+      saveAppt_add,
+      saveAppt_edit,
+      Open_detail,
+      newEvent,
+      newEvent_edit,
+      count: ref(10),
+      number: ref(1),
+      data,
+      set_detil: {},
+    };
+  },
+
+  methods: {
+    next_count: function () {
+      this.count += 10;
+      this.number += 10;
+    },
+    prevent_count: function () {
+      this.count -= 10;
+      this.number -= 10;
+    },
+
+    saveEdit: function (param) {
+      console.log("EDITTT SAVEEEEE");
+      console.log(param);
+      Swal.fire({
+        title: "Are you sure?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Confirm",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const token = localStorage.getItem("jwtToken");
+          const headers = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
+          axios
+            .put(
+              `http://localhost:3000/api/reservations/update/${param.id}`,
+              param,headers
+            )
+            .then((response) => {
+              console.log("POST request successful:", response.data);
+              this.closeModal_add();
+              setTimeout(() => {
+                window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+              }, 1000);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        }
+      });
+    },
+    //http://localhost:3000/api/reservations/delete_course/${param.id}/${param.course_section}/${param.course_type}
+    Delete_course: function (param) {
+      console.log("Delete_course Delete_course Delete_course Delete_course");
+      console.log(param);
+      Swal.fire({
+        title: "Are you sure?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#6b7280",
+        confirmButtonText: "Confirm",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const token = localStorage.getItem("jwtToken");
+          const headers = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
+          axios
+            .delete(
+              `http://localhost:3000/api/reservations/delete_course/${param.course_id}/${param.course_section}/${param.course_type}`,
+              headers
+            )
+            .then((response) => {
+              console.log("POST request successful:", response.data);
+              setTimeout(() => {
+                window.location.reload();
+              }, 1);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        }
+      });
+    },
+  },
+  // GET API users , reservations
+  async created() {
+    try {
+      const token = localStorage.getItem("jwtToken");
+      const headers = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const uniqueCourses = new Set();
+      const response = await axios.get(
+        "http://localhost:3000/api/reservations/list/course",
+        headers
+      );
+      if (Array.isArray(response.data)) {
+        this.data = response.data
+          .map((eventnew) => {
+            const courseKey = `${eventnew.course_type}-${eventnew.course_id}-${eventnew.course_section}`;
+            if (!uniqueCourses.has(courseKey)) {
+              uniqueCourses.add(courseKey);
+              let dayofweek = eventnew.day_of_week;
+              let get_dayofweek = ref("");
+              if (dayofweek === "1") {
+                get_dayofweek.value = "Mon";
+              } else if (dayofweek === "2") {
+                get_dayofweek.value = "Tue";
+              } else if (dayofweek === "3") {
+                get_dayofweek.value = "Wed";
+              } else if (dayofweek === "4") {
+                console.log("loglog  : ");
+                get_dayofweek.value = "Thu";
+              } else if (dayofweek === "5") {
+                get_dayofweek.value = "Fri";
+              } else if (dayofweek === "1,4") {
+                get_dayofweek.value = "Mon-Thu";
+              } else if (dayofweek === "2,5") {
+                get_dayofweek.value = "Tue-Fri";
+              }
+              console.log("info : ", eventnew);
+              return {
+                id: eventnew.id,
+                user_refer: eventnew.user_refer,
+                admin_refer: eventnew.admin_refer,
+                room_refer: eventnew.room_refer,
+                course_id: eventnew.course_id,
+                course_section: eventnew.course_section,
+                course_name: eventnew.course_name,
+                course_type: eventnew.course_type,
+                course_instructor: eventnew.course_instructor,
+                course_instructor_email: eventnew.course_instructor_email,
+                day_of_week: get_dayofweek.value,
+                end_date: eventnew.end_date,
+                description: eventnew.course_description, // string
+                start_time: eventnew.start_time, //16:30 string
+                end_time: eventnew.end_time,
+                start_date: eventnew.start_date,
+                time: eventnew.start_time + " - " + eventnew.end_time,
+                type: eventnew.type, // string
+                status: eventnew.status, // string
+              };
+            }
+            return null;
+          })
+          .filter((event) => event !== null);
+        this.data.sort((a, b) => a.id - b.id);
+        console.log("this.data  : ", this.data);
+        this.max_obj = this.data.length;
+      } else {
+        console.error("Invalid response data:", eventnew.data);
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  },
+};
+</script>
+
+
 <style scoped>
 body {
   color: black;

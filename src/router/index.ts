@@ -1,29 +1,24 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import { ref } from "vue";
 import jwt_decode from "jwt-decode";
-import dashboard from "../views/Dashboard.vue";
-import adminchecklist from "../views/Admin_checklist.vue";
-import login from "../views/login.vue";
-import userchecklist from "../views/Myreq.vue";
-import Course from "../views/Coures.vue";
-import AAAA from "../views/testtype.vue";
-import Getstart from "../views/Getstart.vue";
-import index_test from "../views/testing/index.vue";
-import review from "../views/testing/Review.vue";
-import map from "../views/testing/Map.vue";
-import home from "../views/testing/home.vue";
+import dashboard from "../views/Dashboard/Dashboard.vue";
+import adminchecklist from "../views/Admin/Grant_Deny.vue";
+import login from "../views/OAuth/login.vue";
+import userchecklist from "../views/User/myreservation.vue";
+import Course from "../views/Admin/Coures.vue";
+import Getstart from "../views/Dashboard/Getstart.vue";
 import App from "../App.vue";
 
+
+//Navigation Guard
 const token_user = ref(false);
 const decodedToken = ref(null);
 const name = ref('');
 const admin = ref(false);
 
-// ดึง Token จาก localStorage
 const token = localStorage.getItem("jwtToken");
 
 if (token) {
-  // ถ้ามี Token
   token_user.value = true;
   decodedToken.value = jwt_decode(token);
   name.value = decodedToken.value.first_name;
@@ -43,11 +38,6 @@ const routes: RouteRecordRaw[] = [
     path: "/dashboard",
     name: "dashboard",
     component: dashboard,
-  },
-  {
-    path: "/AAAA",
-    name: "AAAA",
-    component: AAAA,
   },
   {
     path: "/login",
@@ -70,26 +60,6 @@ const routes: RouteRecordRaw[] = [
     path: "/My_reservations",
     name: "userchecklist",
     component: userchecklist,
-  },
-  {
-    path: "/index",
-    name: "index_test",
-    component: index_test,
-  },
-  {
-    path: "/map",
-    name: "map",
-    component: map,
-  },
-  {
-    path: "/review",
-    name: "review",
-    component: review,
-  },
-  {
-    path: "/home",
-    name: "home",
-    component: home,
   },
 ];
 const router = createRouter({

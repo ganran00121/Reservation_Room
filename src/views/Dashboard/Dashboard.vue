@@ -1,7 +1,7 @@
 <script>
 import { watchEffect, ref, defineComponent } from "vue";
-import calendar from "../components/Calendar.vue";
-import ModalCalendar from "../components/Modals/Calendarmodal.vue";
+import calendar from "../../components/Calendar.vue";
+import ModalCalendar from "../../components/Modals/Calendar/Calendarmodal.vue";
 import jwt_decode from "jwt-decode";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import axios from "axios";

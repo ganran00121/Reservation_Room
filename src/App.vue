@@ -117,13 +117,13 @@
       <main class="overflow-x-hidden overflow-y-auto shadow-t transition  ease-in-out duration-500  top-0 sticky">
         <header class="flex items-center justify-between px-6 py-4  bg-transparent text-gray-500 z-40">
           <div class="flex items-center" style="margin-left: 20%;">
-            <button class="text-white focus:outline-none mr-4 p-2 rounded-xl hover:text-black hover:bg-gray-100"
+            <!-- <button class="text-white focus:outline-none mr-4 p-2 rounded-xl hover:text-black hover:bg-gray-100"
               @click="isOpen = !isOpen">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 6H20M4 12H20M4 18H11" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                   stroke-linejoin="round" />
               </svg>
-            </button>
+            </button> -->
           </div>
 
           <div class="flex items-center">
@@ -176,18 +176,6 @@
                 {{ email_user }}
               </p>
               </p>
-
-              <!-- <transition enter-active-class="transition duration-150 ease-out transform"
-                enter-from-class="scale-95 opacity-0" enter-to-class="scale-100 opacity-100"
-                leave-active-class="transition duration-150 ease-in transform" leave-from-class="scale-100 opacity-100"
-                leave-to-class="scale-95 opacity-0">
-                <div v-show="dropdownOpen" class="absolute right-0 z-20 w-48 py-3 mt-2 bg-white rounded-md shadow-xl">
-                  <a href="#"
-                    class="block px-4 py-3 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Profile</a>
-                  <a href="#"
-                    class="block px-4 py-3 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Products</a>
-                </div>
-              </transition> -->
             </div>
           </div>
         </header>

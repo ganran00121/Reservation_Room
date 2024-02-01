@@ -12,7 +12,6 @@
       <br> you can schedule various activities within the calendar for the upcoming semester.
     </p>
 
-
       <div class="flex-1 text-center mx-auto my-8">
         <div class="grid">
           <div class="animate-bounce  w-6 h-6 mx-auto mb-8  text-white">

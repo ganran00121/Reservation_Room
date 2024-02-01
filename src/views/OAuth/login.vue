@@ -278,7 +278,7 @@ export default {
 };
 </script>
 <style scoped>
-@import "../assets/css/login.css";
+@import "../../assets/css/login.css";
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none; /* Safari */
