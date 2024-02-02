@@ -1,3 +1,11 @@
+
+<template>
+  <div class="container rounded-xl mx-auto p-0 md:p-8 lg:p-10 bg-white overflow-hidden my-8">
+    <calendar @dateClick="opendateClick" class=""> </calendar>
+  </div>
+  <modalCalendar v-if="showModal" :form="newEvent" @closeModal="closeModal" @saveAppt="saveAppt" />
+</template>
+
 <script>
 import { watchEffect, ref, defineComponent } from "vue";
 import calendar from "../../components/Calendar.vue";
@@ -293,12 +301,6 @@ export default {
 };
 </script>
 
-<template>
-  <div class="container rounded-xl mx-auto p-0 md:p-8 lg:p-10 bg-white overflow-hidden my-8">
-    <calendar @dateClick="opendateClick" class=""> </calendar>
-  </div>
-  <modalCalendar v-if="showModal" :form="newEvent" @closeModal="closeModal" @saveAppt="saveAppt" />
-</template>
 
 <style>
 .fc-license-message {
