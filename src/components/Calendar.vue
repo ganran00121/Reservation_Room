@@ -76,6 +76,7 @@ export default defineComponent({
     compoDetail,
   },
   setup(props, context) {
+    
     // post get  20-06-2030
     const decodedToken = ref({});
 
@@ -187,16 +188,15 @@ export default defineComponent({
           decodedToken.value = jwt_decode(token);
         }
         console.log("token : ", decodedToken);
-        const test = await axios.get("http://localhost:3000/api/users/list");
+        const test = await axios.get(`${import.meta.env.VITE_APP_USERS_LIST}`);
         let user;
         let users = {};
         for (var i = 0; i < test.data.length; i++) {
           user = test.data[i];
           users[user.id] = user;
         }
-        const response = await axios.get(
-          "http://localhost:3000/api/reservations/list"
-        );
+        // RESERVATION_LIST = 'http://localhost:3000/api/reservations/list'
+        const response = await axios.get(`${import.meta.env.VITE_APP_RESERVATION_LIST}`);
         if (Array.isArray(response.data)) {
           console.log("response : ", response.data);
           events_data.value = response.data

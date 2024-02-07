@@ -189,7 +189,7 @@
 import { watchEffect, ref, defineComponent } from "vue";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import admin_reser from "../../components/Modals/Course/Course_modal.vue";
-import EditCourse from "../../components/Modals/Edit_Reservation/course.vue";
+import EditCourse from "../../components/Modals/Course/Edit_course.vue";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 
@@ -311,8 +311,8 @@ export default {
           var month = (startDate.getMonth() + 1).toString().padStart(2, "0");
           var year = startDate.getFullYear().toString();
           param.start_date = `${day}-${month}-${year}`;
-          axios // add courses
-            .put(`http://localhost:3000/api/reservations/update/${param.id}`,param,headers)
+          axios // update courses
+            .put(`${import.meta.env.VITE_APP_COURSE_UPDATE}${param.id}`,param,headers)
             .then((response) => {
               console.log("POST courses successful : ", response.data);
               closeModal_add();
@@ -356,7 +356,7 @@ export default {
       var year = startDate.getFullYear().toString();
       param.start_date = `${day}-${month}-${year}`;
       axios // add courses
-        .post("http://localhost:3000/api/reservations/add", param, headers)
+        .post(`${import.meta.env.VITE_APP_COURSE_ADD}`, param, headers)
         .then((response) => {
           console.log("POST courses successful : ", response.data);
           closeModal_add();
@@ -418,7 +418,7 @@ export default {
           };
           axios
             .put(
-              `http://localhost:3000/api/reservations/update/${param.id}`,
+              `${import.meta.env.VITE_APP_COURSE_UPDATE}${param.id}`,
               param,headers
             )
             .then((response) => {
@@ -455,7 +455,7 @@ export default {
           };
           axios
             .delete(
-              `http://localhost:3000/api/reservations/delete_course/${param.course_id}/${param.course_section}/${param.course_type}`,
+              `${import.meta.env.VITE_APP_COURSE_DELETE}${param.course_id}/${param.course_section}/${param.course_type}`,
               headers
             )
             .then((response) => {
@@ -482,7 +482,7 @@ export default {
       };
       const uniqueCourses = new Set();
       const response = await axios.get(
-        "http://localhost:3000/api/reservations/list/course",
+        `${import.meta.env.VITE_APP_COURSE_LIST}`,
         headers
       );
       if (Array.isArray(response.data)) {

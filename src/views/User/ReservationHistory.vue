@@ -249,7 +249,7 @@ export default {
           endDate.setHours(endTime[0], endTime[1]);
           console.log("param : ", param);
           axios
-            .get("http://localhost:3000/api/reservations/list", headers)
+            .get(`${import.meta.env.VITE_APP_RESERVATION_LIST}`, headers,headers)
             .then((response) => {
               const reservations = response.data;
               const overlappingReservation = reservations.find((reservation) => {
@@ -295,7 +295,7 @@ export default {
             },
           };
                 axios
-                  .put(`http://localhost:3000/api/reservations/update/${param.id}`,param,headers)
+                  .put(`${import.meta.env.VITE_APP_RESERVATION_UPDATE}${param.id}`,param,headers)
                   .then((response) => {
                     console.log('POST request successful:', response.data);
                     this.closeModal()
@@ -332,7 +332,7 @@ export default {
           }
           }
           axios
-            .delete(`http://localhost:3000/api/reservations/delete/${param.id}`,headers, param)
+            .delete(`${import.meta.env.VITE_APP_RESERVATION_DELETE}${param.id}`,headers, param)
             .then((response) => {
               console.log('POST request successful:', response.data);
               this.closeModal()
@@ -375,7 +375,7 @@ export default {
         this.token_id = decodedToken.id;
         console.log(token_id.value);
       }
-      const response = ref(await axios.get(`http://localhost:3000/api/users/get/${token_id.value}`)); // ID
+      const response = ref(await axios.get(`${import.meta.env.VITE_APP_USERS_GET_ID}${token_id.value}`)); // ID
       console.log("response AAA : ", response);
       const user_first_name = ref(response.value.data.first_name)
       const user_last_name = ref(response.value.data.last_name)

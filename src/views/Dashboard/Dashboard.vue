@@ -185,7 +185,7 @@ export default {
       console.log("startDate : ", startDate.setHours(startTime[0], startTime[1]));
       console.log("endDate : ", endDate.setHours(endTime[0], endTime[1]));
       axios
-        .get("http://localhost:3000/api/reservations/list", headers)
+        .get(`${import.meta.env.VITE_APP_RESERVATION_LIST}`, headers)
         .then((response) => {
           const reservations = response.data;
           console.log(response.data);
@@ -246,7 +246,7 @@ export default {
           } else {
             axios
               .post(
-                "http://localhost:3000/api/reservations/add",
+                `${import.meta.env.VITE_APP_RESERVATION_ADD}`,
                 param,
                 headers
               )

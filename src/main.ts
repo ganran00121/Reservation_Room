@@ -6,7 +6,6 @@ import "./assets/css/index.css";
 
 //main
 import App from "./App.vue";
-
 //library
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';

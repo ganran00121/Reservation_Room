@@ -219,7 +219,7 @@ export default {
     login_acc(info) {
       console.log(info);
       axios
-        .post("http://localhost:3000/api/login", info, {
+        .post(`${import.meta.env.VITE_APP_LOGIN}`, info, {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((response) => {
@@ -258,7 +258,7 @@ export default {
       console.log("info : ",info);
       this.form_in.pass = info.password
       axios
-        .post("http://localhost:3000/api/users/add", info)
+        .post(`${import.meta.env.VITE_APP_USERS_ADD}`, info)
         .then((response) => {
             (this.form_in.user = response.data.email),
 

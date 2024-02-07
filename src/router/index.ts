@@ -4,9 +4,10 @@ import jwt_decode from "jwt-decode";
 import dashboard from "../views/Dashboard/Dashboard.vue";
 import adminchecklist from "../views/Admin/Grant_Deny.vue";
 import login from "../views/OAuth/login.vue";
-import userchecklist from "../views/User/myreservation.vue";
+import ReservationHistory from "../views/User/ReservationHistory.vue";
 import Course from "../views/Admin/Coures.vue";
 import Getstart from "../views/Dashboard/Getstart.vue";
+import not_found from "../views/Pages/404.vue";
 import App from "../App.vue";
 
 
@@ -58,9 +59,18 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: "/My_reservations",
-    name: "userchecklist",
-    component: userchecklist,
+    name: "ReservationHistory",
+    component: ReservationHistory,
   },
+  {
+    path: "/404",
+    name: "not_found",
+    component: not_found,
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    redirect: "/404"
+  }
 ];
 const router = createRouter({
   history: createWebHistory(),
@@ -71,7 +81,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !token_user.value) {
     next({ name: 'login' });
   } else if (to.meta.requiresAdmin && !admin.value) {
-    next({ name: 'dashboard' }); 
+    next({ name: 'not_found' }); 
   } else {
     next(); 
   }

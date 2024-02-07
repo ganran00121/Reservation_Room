@@ -238,7 +238,7 @@ export default {
           data.status = "Approved";
           axios
             .put(
-              `http://localhost:3000/api/reservations/update/${data.id}`,data ,headers)
+              `${import.meta.env.VITE_APP_RESERVATION_UPDATE}${data.id}`,data ,headers)
             .then((response) => {
               Swal.fire("Approved!", "Approved success.", "success");
             })
@@ -274,12 +274,9 @@ export default {
           data.status = "Rejected";
           console.log("data : :::",data);
           axios
-            .put(`http://localhost:3000/api/reservations/update/${data.id}`,data, {headers})
+            .put(`${import.meta.env.VITE_APP_RESERVATION_UPDATE}${data.id}`,data, {headers})
             .then((response) => {
               Swal.fire("Refuse!", "req Refuse.", "success");
-              // setTimeout(() => {
-              //   window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
-              // }, 1000);
             })
             .catch((error) => {
               console.error("Error:", error);
@@ -347,7 +344,7 @@ export default {
         this.token_id = decodedToken.id;
         console.log(token_id.value);
       }
-      const test = await axios.get("http://localhost:3000/api/users/list");
+      const test = await axios.get(`${import.meta.env.VITE_APP_USERS_LIST}`);
       let user;
       let users = {};
       for (var i = 0; i < test.data.length; i++) {
@@ -355,7 +352,7 @@ export default {
         users[user.id] = user;
       }
       const response = await axios.get(
-        `http://localhost:3000/api/reservations/list/request`
+        `${import.meta.env.VITE_APP_RESERVATION_LIST}/request`
       ); // ID
       console.log("response : ", response);
       this.data = response.data.map((eventnew) => ({
