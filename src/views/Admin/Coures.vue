@@ -219,7 +219,7 @@ export default {
       course_type: "Lecture", //null เพราะใช้กับ course
       course_instructor: null, //null เพราะใช้กับ course
       course_instructor_email: null, //null เพราะใช้กับ course
-      day_of_week: null, //null เพราะใช้กับ courseฃ
+      day_of_week: null, //null เพราะใช้กับ course
       end_date: null, // ให้มันเป็น null ถ้าจะ add ธรรมดา string
       // end course
       description: "", // string
@@ -274,7 +274,7 @@ export default {
     };
     const closeModal_edit = () => {
       setTimeout(() => {
-        window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+        window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที 
       },);
       show_edit.value = false;
     };
@@ -317,7 +317,7 @@ export default {
               console.log("POST courses successful : ", response.data);
               closeModal_add();
               setTimeout(() => {
-                window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+                window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที  
               },);
             })
             .catch((error) => {
@@ -361,7 +361,7 @@ export default {
           console.log("POST courses successful : ", response.data);
           closeModal_add();
           setTimeout(() => {
-            window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+            window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที 
           },);
         })
         .catch((error) => {
@@ -425,7 +425,7 @@ export default {
               console.log("POST request successful:", response.data);
               this.closeModal_add();
               setTimeout(() => {
-                window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที (1 วินาที)
+                window.location.reload(); // รีเฟรชหน้าทันทีหลังจาก 1000 มิลลิวินาที 
               }, 1000);
             })
             .catch((error) => {
