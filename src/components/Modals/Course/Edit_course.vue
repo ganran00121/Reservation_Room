@@ -168,7 +168,7 @@
                   <select
                     disabled
                     v-model="form.day_of_week"
-                    class="appearance-none border w-full py-3 px-3 text-black leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm sm:text-sm sm:leading-5"
+                    class="appearance-none border w-full py-3 px-3  text-lg  text-gray-500 font-semibold leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm sm:text-sm sm:leading-5"
                   >
                     <option value="1">Mon</option>
                     <option value="2">Tue</option>
@@ -237,7 +237,7 @@
                     v-model="form.start_date"
                     disabled
                     type="date"
-                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
+                    class="appearance-none border w-full py-3 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
                   />
                 </div>
                 <div class="mb-4 w-full md:w-5/12">
@@ -248,7 +248,7 @@
                     v-model="form.end_date"
                     disabled
                     type="date"
-                    class="appearance-none border w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
+                    class="appearance-none border w-full py-3 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 rounded-2xl shadow-sm"
                   />
                 </div>
               </div>
@@ -331,7 +331,7 @@
 
 <script>
 export default {
-  name: "Modal",
+  name: "Edit_course",
   props: {
     form: {
       type: Object,
@@ -342,10 +342,10 @@ export default {
 
   methods: {
     closeModal() {
-      this.$emit("closeModal");
+      this.$emit("close_edit_model"); // กดปิด เข้้า func รีเฟรชหน้า
     },
     store(form) {
-      this.$emit("saveAppt", form);
+      this.$emit("save_edit", form); // กด save emit ไป func save_edit
     },
   },
 };

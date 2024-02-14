@@ -326,10 +326,10 @@ export default {
 
   methods: {
     closeModal() {
-      this.$emit("closeModal");
+      this.$emit("close_course_model");  // กดปิด เข้้า func ปิด component นี้
     },
     store(form) {
-      this.$emit("saveAppt", form);
+      this.$emit("create_course", form); // กด save emit ไป func create_course
     },
   },
 };

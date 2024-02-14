@@ -9,20 +9,14 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    Admin_reservation: typeof import('./src/components/Modals/Course/admin_reservation.vue')['default']
     Calendar: typeof import('./src/components/Calendar.vue')['default']
     Calendarmodal: typeof import('./src/components/Modals/Calendar/Calendarmodal.vue')['default']
-    Course: typeof import('./src/components/Modals/Course/course.vue')['default']
     Course_modal: typeof import('./src/components/Modals/Course/Course_modal.vue')['default']
-    Detail: typeof import('./src/components/Checklist/detail.vue')['default']
+    Course_model: typeof import('./src/components/Modals/Course/Course_model.vue')['default']
     Edit_course: typeof import('./src/components/Modals/Course/Edit_course.vue')['default']
-    Edit_course_modal: typeof import('./src/components/Modals/edit_course_modal.vue')['default']
-    Edit_user_modal: typeof import('./src/components/Modals/Edit_Reservation/edit_user_modal.vue')['default']
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ShowDetail: typeof import('./src/components/Modals/Showdetail/showDetail.vue')['default']
     User: typeof import('./src/components/Modals/Edit_Reservation/user.vue')['default']
-    Uudetail: typeof import('./src/components/Checklist/uudetail.vue')['default']
   }
 }

@@ -5,7 +5,7 @@ import dashboard from "../views/Dashboard/Dashboard.vue";
 import adminchecklist from "../views/Admin/Grant_Deny.vue";
 import login from "../views/OAuth/login.vue";
 import ReservationHistory from "../views/User/ReservationHistory.vue";
-import Course from "../views/Admin/Coures.vue";
+import Course from "../views/Admin/Course.vue";
 import Getstart from "../views/Dashboard/Getstart.vue";
 import not_found from "../views/Pages/404.vue";
 import App from "../App.vue";
